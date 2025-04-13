@@ -10,10 +10,10 @@ const PORT = process.env.PORT || 3001; // Use environment variable or default to
 // IMPORTANT: Use environment variables for credentials in production!
 // For now, using placeholders. Replace 'YOUR_PASSWORD_HERE' locally.
 const pool = new Pool({
-  user: 'postgres', // Or your specific DB user
+  user: 'USER', // Or your specific DB user
   host: 'localhost',
   database: 'civ_db', // Your database name
-  password: '75clalc47qMarc', // REPLACE THIS LOCALLY
+  password: 'PASSWORD', // REPLACE THIS LOCALLY
   port: 5432,
 });
 
