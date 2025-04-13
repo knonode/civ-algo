@@ -1,0 +1,138 @@
+hist_period,established_year,continent,region,country,picture,location,type_site,culture,unesco_whs,type_icon,latitude,longitude
+MID PALEOLITHIC,-379000,Africa,"Africa, North Africa",Morocco,homosapiens_0607_main.jpg,Jebel Irhoud,cave.svg,,,Settlement.svg,31.855,-8.8725
+MID PALEOLITHIC,-316000,Asia,"Asia, West Asia",Turkey,dna.jpg,Western Eurasia,DNA.svg,,,Settlement.svg,39,39
+MID PALEOLITHIC,-259000,Africa,South Africa,South Africa,Florisbad.jpg,Florisbad,thermal spring.svg,,PHS,Settlement.svg,-28.766667,26.066667
+MID PALEOLITHIC,-250000,Asia,"Asia, Southeast Asia",India,Attirampakkam.png,Attirampakkam,type site.svg,,,Settlement.svg,13.230556,79.888889
+MID PALEOLITHIC,-210000,Europe,Mediterranean,Greece,Apidima Cave.jpg,Apidima Cave,cave.svg,,,Settlement.svg,36.661389,22.36333
+MID PALEOLITHIC,-200000,Africa,"Africa, Horn of Africa",Ethiopia,Omo Kibish Formation.jpg,Omo Kibish Formation,formation.svg,,,Settlement.svg,4.800353,35.967069
+MID PALEOLITHIC,-200000,Africa,"Africa, Southern Africa",South Africa,Klasies River Caves.jpg,Klasies River Caves,cave.svg,,,Settlement.svg,-34.108103,24.390139
+MID PALEOLITHIC,-195000,Asia,"Asia, West Asia",Israel,Misliya Cave.jpg,Misliya Cave,cave.svg,Levallois,,Settlement.svg,32.7413,34.9724
+MID PALEOLITHIC,-160000,Africa,"Africa, East Africa",Sudan,Singa.png,Singa,river.svg,,,Settlement.svg,13.15,33.933333
+MID PALEOLITHIC,-125000,Asia,"Asia, West Asia, Arabia",United Arab Emirates,Jebel Faya.jpg,Jebel Faya,rock shelter.svg,,,Settlement.svg,25.119,55.847
+MID PALEOLITHIC,-125000,Asia,"Asia, West Asia, Arabia",Oman,Aybut Al Auwal.jpg,Aybut Al Auwal,river.svg,Nubian Complex,,Settlement.svg,17.5,54.3
+MID PALEOLITHIC,-90000,Africa,"Africa, Central Africa",DR Congo,Katanda Semliki River.jpg,Katanda Semliki River,river.svg,,,Settlement.svg,1.2625,30.462778
+MID PALEOLITHIC,-80000,Asia,"Asia, Southeast Asia",India,Middle Son River.jpg,Middle Son River,river.svg,,,Settlement.svg,24.499167,82
+MID PALEOLITHIC,-80000,Asia,"Asia, East Asia",China,Fuyan Cave.jpg,Fuyan Cave,cave.svg,,,Settlement.svg,25.65075,111.480333
+MID PALEOLITHIC,-80000,Africa,"Africa, North Africa",Libya,Haua Fteah Cave.jpg,Haua Fteah Cave,coast.svg,,,Settlement.svg,32.899722,22.051389
+MID PALEOLITHIC,-72000,Asia,"Asia, Southeast Asia",Indonesia,Lida Ajer Cave.jpg,Lida Ajer Cave,cave.svg,,,Settlement.svg,-0.318004,100.589405
+MID PALEOLITHIC,-69000,Asia,"Asia, South Asia",Sri Lanka,dna.jpg,South Asia,DNA.svg,,,Settlement.svg,0,0
+MID PALEOLITHIC,-63000,Australia,Australia,Australia,Madjedbebe.jpg,Madjedbebe,rock shelter.svg,,,Settlement.svg,-12.5,132.883333
+MID PALEOLITHIC,-54000,South America,South America,Brazil,Pedra Furada.jpg,Pedra Furada,rock shelter.svg,,,Settlement.svg,-8.833333,-42.553333
+MID PALEOLITHIC,-48000,Africa,"Africa, North Africa",Egypt,Taramsa Hill.png,Taramsa Hill,hills.svg,,,Settlement.svg,26.121475,32.667357
+UPPER PALEOLITHIC,-45000,Asia,"Asia, East Asia",Japan,Nojiri Lake.jpg,Nojiri Lake,lake.svg,,,Settlement.svg,36.826389,138.221944
+UPPER PALEOLITHIC,-44000,Asia,"Asia, Southeast Asia, Indochina",Laos,Tam Pa Ling Cave.jpg,Tam Pa Ling Cave,cave.svg,,,Settlement.svg,20.208611,103.409722
+UPPER PALEOLITHIC,-44000,Asia,"Asia, Southeast Asia",Malaysia,Niah Cave.jpg,Niah Cave,cave.svg,,,Settlement.svg,3.813889,113.781389
+UPPER PALEOLITHIC,-44000,Europe,Europe,Bulgaria,Bacho Kiro Cave.jpg,Bacho Kiro Cave,cave.svg,,,Settlement.svg,42.946667,25.430278
+UPPER PALEOLITHIC,-43000,Europe,Europe,Italy,Grotta del Cavallo.jpg,Grotta del Cavallo,coast.svg,,,Settlement.svg,40.155,17.96
+UPPER PALEOLITHIC,-42000,Europe,Europe,United Kingdom,Kents Cavern.jpg,Kents Cavern,cave.svg,,,Settlement.svg,50.4682,-3.503
+UPPER PALEOLITHIC,-41000,Europe,Europe,Germany,Geissenklosterle.jpg,Geissen-klosterle,artifact.svg,,,Settlement.svg,48.398333,9.772222
+UPPER PALEOLITHIC,-41000,Europe,"Europe, Baltic",Lithuania,Snaukstai.png,Snaukstai,artifact.svg,,,Settlement.svg,55.661,21.406
+UPPER PALEOLITHIC,-40000,Asia,"Asia, Southeast Asia",East Timor,Jerimalai Cave.jpg,Jerimalai Cave,coast.svg,,,Settlement.svg,-8.393889,127.268333
+UPPER PALEOLITHIC,-40000,Europe,Europe,Romania,Pestera cu Oase.jpg,Pestera cu Oase,cave.svg,,,Settlement.svg,45.016667,21.833333
+UPPER PALEOLITHIC,-39000,Australia,Australia,Tasmania,Jordan River Levee.jpg,Jordan River Levee,river.svg,,,Settlement.svg,-42.704779,147.265745
+UPPER PALEOLITHIC,-38000,Asia,"Asia, Southeast Asia",New Guinea,dna.jpg,Western New Guinea,DNA.svg,,,Settlement.svg,0,0
+UPPER PALEOLITHIC,-38000,Europe,Europe,Russian Federation,Mamontovaya Kurya.jpg,Mamontovaya Kurya,river.svg,,,Settlement.svg,66.566667,62.416667
+UPPER PALEOLITHIC,-38000,North America,North America,Canada,Bluefish Caves.jpg,Bluefish Caves,cave.svg,,,Settlement.svg,67.15,-140.583333
+UPPER PALEOLITHIC,-36000,Asia,"Asia, Central Asia, Tibetan Plateau",China,Tibetan Plateau.jpg,Tibetan Plateau,DNA.svg,,,Settlement.svg,0,0
+UPPER PALEOLITHIC,-32000,Asia,"Asia, South Asia",Sri Lanka,Fa Hien Cave.jpg,Fa Hien Cave,cave.svg,,,Settlement.svg,6.601667,80.218333
+UPPER PALEOLITHIC,-31000,Europe,Europe,Austria,Willendorf.jpg,Willendorf,artifact.svg,,,Settlement.svg,48.316667,15.383333
+UPPER PALEOLITHIC,-30000,Asia,"Asia, East Asia",Japan,Yamashita-cho First Cave.jpg,Yamashita-cho First Cave,cave.svg,,,Settlement.svg,26.200833,127.672839
+UPPER PALEOLITHIC,-30000,Europe,Europe,France,Chauvethorses.jpg,Grotte Chauvet-Pont d'Arc,cave.svg,,WHS.png,Settlement.svg,44.3875,4.414167
+UPPER PALEOLITHIC,-29000,Europe,Europe,Czech Republic,Mladec Caves.jpg,Mladec Caves,cave.svg,,,Settlement.svg,49.706389,17.016667
+UPPER PALEOLITHIC,-28000,Europe,Europe,Poland,Oblazowa Cave.jpg,Oblazowa Cave,cave.svg,,,Settlement.svg,49.428686,20.125753
+UPPER PALEOLITHIC,-26000,Asia,"Asia, Southeast Asia",New Guinea,Kilu Cave.png,Kilu Cave,coast.svg,,,Settlement.svg,-5.335556,154.687222
+UPPER PALEOLITHIC,-23000,Europe,Europe,France,Brassempouy.jpg,la Grotte du Pape,artifact.svg,,,Settlement.svg,43.628611,0.710278
+UPPER PALEOLITHIC,-22000,Europe,Europe,Portugal,Abrigo do Lagar Velho.png,Abrigo do Lagar Velho,rock shelter.svg,,,Settlement.svg,39.755392,-8.735256
+UPPER PALEOLITHIC,-20000,North America,North America,United States,Lake Otero.jpg,Lake Otero,lake.svg,,,Settlement.svg,32.779167,106.171944
+UPPER PALEOLITHIC,-18000,Europe,Europe,Italy,San Teodoro Cave.jpg,San Teodoro cave,cave.svg,,,Settlement.svg,38.05,14.591319
+UPPER PALEOLITHIC,-16000,South America,South America,Chile,Monte Verde.jpg,Monte Verde,river.svg,,,Settlement.svg,-41.504722,-73.204444
+UPPER PALEOLITHIC,-12000,South America,South America,Peru,Cueva de Pikimachay.jpg,Cueva de Pikimachay,cave.svg,,,Settlement.svg,-13.040833,-74.224167
+UPPER PALEOLITHIC,-11000,North America,North America,Santa Rosa Island,Arlington Springs.jpg,Arlington Springs,coast.svg,,,Settlement.svg,33.973337,120.1070
+HOLOCENE,-10500,Europe,"Europe, British Isles",Ireland,Alice and Gwendoline Cave.jpg,Alice and Gwendoline Cave,cave.svg,,,Settlement.svg,52.81765,-9.009355
+HOLOCENE,-10500,Europe,Mediterranean,Cyprus,Aetokremnos.jpg,Aetokremnos,rock shelter.svg,,,Settlement.svg,34.570556,32.990556
+HOLOCENE,-10500,South America,"Americas, South America",Colombia,El Abra.jpg,El Abra,rock shelter.svg,,,Settlement.svg,5.017358,-73.951203
+HOLOCENE,-10000,North America,"Americas, North America",Canada,Triquet Island.jpg,Triquet Island,coast.svg,,,Settlement.svg,51.8,-128.25
+HOLOCENE,-9000,Asia,"Asia, West Asia",Palestine,Ain Sakhri Cave.jpg,Ain Sakhri Caves Betlehem,artifact.svg,,,Settlement.svg,31.5847,35.3631
+HOLOCENE,-9000,Europe,"Europe, Scandinavia",Norway,Aukra.jpg,Aukra,coast.svg,,,Settlement.svg,62.828611,6.845833
+HOLOCENE,-9000,South America,"Americas, South America",Argentina,Piedra Museo.png,Piedra Museo,rock shelter.svg,,,Settlement.svg,-47.669935,-67.999924
+HOLOCENE,-9000,Europe,"Europe, Baltic",Estonia,Pulli.jpg,Pulli,river.svg,,,Settlement.svg,58.4192,24.6756
+HOLOCENE,-8000,Africa,Atlantic / Central Africa,Equatorial Guinea,Bioko.png,Bioko,DNA.svg,,,Settlement.svg,3.5,8.7
+HOLOCENE,-7000,Asia,"Asia, Southeast Asia, Indochina",Cambodia,Laang Spean.png,Laang Spean,cave.svg,,,Settlement.svg,12.85,102.91666
+HOLOCENE,-7000,Asia,"Asia, West Asis",Lebanon,Byblos.jpg,Byblos,coast.svg,,,Settlement.svg,34.120428,35.649109
+HOLOCENE,-6300,Asia,Arctic,Russian Federation,Zhokov Island.jpg,Zhokhov Island,coast.svg,,,Settlement.svg,76.141111,152.73305
+HOLOCENE,-6000,Asia,Madhya Pradesh,India,Bhimbetka.jpg,Bhimbetka,rock shelter.svg,Acheulian,WHS.png,Settlement.svg,22.938415,77.613085
+HOLOCENE,-5250,Europe,Mediterranean,Malta,Ghar Dalam.jpg,Ghar Dalam,cave.svg,,,Settlement.svg,35.836417,14.528028
+HOLOCENE,-5000,South America,"Americas, Caribbean",Trinidad,Banwari Trace.jpg,Banwari Trace,river.svg,,,Settlement.svg,10.1755556,-61.4786
+HOLOCENE,-4000,,"Americas, Caribbean",Puerto Rico,Angostura Site.jpg,Angostura Site,burial.jpg,,,Settlement.svg,18.2,-66.5
+HOLOCENE,-2000,North America,"Arctic, North America",Greenland,Saqqaq.jpg,Saqqaq,DNA.svg,Saqqaq,,Settlement.svg,70.009722,-51.945833
+HOLOCENE,-2000,North America,"Arctic, North America",Canada,Pond Inlet.jpg,Pond Inlet,coast.svg,Pre-Dorset,,Settlement.svg,72.7,-77.961
+HOLOCENE,-1800,Asia,"Asia, Central Asia",China,Tarim Basin.jpg,Tarim Basin,mummies.svg,,,Settlement.svg,40.336453,88.672422
+HOLOCENE,-1800,,"Asia, Central Asia",China,Xiaohe Cemetery.jpg,Xiaohe Cemetery,mummies.svg,,,Settlement.svg,40.3364,88.6725
+HOLOCENE,-1500,Asia,Pacific,USA,Unai Bapot.jpg,Unai Bapot Saipan,coast.svg,Chamorro,,Settlement.svg,15.183333,145.75
+HOLOCENE,-1400,Asia,"Arctic, Siberia",Russian Federation,Chertov Ovrag.jpg,Chertov Ovrag,coast.svg,Paleo-Eskimo,,Settlement.svg,71,179.883
+HOLOCENE,-1180,,Pacific,Tonga,Pea village on Tongatapu.jpg,Pea village on Tongatapu,coast.svg,Lapita,,Settlement.svg,-21.211389,-175.15305
+HOLOCENE,-1000,,Pacific,Fiji,Bourewa.png,Bourewa Nadroga,coast.svg,Lapita,,Settlement.svg,-18,177.6667
+HOLOCENE,-1000,Europe,Atlantic / North Africa,Canary Islands,Canary Islands.jpg,Canary Islands,DNA.svg,Amazigh,,Settlement.svg,28.268611,-16.605556
+HOLOCENE,-1000,,Pacific,Vanuatu,Teouma Cemetery.jpg,Teouma Cemetery,burial.jpg,Lapita,,Settlement.svg,-17.7856,168.3862
+HOLOCENE,-1000,,Pacific,Samoa,Mulifanua.jpg,Mulifanua,coast.svg,Lapita,,Settlement.svg,-13.8333,-171.9833
+HOLOCENE,300,,Pacific,Hawaii,Ka Lae.jpg,Ka Lae,coast.svg,,,Settlement.svg,18.9111,-155.68111
+HOLOCENE,400,,Pacific,Kiribati,Line Islands.png,Line Islands,coast.svg,,,Settlement.svg,1.7,-157.2
+HOLOCENE,500,,Indian Ocean / East Africa,Madagascar,Madagascar.jpg,Madagascar,DNA.svg,Malagasy,,Settlement.svg,-20.40952,46.153720
+HOLOCENE,550,,Indian Ocean / East Africa,Comoros,Anjouan.png,Anjouan,coast.svg,,,Settlement.svg,-12.215,44.425
+HOLOCENE,500,Europe,Atlantic / Northern Europe,Faroe Islands,Faroe Islands.jpg,Faroe Islands,coast.svg,,,Settlement.svg,62,-6.783333
+HOLOCENE,750,,Pacific,Easter Island,Anakena.png,Anakena,coast.svg,Rapa Nui,,Settlement.svg,-27.073889,-109.32277
+HOLOCENE,860,,Pacific,France,Faahia.jpg,Fa'ahia,coast.svg,Polynesian,,Settlement.svg,-16.709444,-151.037778
+HOLOCENE,874,Europe,Atlantic / Northern Europe,Iceland,Reykjavik.png,Reykjavik,coast.svg,Norse,,Settlement.svg,64.146667,-21.94
+HOLOCENE,900,,"Americas, Caribbean",Bahamas,Three Dog Site SS21.png,Three Dog Site SS21,coast.svg,Lucayan,,Settlement.svg,23.992679,-74.540138
+HOLOCENE,1250,,Pacific,New Zealand,Wairau Bar.jpg,Wairau Bar,burial.jpg,,,Settlement.svg,-41.509361,174.06380
+HOLOCENE,1250,,Pacific,Australia,Emily Bay.jpg,Emily Bay,coast.svg,,,Settlement.svg,-29.056,167.961
+HOLOCENE,1250,,Pacific,New Zeland,Sandy Bay.jpg,Sandy Bay Enderby Island,coast.svg,,,Settlement.svg,-50.495833,166.295556
+HOLOCENE,1350,,Pacific,New Zeland,Kermadec Islands.jpg,Kermadec Islands,coast.svg,,,Settlement.svg,-29.276944,-177.923333
+"MODERN, AGE OF SAILS",1420,,Atlantic / North Africa,Madeira,Madeira.jpg,Madeira,coast.svg,,,Settlement.svg,32.651111,-16.90972
+"MODERN, AGE OF SAILS",1439,,Atlantic,Azores,Santa Maria Island.jpg,Santa Maria Island,coast.svg,,,Settlement.svg,36.974722,-25.094722
+"MODERN, AGE OF SAILS",1462,,Atlantic / West Africa,Cape Verde,Ribeira Grande.jpg,Ribeira Grande,coast.svg,,,Settlement.svg,14.916,-23.606
+HOLOCENE,1475,,"Arctic, North America",Greenland,Qilakitsoq.jpg,Qilakitsoq,mummies.svg,Thule,,Settlement.svg,70.608611,-52.181944
+"MODERN, AGE OF SAILS",1485,,Atlantic / Central Africa,Sao Tome and Principe,Sao Tome.jpg,Sao Tome,colony.svg,,,Settlement.svg,0.336111,6.730556
+"MODERN, AGE OF SAILS",1500,,Pacific Ocean,New Zealand,Chatham Islands.jpg,Chatham Islands,coast.svg,Moriori,,Settlement.svg,-43.8003,-176.3528
+"MODERN, AGE OF SAILS",1516,,South Atlantic,United Kingdom,Saint Helena.jpg,Saint Helena,castaway,,,Settlement.svg,-15.966667,-5.7
+"MODERN, AGE OF SAILS",1543,,South Atlantic / Central Africa,Equatorial Guinea,Annobon.png,Annobon,colony.svg,Annobon,,Settlement.svg,-1.435,5.6375
+"MODERN, AGE OF SAILS",1609,,North Atlantic,United Kingdom,Bermuda.jpg,Bermuda,colony.svg,,,Settlement.svg,32.296111,-64.782778
+"MODERN, AGE OF SAILS",1619,,"Arctic, Northern Europe",Norway,Smeerenburg.png,Smeerenburg,whaling.svg,,,Settlement.svg,79.731667,10.995
+"MODERN, AGE OF SAILS",1638,,Indian Ocean,Mauritius,Vieux Grand Port.png,Vieux Grand Port,colony.svg,,,Settlement.svg,-20.4,57.64
+"MODERN, AGE OF SAILS",1642,,Indian Ocean,France,Ile de la Reunion.jpg,Ile de la Reunion,colony.svg,,,Settlement.svg,-21.11444,55.5325
+"MODERN, AGE OF SAILS",1691,,Indian Ocean,Mauritius,Rodrigues.jpg,Rodrigues,colony.svg,,,Settlement.svg,-19.716667,63.416667
+"MODERN, AGE OF SAILS",1704,,East Pacific,Chile,Robinson Crusoe Island.png,Robinson Crusoe Island,castaway.svg,,,Settlement.svg,-33.641389,-78.841111
+"MODERN, AGE OF SAILS",1705,,East Pacific,France,Clipperton Island.jpg,Clipperton Island,pirate.svg,,,Settlement.svg,10.3,-109.21666
+"MODERN, AGE OF SAILS",1750,,East Pacific,Chile,San Juan Bautista.jpg,San Juan Bautista,colony.svg,,,Settlement.svg,33.63333,-78.83333
+"MODERN, AGE OF SAILS",1764,,South Atlantic,United Kingdom,Puerto Soledad.jpg,Puerto Soledad,penal.svg,,,Settlement.svg,-51.528878,-58.127718
+"MODERN, AGE OF SAILS",1770,,Indian Ocean,Seychelles,Ste Anne Island.jpg,Ste. Anne Island,colony.svg,,,Settlement.svg,-4.6,55.5
+"MODERN, AGE OF SAILS",1805,,East Pacific,Ecuador,Floreana Island.jpg,Floreana Island,castaway.svg,,,Settlement.svg,-1.2975,-90.43416
+"MODERN, AGE OF SAILS",1810,,South Atlantic,United Kingdom,Tristan da Cunha.jpg,Tristan da Cunha,TAZ.svg,,,Settlement.svg,-37.066667,-12.316667
+"MODERN, AGE OF SAILS",1815,,South Atlantic,United Kingdom,Ascension Island.jpg,Ascension Island,castaway.svg,,,Settlement.svg,-7.933333,-14.416667
+"MODERN, AGE OF SAILS",1825,,"Pacific Ocean, Bering Sea",Russian Federation,Bering Island.jpg,Bering Island,coast.svg,,,Settlement.svg,55,166.4
+"MODERN, AGE OF SAILS",1826,,Indian Ocean,Australia,Cocos Keeling Islands.jpg,Cocos Keeling Islands,TAZ.svg,Cocos Malays,,Settlement.svg,-12.186944,96.828333
+"MODERN, AGE OF SAILS",1830,,Pacific Ocean,Japan,Chichijima.jpg,Chichijima,coast.svg,Obeikei,,Settlement.svg,27.066667,142.20833
+"MODERN, AGE OF SAILS",1834,,"Pacific Ocean, Tasman Sea",Australia,Blinky Beach.jpg,Blinky Beach,whaling.svg,,WHS.png,Settlement.svg,-31.554167,159.085
+"MODERN, AGE OF SAILS",1843,,Indian Ocean,France,Ile Saint Paul.jpg,Ile Saint-Paul,coast.svg,,,Settlement.svg,-38.716667,77.516667
+"MODERN, AGE OF SAILS",1877,,"Arctic, Northern Europe",Russian Federation,Malye Karmakuly.jpg,Malye Karmakuly,coast.svg,,,Settlement.svg,74,56
+"MODERN, AGE OF SAILS",1871,,Indian Ocean,France,Ile Amsterdam.jpeg,Ile Amsterdam,research station.svg,,,Settlement.svg,-37.83333,77.55
+"MODERN, AGE OF SAILS",1886,,Pacific Ocean,Japan,Minamitorishima.jpg,Minami-Torishima,research station.svg,,,Settlement.svg,24.286667,153.98055
+"MODERN, AGE OF SAILS",1888,,Indian Ocean,Australia,Flying Fish Cove.jpg,Flying Fish Cove,TAZ.svg,,,Settlement.svg,-10.42611,105.67277
+"MODERN, AGE OF SAILS",1896,,Pacific Ocean,New Zealand,Campbell Island.jpg,Campbell Island,whaling.svg,,,Settlement.svg,-52.54,169.145
+"MODERN, AGE OF SAILS",1900,,"Pacific Ocean, Philippine Sea",Japan,Minamidaitojima.jpg,Minamidaitojima,coast.svg,,,Settlement.svg,25.833333,131.23333
+"MODERN, AGE OF SAILS",1903,,Antarctic,Argentina,Omond House.jpg,Omond House,research station.svg,,,Settlement.svg,-60.73796,-44.73789
+"MODERN, AGE OF SAILS",1904,Europe,South Atlantic,United Kingdom,Grytviken.jpg,Grytviken,whaling.svg,,,Settlement.svg,-54.28138,-36.50805
+"MODERN, AGE OF SAILS",1921,Europe,"Arctic, Northern Europe",Norway,Eggoya.jpg,Eggoya,research station.svg,,,Settlement.svg,70.973,-8.385
+"MODERN, AGE OF SAILS",1927,Europe,Indian Ocean,France,Port-Couvreux.jpg,Port-Couvreux,research station.svg,,,Settlement.svg,-49.280277,69.688611
+"MODERN, AGE OF SAILS",1929,North America,East Pacific,Mexico,Socorro Island.jpg,Socorro Island,castaway.svg,,,Settlement.svg,18.784444,-110.975
+"MODERN, AGE OF SAILS",1933,,"Arctic, New Siberian Islands",Russian Federation,Northern Shamrock.png,Northern Shamrock,naval base.svg,,,Settlement.svg,75.813333,137.6763
+"MODERN, AGE OF SAILS",1947,Antarctica,Antarctic,Antarctica,Captain Arturo Prat Base.jpg,Captain Arturo Prat Base,naval base.svg,,,Settlement.svg,-62.478889,-59.664444
+"MODERN, AGE OF SAILS",1947,,Indian Ocean,South Africa,Marion Research Station.jpg,Marion Research Station,research station.svg,,,Settlement.svg,-46.87605,37.858907
+"MODERN, AGE OF SAILS",1948,,Antarctica,Antarctica,Bernardo OHiggins Base.jpg,Bernardo O'Higgins Base,research station.svg,,,Settlement.svg,-63.320951,-57.899781
+"MODERN, AGE OF SAILS",1948,,Pacific Ocean,Australia,Macquarie Island Station.jpg,Macquarie Island Station,research station.svg,,,Settlement.svg,-54.498889,158.93889
+"MODERN, AGE OF SAILS",1957,,East Pacific,Mexico,Socorro Island Base.jpg,Socorro Island Base,naval base.svg,,,Settlement.svg,18.784444,-110.975
+"MODERN, AGE OF SAILS",1963,,Indian Ocean,France,Alfred Faure.jpg,Alfred Faure,research station.svg,,,Settlement.svg,-46.43222,51.85833
+"MODERN, AGE OF SAILS",1974,,"Arctic, Siberia",Russian Federation,Prima.jpg,Prima Polar Station,research station.svg,,,Settlement.svg,79.351111,101.7333
+"MODERN, AGE OF SAILS",1985,,North Atlantic / British Isles,Disputed,Rockall.jpg,Rockall,TAZ.svg,,,Settlement.svg,57.596306,-13.68731
+"MODERN, AGE OF SAILS",1997,Africa,Atlantic,International,Null Island.jpg,Null Island,research station.svg,,,Settlement.svg,0,0
+"MODERN, AGE OF SAILS",1998,Space,Low Earth Orbit,International,iss.jpg,International Space Station,rocket.svg,,,Settlement.svg,0,0
