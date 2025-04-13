@@ -241,7 +241,8 @@ const GameInterface: React.FC = () => {
     const fetchLocations = async () => {
       try {
         console.log(`Fetching locations for year: ${historicalYear}`);
-        const response = await fetch(`http://localhost:3001/api/settlements?max_year=${historicalYear}`);
+        // Use relative path for API call
+        const response = await fetch(`/api/settlements?max_year=${historicalYear}`);
         
         // Guard against fetch errors
         if (!response.ok) {
@@ -360,7 +361,8 @@ const GameInterface: React.FC = () => {
   useEffect(() => {
     const fetchPopulation = async () => {
       try {
-        const response = await fetch(`http://localhost:3001/api/global-population?year=${historicalYear}`);
+        // Use relative path for API call
+        const response = await fetch(`/api/global-population?year=${historicalYear}`);
         
         if (response.status === 404) {
           // Set default value for missing data instead of throwing error
