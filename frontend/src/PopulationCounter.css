@@ -1,0 +1,36 @@
+.population-counter {
+  font-family: 'Roboto Mono', monospace;
+  background: #1a1a1a;
+  border-radius: 8px;
+  padding: 15px;
+  color: #ffffff;
+  width: 320px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+  text-align: center;
+}
+
+.population-title {
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 10px;
+  color: #888;
+  text-align: center;
+}
+
+.population-value {
+  font-size: 36px;
+  font-weight: bold;
+  color: #ffd700;
+  text-shadow: 0 0 8px rgba(255, 215, 0, 0.6);
+  padding: 10px 0;
+  text-align: center;
+}
+
+.population-year {
+  font-size: 14px;
+  color: #63aeff;
+  text-align: center;
+  margin-top: 0;
+  margin-bottom: 10px;
+}
