@@ -53,7 +53,6 @@ export default async function handler(
     `;
 
     const result = await pool.query<PopulationDataPoint>(query, [targetYear]);
-    console.log('Population query result:', result.rows);
 
     let calculatedPopulation = 0;
 
@@ -80,7 +79,6 @@ export default async function handler(
       calculatedPopulation = Math.round(calculatedPopulation);
     }
 
-    console.log(`Calculated population for year ${targetYear}: ${calculatedPopulation}`);
     response.status(200).json({ year: targetYear, population: calculatedPopulation });
 
   } catch (error: any) {

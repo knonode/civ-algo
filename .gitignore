@@ -126,3 +126,7 @@ server.log
 *.njsproj
 *.sln
 *.sw? 
+.env*.local
+
+# Multi-repo
+.multi-repo/

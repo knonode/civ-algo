@@ -17,15 +17,6 @@ export function getDbPool(): Pool {
       //   rejectUnauthorized: false 
       // }
     });
-
-    // Optional: Test connection on creation (consider impact on cold starts)
-    pool.query('SELECT NOW()', (err, res) => {
-      if (err) {
-        console.error('Error connecting to database:', err.stack);
-      } else {
-        console.log('Database pool initialized.');
-      }
-    });
   }
   return pool;
 } 

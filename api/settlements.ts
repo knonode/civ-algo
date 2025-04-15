@@ -44,12 +44,13 @@ export default async function handler(
       WHERE established_year <= $1
       ORDER BY established_year ASC;
     `;
+
     const result = await pool.query(queryText, [maxYear]);
 
     response.status(200).json(result.rows);
 
   } catch (error: any) {
-    console.error('Error executing settlements query:', error.stack);
+    console.error('[API settlements handler] Error executing query:', error.stack);
     response.status(500).json({ error: 'Internal server error' });
   }
 } 
