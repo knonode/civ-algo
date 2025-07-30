@@ -111,7 +111,7 @@ const maxPoweredLogDiff = Math.pow(maxLogDiff, power);
 // Calculate B_CONSTANT based on the powered difference
 const B_CONSTANT = TOTAL_YEARS / maxPoweredLogDiff;
 
-// Modified calculation function
+// Historical year calculation
 const calculateHistoricalYear = (round: number): number => {
   const currentRound = Math.min(round, TOTAL_ROUNDS);
   const nonNegativeRound = Math.max(0, currentRound);
@@ -126,17 +126,19 @@ const calculateHistoricalYear = (round: number): number => {
   return Math.floor(year);
 }
 
-// Calculate Years Per Round (the derivative of the historical year function)
+// Updated Years Per Round calculation without minimum floor
 const calculateYearsPerRound = (round: number): number => {
   // Ensure round >= 0
   const nonNegativeRound = Math.max(0, round);
   
-  // Apply the formula: dY/dR = B_CONSTANT / (R + C)
-  const rate = B_CONSTANT / (nonNegativeRound + C);
+  // Apply the correct derivative formula that includes the power term
+  const logDiff = Math.log(nonNegativeRound + C) - LOG_C;
   
-  // Return a minimum value instead of near-zero for display purposes at high rounds
-  // Or return the raw value if preferred
-  return Math.max(0.01, rate); // Return rate, with a minimum floor of 0.01 
+  // The derivative is: power * B_CONSTANT * (logDiff)^(power-1) * (1/(round + C))
+  const rate = power * B_CONSTANT * Math.pow(logDiff, power - 1) / (nonNegativeRound + C);
+  
+  // Return the actual rate without a minimum floor
+  return rate;
 };
 // --- End Configuration --- 
 
@@ -332,6 +334,25 @@ const GameInterface: React.FC = () => {
     const newRound = parseInt(event.target.value, 10);
     setCurrentRound(newRound);
     
+    // IMPORTANT: Reset interpolation values during jumps
+    setNextYearPopulation(0);
+    setInterpolatedPopulation(0);
+    
+    // IMPORTANT: Calculate and update these values immediately
+    const calculatedHistoricalYear = calculateHistoricalYear(newRound);
+    const calculatedYearsPerRound = calculateYearsPerRound(newRound);
+    
+    // Update state immediately instead of waiting for useEffect
+    setHistoricalYear(calculatedHistoricalYear);
+    setYearsPerRound(calculatedYearsPerRound);
+    
+    // Find the active milestone based on the historical year
+    const activeMilestone = milestoneDescriptions.find(
+      milestone => calculatedHistoricalYear >= milestone.startYear && 
+                   calculatedHistoricalYear <= milestone.endYear
+    );
+    setCurrentMilestone(activeMilestone || null);
+    
     // Clear any existing timeout
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
@@ -371,7 +392,19 @@ const GameInterface: React.FC = () => {
         }
         
         const data = await response.json();
+        console.log(`Raw population data for year ${historicalYear}: ${data.population}`);
         setGlobalPopulation(data.population);
+        
+        // Also fetch next year's population for interpolation
+        const nextYear = historicalYear + 1;
+        const nextYearResponse = await fetch(`/api/global-population?year=${nextYear}`);
+        
+        if (nextYearResponse.ok) {
+          const nextYearData = await nextYearResponse.json();
+          console.log(`Raw population data for year ${nextYear}: ${nextYearData.population}`);
+          setNextYearPopulation(nextYearData.population);
+        }
+        
       } catch (error) {
         console.error("Error fetching population:", error);
         // Set fallback value on any error
@@ -381,6 +414,48 @@ const GameInterface: React.FC = () => {
 
     fetchPopulation();
   }, [historicalYear]);
+
+  // Add new state for next year's population
+  const [nextYearPopulation, setNextYearPopulation] = useState<number>(0);
+
+  // Add state for population trend
+  const [populationTrend, setPopulationTrend] = useState<'up' | 'down' | 'stable' | null>(null);
+
+  // Update the derived state to include trend calculation
+  useEffect(() => {
+    // Calculate year fraction for interpolation
+    const yearStart = Math.floor(historicalYear);
+    const yearFraction = historicalYear - yearStart;
+    
+    // If nextYearPopulation is available, interpolate between current and next
+    if (nextYearPopulation > 0) {
+      const yearProgress = (currentRound % 365) / 365;
+      
+      // For BCE years, time flows backwards, so we need to invert the progress
+      const adjustedProgress = historicalYear < 0 ? 1 - yearProgress : yearProgress;
+      
+      const interpolatedPopulation = globalPopulation + 
+        (nextYearPopulation - globalPopulation) * adjustedProgress;
+      
+      // Calculate trend based on comparison with next year
+      if (nextYearPopulation > globalPopulation) {
+        setPopulationTrend('up');
+      } else if (nextYearPopulation < globalPopulation) {
+        setPopulationTrend('down');
+      } else {
+        setPopulationTrend('stable');
+      }
+      
+      // Round to nearest integer
+      setInterpolatedPopulation(Math.round(interpolatedPopulation));
+    } else {
+      setInterpolatedPopulation(globalPopulation);
+      setPopulationTrend(null); // No trend data available
+    }
+  }, [currentRound, globalPopulation, nextYearPopulation, historicalYear]);
+
+  // Add state for the interpolated population
+  const [interpolatedPopulation, setInterpolatedPopulation] = useState<number>(0);
 
   return (
     <div className="game-interface-layout">
@@ -394,8 +469,9 @@ const GameInterface: React.FC = () => {
           />
           <PopulationCounter 
             currentYear={historicalYear}
-            population={globalPopulation}
+            population={interpolatedPopulation}
             milestone={currentMilestone}
+            populationTrend={populationTrend} // Add the trend prop
           />
         </div>
       </div>

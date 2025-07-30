@@ -71,7 +71,7 @@
 }
 
 .slider-label {
-  font-size: 12px;
+  font-size: 11px;
   color: #888;
   text-align: center;
   margin-top: 5px;
@@ -91,7 +91,7 @@
 .time-slider::-moz-range-thumb { width: 16px; height: 16px; background: #63aeff; border-radius: 50%; border: none; }
 
 .slider-instruction {
-  font-size: 12px;
+  font-size: 11px;
   color: #888;
   text-align: center;
   margin-top: 5px;

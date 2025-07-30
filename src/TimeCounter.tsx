@@ -31,6 +31,123 @@ const formatRoundNumber = (num: number): string => {
   return (num / 1_000_000).toFixed(1).replace(/\.0$/, '') + 'M'; // e.g., 1.2M, 11M
 };
 
+// Format the years per round display with multiple time units
+const formatYearsPerRound = (ypr: number): string => {
+  // Convert to various time units
+  const MONTHS_PER_YEAR = 12;
+  const DAYS_PER_MONTH = 30.44; // Average
+  const HOURS_PER_DAY = 24;
+  const MINUTES_PER_HOUR = 60;
+  const SECONDS_PER_MINUTE = 60;
+  
+  if (ypr >= 1) {
+    // Years
+    return ypr < 10 ? ypr.toFixed(2) + ' Y/R' : 
+           ypr < 100 ? ypr.toFixed(1) + ' Y/R' : 
+           Math.floor(ypr).toLocaleString() + ' Y/R';
+  } 
+  
+  // Convert to months
+  const monthsPerRound = ypr * MONTHS_PER_YEAR;
+  if (monthsPerRound >= 1) {
+    return monthsPerRound.toFixed(1) + ' M/R';
+  }
+  
+  // Convert to days
+  const daysPerRound = monthsPerRound * DAYS_PER_MONTH;
+  if (daysPerRound >= 1) {
+    return daysPerRound.toFixed(1) + ' D/R';
+  }
+  
+  // Convert to hours
+  const hoursPerRound = daysPerRound * HOURS_PER_DAY;
+  if (hoursPerRound >= 1) {
+    return hoursPerRound.toFixed(1) + ' H/R';
+  }
+  
+  // Convert to minutes
+  const minutesPerRound = hoursPerRound * MINUTES_PER_HOUR;
+  if (minutesPerRound >= 1) {
+    return minutesPerRound.toFixed(1) + ' Min/R';
+  }
+  
+  // Convert to seconds
+  const secondsPerRound = minutesPerRound * SECONDS_PER_MINUTE;
+  return secondsPerRound.toFixed(1) + ' S/R';
+}
+
+  // Format the main historical year display with increasing granularity
+  const formatHistoricalYearDisplay = (yearsPerRound: number, historicalYear: number, currentRound: number): string => {
+    if (historicalYear === 0) return '1 CE'; // Special case
+    
+    const absoluteYear = Math.abs(historicalYear);
+    const suffix = historicalYear < 0 ? ' BCE' : ' CE';
+    
+    // For ancient history, just show the year
+    if (yearsPerRound >= 1) {
+      return absoluteYear.toLocaleString() + suffix;
+    }
+    
+    const year = Math.floor(absoluteYear);
+    
+    // Calculate the date within the year based on the current round
+    // We'll use the currentRound to determine the date within the year
+    // This ensures the date progresses properly within each year
+    let yearProgress = (currentRound % 365) / 365; // Use modulo to get position within year
+    
+    // For BCE years, time flows backwards, so we need to invert the progress
+    if (historicalYear < 0) {
+      yearProgress = 1 - yearProgress; // Invert the progress for BCE years
+    }
+    
+    // For debugging - let's see what values we're getting
+    console.log(`Year: ${historicalYear}, Round: ${currentRound}, Progress: ${yearProgress}, YpR: ${yearsPerRound}`);
+    
+    // For more recent history where yearsPerRound < 1, show months
+    if (yearsPerRound < 1 && yearsPerRound >= 1/12) {
+      const monthIndex = Math.floor(yearProgress * 12);
+      const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 
+                          'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+      const month = monthNames[monthIndex];
+      return `${year}${suffix} ${month}`;
+    }
+    
+    // For very recent history where yearsPerRound < 1/12 (about a month), show days
+    if (yearsPerRound < 1/12 && yearsPerRound >= 1/365) {
+      const monthIndex = Math.floor(yearProgress * 12);
+      const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 
+                          'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+      const month = monthNames[monthIndex];
+      
+      // Calculate day of month (approximate)
+      const daysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+      const monthProgress = yearProgress * 12 - monthIndex;
+      const day = Math.floor(monthProgress * daysInMonth[monthIndex]) + 1;
+      
+      return `${year}${suffix} ${month} ${day}`;
+    }
+    
+    // For extremely recent history where yearsPerRound < 1/365 (about a day), add time
+    if (yearsPerRound < 1/365) {
+      const monthIndex = Math.floor(yearProgress * 12);
+      const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 
+                          'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+      const month = monthNames[monthIndex];
+      
+      const daysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+      const monthProgress = yearProgress * 12 - monthIndex;
+      const day = Math.floor(monthProgress * daysInMonth[monthIndex]) + 1;
+      
+      const dayProgress = monthProgress * daysInMonth[monthIndex] - (day - 1);
+      const hour = Math.floor(dayProgress * 24);
+      const minute = Math.floor((dayProgress * 24 - hour) * 60);
+      
+      return `${year}${suffix} ${month} ${day}, ${hour}:${minute.toString().padStart(2, '0')}`;
+    }
+    
+    return absoluteYear.toLocaleString() + suffix;
+  };
+
 // Main component
 const TimeCounter: React.FC<TimeCounterProps> = ({
   yearsPerRound,
@@ -61,29 +178,15 @@ const TimeCounter: React.FC<TimeCounterProps> = ({
   }, [yearsPerRound, prevYearsPerRound, animationDuration]);
 
   // Format the main historical year display (BCE/CE)
-  const formatHistoricalYearDisplay = (): string => {
-    if (historicalYear === 0) return '1 CE'; // Or handle as needed
-    const year = Math.abs(historicalYear);
-    const suffix = historicalYear < 0 ? ' BCE' : ' CE';
-    // Add comma separators for large numbers
-    return year.toLocaleString() + suffix;
-  };
-
-  // Format the years per round display
-  const formatYearsPerRound = (ypr: number): string => {
-    if (ypr < 0.01) return ypr.toFixed(4); // More precision for very small rates
-    if (ypr < 10) return ypr.toFixed(2);
-    if (ypr < 100) return ypr.toFixed(1);
-    return Math.floor(ypr).toLocaleString(); // Integer for large numbers
-  };
+  const formattedYearDisplay = formatHistoricalYearDisplay(yearsPerRound, historicalYear, currentRound);
 
   return (
     <div className={`time-counter ${isHighlighted ? 'highlighted' : ''}`}>
       <div className="time-display-row">
-        <span className="counter-header">CIV.ALGO</span>
-        <span className="main-year-display">{formatHistoricalYearDisplay()}</span>
+        <span className="counter-header">Game time</span>
+        <span className="main-year-display">{formattedYearDisplay}</span>
         <span className="round-number">R #{currentRound.toLocaleString()}/{formatRoundNumber(totalRounds)}</span>
-        <span className="years-per-round">{formatYearsPerRound(yearsPerRound)} Y/R</span>
+        <span className="years-per-round">{formatYearsPerRound(yearsPerRound)}</span>
       </div>
     </div>
   );

@@ -14,11 +14,11 @@
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  gap: 10px;
+  gap: 5px;
 }
 
 .population-group {
-  font-size: 12px;
+  font-size: 11px;
   color: #888;
   white-space: nowrap;
 }
@@ -38,7 +38,7 @@
 }
 
 .population-info {
-  font-size: 12px;
+  font-size: 11px;
   color: #63aeff;
   white-space: nowrap;
   overflow: hidden;
@@ -68,7 +68,7 @@
   background-color: rgba(0, 0, 0, 0.9);
   border: 2px solid #f1bf19;
   border-radius: 4px;
-  padding: 12px 16px;
+  padding: 11px 16px;
   font-size: 14px;
   color: #fff;
   white-space: normal;
@@ -84,7 +84,7 @@
 }
 
 .population-year {
-  font-size: 12px;
+  font-size: 11px;
   color: #aaa;
   margin-left: auto;
 }
@@ -130,7 +130,27 @@
 }
 
 .user-population {
-  font-size: 12px;
+  font-size: 11px;
   color: #888;
   white-space: nowrap;
+}
+
+/* Add these styles for trend arrows */
+.trend-arrow {
+  display: inline-block;
+  margin-left: 4px;
+  font-weight: bold;
+  font-size: 12px;
+}
+
+.trend-arrow.up {
+  color: #4caf50; /* Green for increasing */
+}
+
+.trend-arrow.down {
+  color: #f44336; /* Red for decreasing */
+}
+
+.trend-arrow.stable {
+  color: #ffeb3b; /* Yellow for stable */
 }
