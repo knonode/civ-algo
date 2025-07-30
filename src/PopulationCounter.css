@@ -17,18 +17,24 @@
   gap: 10px;
 }
 
-.population-title {
+.population-group {
   font-size: 12px;
   color: #888;
   white-space: nowrap;
 }
 
 .population-value {
-  font-size: 12px;
   font-weight: bold;
   color: #ffd700;
   text-shadow: 0 0 4px rgba(255, 215, 0, 0.4);
-  white-space: nowrap;
+  margin-left: 4px;
+}
+
+.user-population-value {
+  font-weight: bold;
+  color: #4caf50;
+  text-shadow: 0 0 4px rgba(76, 175, 80, 0.3);
+  margin-left: 4px;
 }
 
 .population-info {
@@ -37,6 +43,44 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  cursor: pointer;
+}
+
+.population-info:hover {
+  text-decoration: underline;
+}
+
+.milestone-description-container {
+  position: relative;
+  flex-grow: 1;
+  overflow: hidden;
+  display: flex;
+  justify-content: flex-end; /* Push content to the right */
+  width: 100%; /* Ensure it takes full available width */
+}
+
+.milestone-tooltip {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+  background-color: rgba(0, 0, 0, 0.9);
+  border: 2px solid #f1bf19;
+  border-radius: 4px;
+  padding: 12px 16px;
+  font-size: 14px;
+  color: #fff;
+  white-space: normal;
+  width: 80%;
+  max-width: 300px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.7);
+  animation: fadeIn 0.2s ease-in;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 .population-year {
@@ -57,8 +101,36 @@
     margin-top: 3px;
   }
   
+  .milestone-description-container {
+    width: 100%;
+  }
+  
+  .milestone-tooltip {
+    width: calc(100% - 24px);
+  }
+  
   .population-year {
     margin-left: 0;
     margin-top: 3px;
   }
+}
+
+.tooltip-description {
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 8px;
+  color: #fff;
+}
+
+.tooltip-years {
+  font-size: 14px;
+  color: #63aeff;
+  margin-top: 6px;
+  font-weight: normal;
+}
+
+.user-population {
+  font-size: 12px;
+  color: #888;
+  white-space: nowrap;
 }
