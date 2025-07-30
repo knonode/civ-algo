@@ -69,7 +69,7 @@ const TimeCounter: React.FC<TimeCounterProps> = ({
     return year.toLocaleString() + suffix;
   };
 
-  // Format the bottom-right years per round display
+  // Format the years per round display
   const formatYearsPerRound = (ypr: number): string => {
     if (ypr < 0.01) return ypr.toFixed(4); // More precision for very small rates
     if (ypr < 10) return ypr.toFixed(2);
@@ -79,20 +79,11 @@ const TimeCounter: React.FC<TimeCounterProps> = ({
 
   return (
     <div className={`time-counter ${isHighlighted ? 'highlighted' : ''}`}>
-      <div className="counter-header">CIV.ALGO</div>
-      
-      {/* Main Display: Historical Year */}
-      <div className="counter-display main-year-display">
-        {formatHistoricalYearDisplay()}
-      </div>
-
-      <div className="historical-info">
-        <span className="round-number">
-          Round #{formatRoundNumber(currentRound)} / {formatRoundNumber(totalRounds)}
-        </span>
-        <span className="historical-year years-per-round">
-          {formatYearsPerRound(yearsPerRound)} Years/Round
-        </span>
+      <div className="time-display-row">
+        <span className="counter-header">CIV.ALGO</span>
+        <span className="main-year-display">{formatHistoricalYearDisplay()}</span>
+        <span className="round-number">R #{currentRound.toLocaleString()}/{formatRoundNumber(totalRounds)}</span>
+        <span className="years-per-round">{formatYearsPerRound(yearsPerRound)} Y/R</span>
       </div>
     </div>
   );

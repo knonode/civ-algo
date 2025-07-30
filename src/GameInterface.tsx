@@ -1,5 +1,4 @@
-import React, { useEffect, useState, useCallback, useRef } from 'react';
-import axios from 'axios';
+import React, { useEffect, useState, useRef } from 'react';
 import TimeCounter from './TimeCounter';
 import MapView from './MapView';
 import './GameInterface.css';
@@ -19,8 +18,8 @@ export interface MilestoneSegment {
 // Raw milestone descriptions (no longer need Omit, as the base type is now stricter)
 const milestoneDescriptions: MilestoneSegment[] = [
   // Block 1
-  { startYear: -400000, endYear: -325000, description: "Early stone tools, fire control" },
-  { startYear: -325000, endYear: -250000, description: "Early human migration patterns" },
+  { startYear: -400000, endYear: -325000, description: "Early stone tools, fire" },
+  { startYear: -325000, endYear: -250000, description: "Early human migration" },
   { startYear: -250000, endYear: -175000, description: "Neanderthal development" },
   { startYear: -175000, endYear: -100000, description: "Early symbolic thought" },
   
@@ -103,7 +102,6 @@ const C = 5;
 
 // Calculate LOG_C and other constants as before
 const LOG_C = Math.log(C);
-const LOG_TOTAL_ROUNDS_PLUS_C = Math.log(TOTAL_ROUNDS + C);
 
 // Apply power to logarithmic difference at max rounds
 const power = 0.7; // Accelerates early history
@@ -154,7 +152,6 @@ const formatRoundNumber = (num: number): string => {
 };
 
 const GameInterface: React.FC = () => {
-  // console.log("GameInterface: Initial Render...");
 
   // Initialize state - currentRound now directly controlled by slider
   const initialRound = 1;
@@ -350,7 +347,6 @@ const GameInterface: React.FC = () => {
     }, 2000);
   };
 
-  // console.log("GameInterface: Rendering JSX...");
 
   const timeoutRef = useRef<number | null>(null);
 
@@ -387,40 +383,38 @@ const GameInterface: React.FC = () => {
   }, [historicalYear]);
 
   return (
-    // Add a class for styling the layout
     <div className="game-interface-layout">
-      <div className="counter-container">
-        <TimeCounter
-          yearsPerRound={yearsPerRound}
-          currentRound={currentRound}
-          historicalYear={historicalYear}
-          totalRounds={TOTAL_ROUNDS}
-        />
-        <PopulationCounter 
-          currentYear={historicalYear}
-          population={globalPopulation}
-          milestone={currentMilestone}
-        />
+      <div className="counters-bar">
+        <div className="counter-container">
+          <TimeCounter
+            yearsPerRound={yearsPerRound}
+            currentRound={currentRound}
+            historicalYear={historicalYear}
+            totalRounds={TOTAL_ROUNDS}
+          />
+          <PopulationCounter 
+            currentYear={historicalYear}
+            population={globalPopulation}
+            milestone={currentMilestone}
+          />
+        </div>
       </div>
 
-      {/* Restore slider container here */}
+      <div className="map-container">
+        <MapView locations={visibleLocations} />
+      </div>
+
       <div className="slider-container">
-        <label htmlFor="timeSlider">Round: {formatRoundNumber(currentRound)} / {formatRoundNumber(TOTAL_ROUNDS)}</label>
+        <label className="slider-label" htmlFor="timeSlider">Time Machine ⏲️ R #{formatRoundNumber(currentRound)} / {formatRoundNumber(TOTAL_ROUNDS)}</label>
         <input
           type="range"
           id="timeSlider"
           min="1"
-          max={TOTAL_ROUNDS} // Use the constant
+          max={TOTAL_ROUNDS}
           value={currentRound}
           onChange={handleSliderChange}
           className="time-slider"
         />
-        <p className="slider-instruction">Use the slider to go forward and back in time.</p>
-      </div>
-
-      <div className="map-container">
-         {/* Pass fetched locations to the map */}
-        <MapView locations={visibleLocations} />
       </div>
     </div>
   );

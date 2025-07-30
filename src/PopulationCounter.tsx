@@ -1,15 +1,14 @@
 import React from 'react';
 import './PopulationCounter.css';
-import { MilestoneSegment } from './GameInterface'; // Import type
+import { MilestoneSegment } from './GameInterface';
 
 interface PopulationCounterProps {
   currentYear: number;
   population: number;
-  milestone: MilestoneSegment | null; // Add milestone prop
+  milestone: MilestoneSegment | null;
 }
 
 const PopulationCounter: React.FC<PopulationCounterProps> = ({ 
-  currentYear, 
   population,
   milestone
 }) => {
@@ -18,12 +17,13 @@ const PopulationCounter: React.FC<PopulationCounterProps> = ({
   
   return (
     <div className="population-counter">
-      <div className="population-title">GLOBAL POPULATION</div>
-      <div className="population-value">{formattedPopulation}</div>
-      {milestone && (
-        <div className="population-info">{milestone.description} ({milestone.startYear} BCE - {milestone.endYear} BCE)</div>
-      )}
-      <div className="population-year">Year: {currentYear}</div>
+      <div className="population-display-row">
+        <span className="population-title">Global ppl</span>
+        <span className="population-value">{formattedPopulation}</span>
+        {milestone && (
+          <span className="population-info">{milestone.description}</span>
+        )}
+      </div>
     </div>
   );
 };

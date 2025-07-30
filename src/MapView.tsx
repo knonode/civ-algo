@@ -84,7 +84,8 @@ const MapView: React.FC<MapViewProps> = ({ locations }) => {
         mapRef.current = L.map(mapElementRef.current, {
           center: [20, 0], // Initial center
           zoom: 2,        // Initial zoom
-          attributionControl: false
+          attributionControl: false,
+          zoomControl: false  // Disable zoom control buttons
         });
         console.log("L.map call completed inside setTimeout."); // Log after L.map
 
@@ -118,22 +119,16 @@ const MapView: React.FC<MapViewProps> = ({ locations }) => {
 
   // Effect to add/update dynamic markers - UNCOMMENT NOW
   useEffect(() => {
-    console.log(`Dynamic Marker useEffect triggered. Received ${locations.length} locations:`, locations);
 
     if (!mapRef.current || !isMapInitialized) {
-      console.log("Map not ready for dynamic markers yet...");
       return;
     }
-    // Log the map instance *inside this effect*
-    console.log("Map instance inside dynamic marker effect:", mapRef.current);
 
     // Ensure map is valid before proceeding
     if (!mapRef.current) {
-        console.error("Map instance became null before loops!");
         return;
     }
 
-    console.log("Updating dynamic markers on plain Leaflet map...");
     const map = mapRef.current;
 
     locations.forEach((loc) => {
@@ -167,14 +162,13 @@ const MapView: React.FC<MapViewProps> = ({ locations }) => {
         renderedLocationsRef.current.add(loc.location);
       }
     });
-    console.log("Finished adding dynamic markers loop.");
 
   }, [locations, isMapInitialized]);
 
   return (
     // Div container for the Leaflet map
     // Note: height/width must be set via CSS or style prop for Leaflet to work
-    <div ref={mapElementRef} style={{ height: '600px', width: '100%' }}></div>
+    <div ref={mapElementRef} style={{ height: '100%', width: '100%' }}></div>
   );
 };
 

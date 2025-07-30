@@ -81,9 +81,13 @@ export default async function handler(
 
     response.status(200).json({ year: targetYear, population: calculatedPopulation });
 
-  } catch (error: any) {
-    console.error('Error in population endpoint:', error.stack);
-    // Send a default value or error - adjust as needed
-    response.status(500).json({ error: 'Internal server error', year: targetYear, population: 0 }); 
+  } catch (error: unknown) {
+    console.error('Error in population endpoint:', 
+      error instanceof Error ? error.stack : String(error));
+    response.status(500).json({ 
+      error: 'Internal server error', 
+      year: targetYear, 
+      population: 0 
+    }); 
   }
 } 

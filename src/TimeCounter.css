@@ -1,107 +1,62 @@
-/* Rolling Time Counter Styles */
+/* Compact TimeCounter Styles */
 .time-counter {
   font-family: 'Roboto Mono', monospace;
-  background: #1a1a1a;
-  border-radius: 8px;
-  padding: 15px;
+  background: rgba(26, 26, 26, 0.8);
+  border-radius: 4px;
+  padding: 5px 10px;
   color: #ffffff;
-  width: 320px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
-  transition: box-shadow 0.3s, transform 0.3s;
+  display: flex;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  width: auto;
 }
 
-.time-counter.highlighted {
-  box-shadow: 0 0 20px rgba(255, 215, 0, 0.7);
-  transform: scale(1.02);
+.time-display-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 10px;
 }
 
 .counter-header {
-  font-size: 14px;
+  font-size: 12px;
   text-transform: uppercase;
   letter-spacing: 1px;
-  margin-bottom: 10px;
   color: #888;
-  text-align: center;
+  white-space: nowrap;
 }
 
-.counter-display {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 10px 0;
-  /* Remove perspective if not using 3D digits */
-  /* perspective: 1000px; */
-}
-
-/* Remove styles for digit-container and digit-roller */
-/* .digit-container { ... } */
-/* .digit-roller { ... } */
-
-/* New style for the main historical year display */
 .main-year-display {
-  font-size: 36px; /* Larger font size */
+  font-size: 12px;
   font-weight: bold;
-  color: #ffd700; /* Keep the gold color */
-  text-shadow: 0 0 8px rgba(255, 215, 0, 0.6); /* Slightly stronger shadow */
-  padding: 10px 0; /* Add some padding */
-  flex-grow: 1; /* Allow it to take space */
-  text-align: center;
-}
-
-/* Remove styles for individual digit */
-/* .digit { ... } */
-
-/* Remove or adjust counter-unit if not used or changed */
-.counter-unit {
-  /* margin-left: 12px; */
-  /* font-size: 12px; */
-  /* color: #aaa; */
-  /* align-self: flex-end; */
-  /* margin-bottom: 10px; */
-  display: none; /* Hide it if not needed */
-}
-
-.historical-info {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 10px;
-  font-size: 14px;
+  color: #ffd700;
+  text-shadow: 0 0 4px rgba(255, 215, 0, 0.4);
+  white-space: nowrap;
 }
 
 .round-number {
+  font-size: 12px;
   color: #8bc34a;
+  white-space: nowrap;
 }
 
-/* Adjust historical-year which now shows YpR */
-.historical-year.years-per-round {
-  color: #ff9800; /* Keep orange color */
-  font-weight: normal; /* Maybe not bold */
-  font-size: 14px; /* Match round number size */
+.years-per-round {
+  font-size: 12px;
+  color: #ff9800;
+  white-space: nowrap;
 }
 
-.population-info {
-  font-size: 14px;
-  color: #63aeff;
-  text-align: center;
-  font-style: italic;
-  margin-top: 5px;
-  margin-bottom: 10px;
-  line-height: 1.3;
-}
-
-@media (max-width: 480px) {
+@media (max-width: 768px) {
   .time-counter {
-    width: 280px;
-    padding: 10px;
+    flex-direction: column;
+    align-items: flex-start;
   }
   
-  .digit-container {
-    width: 25px;
-    height: 40px;
-  }
-  
-  .digit {
-    height: 40px;
-    font-size: 22px;
+  .historical-info {
+    margin-left: 0;
+    margin-top: 3px;
+    width: 100%;
+    justify-content: space-between;
   }
 }

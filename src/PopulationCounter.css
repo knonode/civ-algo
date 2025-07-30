@@ -1,36 +1,64 @@
 .population-counter {
   font-family: 'Roboto Mono', monospace;
-  background: #1a1a1a;
-  border-radius: 8px;
-  padding: 15px;
+  background: rgba(26, 26, 26, 0.8);
+  border-radius: 4px;
+  padding: 5px 10px;
   color: #ffffff;
-  width: 320px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
-  text-align: center;
+  display: flex;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.population-display-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 10px;
 }
 
 .population-title {
-  font-size: 14px;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  margin-bottom: 10px;
+  font-size: 12px;
   color: #888;
-  text-align: center;
+  white-space: nowrap;
 }
 
 .population-value {
-  font-size: 36px;
+  font-size: 12px;
   font-weight: bold;
   color: #ffd700;
-  text-shadow: 0 0 8px rgba(255, 215, 0, 0.6);
-  padding: 10px 0;
-  text-align: center;
+  text-shadow: 0 0 4px rgba(255, 215, 0, 0.4);
+  white-space: nowrap;
+}
+
+.population-info {
+  font-size: 12px;
+  color: #63aeff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .population-year {
-  font-size: 14px;
-  color: #63aeff;
-  text-align: center;
-  margin-top: 0;
-  margin-bottom: 10px;
+  font-size: 12px;
+  color: #aaa;
+  margin-left: auto;
+}
+
+@media (max-width: 768px) {
+  .population-counter {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .population-info {
+    width: 100%;
+    margin-left: 0;
+    margin-top: 3px;
+  }
+  
+  .population-year {
+    margin-left: 0;
+    margin-top: 3px;
+  }
 }
