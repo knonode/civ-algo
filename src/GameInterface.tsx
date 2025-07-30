@@ -327,6 +327,12 @@ const GameInterface: React.FC = () => {
       animationFrameRef.current = 0;
     }
     
+    // Cancel any existing trend timeout
+    if (trendTimeoutRef.current) {
+      clearTimeout(trendTimeoutRef.current);
+      trendTimeoutRef.current = null;
+    }
+    
     // Pause immediately
     setIsPaused(true);
     
@@ -337,6 +343,11 @@ const GameInterface: React.FC = () => {
     // IMPORTANT: Reset interpolation values during jumps
     setNextYearPopulation(0);
     setInterpolatedPopulation(0);
+    prevPopulationRef.current = 0; // Reset previous population too
+    
+    // Reset trend state
+    setPopulationTrend(null);
+    lastTrendRef.current = null;
     
     // IMPORTANT: Calculate and update these values immediately
     const calculatedHistoricalYear = calculateHistoricalYear(newRound);
@@ -418,15 +429,17 @@ const GameInterface: React.FC = () => {
   // Add new state for next year's population
   const [nextYearPopulation, setNextYearPopulation] = useState<number>(0);
 
-  // Add state for population trend
+  // Use ref instead of state to avoid dependency issues
+  const prevPopulationRef = useRef<number>(0);
   const [populationTrend, setPopulationTrend] = useState<'up' | 'down' | 'stable' | null>(null);
+  const lastTrendRef = useRef<'up' | 'down' | 'stable' | null>(null);
+  const trendTimeoutRef = useRef<number | null>(null);
+
+  // Use ref to track when we last updated the trend
+  const lastTrendUpdateRoundRef = useRef<number>(0);
 
   // Update the derived state to include trend calculation
   useEffect(() => {
-    // Calculate year fraction for interpolation
-    const yearStart = Math.floor(historicalYear);
-    const yearFraction = historicalYear - yearStart;
-    
     // If nextYearPopulation is available, interpolate between current and next
     if (nextYearPopulation > 0) {
       const yearProgress = (currentRound % 365) / 365;
@@ -437,22 +450,43 @@ const GameInterface: React.FC = () => {
       const interpolatedPopulation = globalPopulation + 
         (nextYearPopulation - globalPopulation) * adjustedProgress;
       
-      // Calculate trend based on comparison with next year
-      if (nextYearPopulation > globalPopulation) {
-        setPopulationTrend('up');
-      } else if (nextYearPopulation < globalPopulation) {
-        setPopulationTrend('down');
-      } else {
-        setPopulationTrend('stable');
-      }
-      
       // Round to nearest integer
-      setInterpolatedPopulation(Math.round(interpolatedPopulation));
+      const roundedPopulation = Math.round(interpolatedPopulation);
+      setInterpolatedPopulation(roundedPopulation);
+
+      // Only update trend when the round changes
+      if (currentRound !== lastTrendUpdateRoundRef.current) {
+        // Simple trend calculation based on previous value
+        if (prevPopulationRef.current === 0) {
+          // First meaningful value, initialize but don't show trend yet
+          prevPopulationRef.current = roundedPopulation;
+          setPopulationTrend(null);
+        } else if (roundedPopulation > prevPopulationRef.current) {
+          setPopulationTrend('up');
+        } else if (roundedPopulation < prevPopulationRef.current) {
+          setPopulationTrend('down');
+        } else {
+          setPopulationTrend('stable');
+        }
+        
+        // Update previous population for next comparison
+        prevPopulationRef.current = roundedPopulation;
+        
+        // Remember this round so we don't update again until round changes
+        lastTrendUpdateRoundRef.current = currentRound;
+      }
     } else {
       setInterpolatedPopulation(globalPopulation);
-      setPopulationTrend(null); // No trend data available
+      setPopulationTrend(null);
     }
-  }, [currentRound, globalPopulation, nextYearPopulation, historicalYear]);
+
+    // Clear timeout on unmount
+    return () => {
+      if (trendTimeoutRef.current) {
+        clearTimeout(trendTimeoutRef.current);
+      }
+    };
+  }, [currentRound]); // Only depend on currentRound, not the population data
 
   // Add state for the interpolated population
   const [interpolatedPopulation, setInterpolatedPopulation] = useState<number>(0);

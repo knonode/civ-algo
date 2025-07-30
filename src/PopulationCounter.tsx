@@ -6,11 +6,13 @@ interface PopulationCounterProps {
   currentYear: number;
   population: number;
   milestone: MilestoneSegment | null;
+  populationTrend: 'up' | 'down' | 'stable' | null;
 }
 
 const PopulationCounter: React.FC<PopulationCounterProps> = ({ 
   population,
-  milestone
+  milestone,
+  populationTrend
 }) => {
   // Format population with commas
   const formattedPopulation = population.toLocaleString();
@@ -65,10 +67,35 @@ const PopulationCounter: React.FC<PopulationCounterProps> = ({
     };
   }, [showTooltip]);
 
+  // Render trend arrow based on populationTrend
+  const renderTrendArrow = () => {
+    if (!populationTrend) return null;
+    
+    let arrow = '';
+    switch (populationTrend) {
+      case 'up':
+        arrow = '↑';
+        break;
+      case 'down':
+        arrow = '↓';
+        break;
+      case 'stable':
+        arrow = '→';
+        break;
+    }
+    
+    return <span className={`trend-arrow ${populationTrend}`}>{arrow}</span>;
+  };
+
   return (
     <div className="population-counter">
       <div className="population-display-row">
-        <span className="population-group">Global ppl <span className="population-value">{formattedPopulation}</span></span>
+        <span className="population-group">
+          Global ppl <span className="population-value">
+            {formattedPopulation}
+            {renderTrendArrow()} {/* Add trend arrow here */}
+          </span>
+        </span>
         <span className="population-group">Your ppl <span className="user-population-value">{formattedUserPopulation}</span></span>
         {milestone && (
           <span 

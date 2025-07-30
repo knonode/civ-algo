@@ -89,6 +89,7 @@ const formatYearsPerRound = (ypr: number): string => {
     }
     
     const year = Math.floor(absoluteYear);
+    const formattedYear = year.toLocaleString(); // Add comma separation
     
     // Calculate the date within the year based on the current round
     // We'll use the currentRound to determine the date within the year
@@ -109,7 +110,7 @@ const formatYearsPerRound = (ypr: number): string => {
       const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 
                           'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
       const month = monthNames[monthIndex];
-      return `${year}${suffix} ${month}`;
+      return `${formattedYear}${suffix} ${month}`;
     }
     
     // For very recent history where yearsPerRound < 1/12 (about a month), show days
@@ -124,7 +125,7 @@ const formatYearsPerRound = (ypr: number): string => {
       const monthProgress = yearProgress * 12 - monthIndex;
       const day = Math.floor(monthProgress * daysInMonth[monthIndex]) + 1;
       
-      return `${year}${suffix} ${month} ${day}`;
+      return `${formattedYear}${suffix} ${month} ${day}`;
     }
     
     // For extremely recent history where yearsPerRound < 1/365 (about a day), add time
@@ -142,7 +143,7 @@ const formatYearsPerRound = (ypr: number): string => {
       const hour = Math.floor(dayProgress * 24);
       const minute = Math.floor((dayProgress * 24 - hour) * 60);
       
-      return `${year}${suffix} ${month} ${day}, ${hour}:${minute.toString().padStart(2, '0')}`;
+      return `${formattedYear}${suffix} ${month} ${day}, ${hour}:${minute.toString().padStart(2, '0')}`;
     }
     
     return absoluteYear.toLocaleString() + suffix;
@@ -183,8 +184,7 @@ const TimeCounter: React.FC<TimeCounterProps> = ({
   return (
     <div className={`time-counter ${isHighlighted ? 'highlighted' : ''}`}>
       <div className="time-display-row">
-        <span className="counter-header">Game time</span>
-        <span className="main-year-display">{formattedYearDisplay}</span>
+        <span className="time-group">Game time <span className="main-year-display">{formattedYearDisplay}</span></span>
         <span className="round-number">R #{currentRound.toLocaleString()}/{formatRoundNumber(totalRounds)}</span>
         <span className="years-per-round">{formatYearsPerRound(yearsPerRound)}</span>
       </div>
