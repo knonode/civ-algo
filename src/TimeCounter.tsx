@@ -1,5 +1,5 @@
 // Rolling Time Counter Component
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import './TimeCounter.css'; // Assuming CSS file is renamed
 import type { MilestoneSegment } from './GameInterface'; // Import the type
 
@@ -9,6 +9,8 @@ interface TimeCounterProps {
   historicalYear: number;    // Current year in historical timeline (e.g., -10000 for 10000 BCE)
   totalRounds: number;       // Total rounds in the game simulation
   milestone?: MilestoneSegment | null; // Make milestone optional
+  expandedCounter: 'time' | 'population-global' | 'population-user' | 'population-description' | null;
+  onCounterToggle: (counter: 'time' | 'population-global' | 'population-user' | 'population-description' | null) => void;
 }
 
 // Calculate appropriate animation duration based on how quickly time is passing
@@ -155,10 +157,26 @@ const TimeCounter: React.FC<TimeCounterProps> = ({
   currentRound,
   historicalYear,
   totalRounds,
+  expandedCounter,
+  onCounterToggle
 }) => {
   const [isHighlighted, setIsHighlighted] = useState(false);
   const [prevYearsPerRound, setPrevYearsPerRound] = useState(yearsPerRound);
   const animationDuration = calculateAnimationDuration(yearsPerRound);
+
+  // References for clickable spans
+  const gameTimeRef = useRef<HTMLElement>(null);
+  const roundNumberRef = useRef<HTMLElement>(null);
+  const yearsPerRoundRef = useRef<HTMLElement>(null);
+
+  // Handle counter clicks to expand/collapse
+  const handleCounterClick = (counterType: 'time') => {
+    if (expandedCounter === counterType) {
+      onCounterToggle(null); // Collapse if already expanded
+    } else {
+      onCounterToggle(counterType); // Expand this counter
+    }
+  };
 
   // Simplified useEffect to handle highlight on yearsPerRound change
   useEffect(() => {
@@ -184,9 +202,30 @@ const TimeCounter: React.FC<TimeCounterProps> = ({
   return (
     <div className={`time-counter ${isHighlighted ? 'highlighted' : ''}`}>
       <div className="time-display-row">
-        <span className="time-group">Game time <span className="main-year-display">{formattedYearDisplay}</span></span>
-        <span className="round-number">R #{currentRound.toLocaleString()}/{formatRoundNumber(totalRounds)}</span>
-        <span className="years-per-round">{formatYearsPerRound(yearsPerRound)}</span>
+        <span 
+          ref={gameTimeRef}
+          className={`time-group clickable-time ${expandedCounter === 'time' ? 'active' : ''}`}
+          onClick={() => handleCounterClick('time')}
+          title="Click to view time charts"
+        >
+          Game time <span className="main-year-display">{formattedYearDisplay}</span>
+        </span>
+        <span 
+          ref={roundNumberRef}
+          className={`round-number clickable-time ${expandedCounter === 'time' ? 'active' : ''}`}
+          onClick={() => handleCounterClick('time')}
+          title="Click to view time charts"
+        >
+          R #{currentRound.toLocaleString()}/{formatRoundNumber(totalRounds)}
+        </span>
+        <span 
+          ref={yearsPerRoundRef}
+          className={`years-per-round clickable-time ${expandedCounter === 'time' ? 'active' : ''}`}
+          onClick={() => handleCounterClick('time')}
+          title="Click to view time charts"
+        >
+          {formatYearsPerRound(yearsPerRound)}
+        </span>
       </div>
     </div>
   );

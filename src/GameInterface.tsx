@@ -4,6 +4,7 @@ import MapView from './MapView';
 import './GameInterface.css';
 import { LocationData } from './interfaces'; // Import LocationData
 import PopulationCounter from './PopulationCounter';
+import PopulationChart from './PopulationChart';
 
 // Define AND Export the Milestone structure
 export interface MilestoneSegment {
@@ -153,6 +154,14 @@ const formatRoundNumber = (num: number): string => {
   return (num / 1_000_000).toFixed(1).replace(/\.0$/, '') + 'M';
 };
 
+// Utility function to format historical years (copied from PopulationCounter)
+const formatHistoricalYear = (year: number): string => {
+  // Convert to positive number and add commas
+  const absoluteYear = Math.abs(year).toLocaleString();
+  // Add BCE for negative years, CE for positive
+  return year < 0 ? `${absoluteYear} BCE` : `${absoluteYear} CE`;
+};
+
 const GameInterface: React.FC = () => {
 
   // Initialize state - currentRound now directly controlled by slider
@@ -172,6 +181,9 @@ const GameInterface: React.FC = () => {
   // Track the last update timestamp and animation frame ID
   const lastUpdateTimeRef = useRef<number>(0);
   const animationFrameRef = useRef<number>(0);
+
+  // Add state for expandable counters
+  const [expandedCounter, setExpandedCounter] = useState<'time' | 'population-global' | 'population-user' | 'population-description' | null>(null);
 
   // Use animation frames instead of intervals for smoother updates
   useEffect(() => {
@@ -500,13 +512,67 @@ const GameInterface: React.FC = () => {
             currentRound={currentRound}
             historicalYear={historicalYear}
             totalRounds={TOTAL_ROUNDS}
+            expandedCounter={expandedCounter}
+            onCounterToggle={setExpandedCounter}
           />
+          
           <PopulationCounter 
-            currentYear={historicalYear}
             population={interpolatedPopulation}
             milestone={currentMilestone}
-            populationTrend={populationTrend} // Add the trend prop
+            populationTrend={populationTrend}
+            expandedCounter={expandedCounter}
+            onCounterToggle={setExpandedCounter}
           />
+          
+          {/* Expansion area - appears after both counters */}
+          {expandedCounter && (
+            <div className="counter-expansion">
+              {expandedCounter === 'time' && (
+                <div className="time-expansion">
+                  <div className="expansion-placeholder">
+                    <h4>Time Charts</h4>
+                    <p>Game time vs Real time charts will appear here</p>
+                    <p>Placeholder for future implementation</p>
+                  </div>
+                </div>
+              )}
+              
+              {expandedCounter === 'population-global' && (
+                <div className="population-global-expansion">
+                  <PopulationChart
+                    isExpanded={true}
+                    onClose={() => setExpandedCounter(null)}
+                    anchorRef={{ current: null }}
+                    embedded={true}
+                  />
+                </div>
+              )}
+              
+              {expandedCounter === 'population-user' && (
+                <div className="population-user-expansion">
+                  <div className="expansion-placeholder">
+                    <h4>Your Population Chart</h4>
+                    <p>Your population growth chart will appear here</p>
+                    <p>Placeholder for future implementation</p>
+                  </div>
+                </div>
+              )}
+              
+                             {expandedCounter === 'population-description' && currentMilestone && (
+                 <div className="population-description-expansion">
+                   <div className="milestone-expansion">
+                     <h4>{currentMilestone.description}</h4>
+                     <div className="milestone-years">
+                       {formatHistoricalYear(currentMilestone.startYear)} - {formatHistoricalYear(currentMilestone.endYear)}
+                     </div>
+                     <div className="milestone-summary">
+                       <p>Placeholder for historical period summary.</p>
+                     </div>
+                   </div>
+                 </div>
+               )}
+            </div>
+          )}
         </div>
       </div>
 

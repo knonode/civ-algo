@@ -1,0 +1,133 @@
+.population-chart-dropdown {
+  position: absolute;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.95);
+  border: 1px solid #333;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  min-width: 400px;
+  max-width: 600px;
+}
+
+.dropdown-content {
+  padding: 15px;
+  background: rgba(0, 0, 0, 0.95);
+  border-radius: 6px;
+}
+
+/* Embedded chart styles */
+.embedded-chart {
+  width: 100%;
+  background: transparent;
+}
+
+.embedded-chart .loading,
+.embedded-chart .error,
+.embedded-chart .no-data {
+  padding: 20px;
+  text-align: center;
+  color: #ccc;
+}
+
+.embedded-chart .chart-info {
+  text-align: center;
+  margin-top: 10px;
+  color: #888;
+  font-size: 11px;
+}
+
+.loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 20px;
+  color: #ccc;
+}
+
+.loading-spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #333;
+  border-top: 2px solid #ffd700;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 20px;
+  color: #ff6b6b;
+}
+
+.error button {
+  background: #ff6b6b;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.error button:hover {
+  background: #ff5252;
+}
+
+.no-data {
+  padding: 20px;
+  text-align: center;
+  color: #888;
+}
+
+.chart-info {
+  text-align: center;
+  margin-top: 10px;
+  color: #888;
+  font-size: 11px;
+}
+
+/* Position the dropdown relative to population counter */
+.population-counter {
+  position: relative; /* This enables absolute positioning for dropdown */
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .population-chart-dropdown {
+    min-width: 320px;
+    max-width: calc(100vw - 20px);
+    left: -10px;
+    right: -10px;
+  }
+  
+  .dropdown-content {
+    padding: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .population-chart-dropdown {
+    min-width: 280px;
+  }
+  
+  .loading-spinner {
+    width: 20px;
+    height: 20px;
+    border-width: 2px;
+  }
+  
+  .loading {
+    font-size: 12px;
+    height: 100px;
+  }
+}
+
+

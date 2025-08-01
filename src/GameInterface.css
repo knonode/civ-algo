@@ -30,6 +30,114 @@
   gap: 5px;
 }
 
+/* Expansion area styles */
+.counter-expansion {
+  background-color: rgba(0, 0, 0, 0.8);
+  border: 1px solid #333;
+  border-radius: 4px;
+  margin: 5px 0;
+  overflow: hidden;
+  animation: expandIn 0.3s ease-out;
+}
+
+@keyframes expandIn {
+  from {
+    max-height: 0;
+    opacity: 0;
+  }
+  to {
+    max-height: 400px;
+    opacity: 1;
+  }
+}
+
+/* Clickable span styles */
+.clickable-population,
+.clickable-time {
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-radius: 3px;
+  padding: 2px 4px;
+}
+
+.clickable-population:hover,
+.clickable-time:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  transform: translateY(-1px);
+}
+
+.clickable-population.active,
+.clickable-time.active {
+  background-color: rgba(255, 215, 0, 0.2);
+  border: 1px solid rgba(255, 215, 0, 0.5);
+  box-shadow: 0 0 5px rgba(255, 215, 0, 0.3);
+}
+
+/* Expansion content styles */
+.expansion-placeholder {
+  padding: 20px;
+  text-align: center;
+  color: #ccc;
+}
+
+.expansion-placeholder h4 {
+  margin: 0 0 10px 0;
+  color: #ffd700;
+  font-size: 14px;
+}
+
+.expansion-placeholder p {
+  margin: 5px 0;
+  font-size: 12px;
+  color: #888;
+}
+
+/* Population chart expansion */
+.population-global-expansion {
+  padding: 10px;
+}
+
+.population-global-expansion .population-chart-dropdown {
+  position: static;
+  width: 100%;
+}
+
+.population-global-expansion .dropdown-content {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+}
+
+/* Milestone expansion */
+.milestone-expansion {
+  padding: 20px;
+  color: #ccc;
+}
+
+.milestone-expansion h4 {
+  margin: 0 0 15px 0;
+  color: #ffd700;
+  font-size: 14px;
+}
+
+.milestone-description {
+  font-size: 13px;
+  line-height: 1.4;
+  margin-bottom: 10px;
+  color: #eee;
+}
+
+.milestone-years {
+  font-size: 11px;
+  color: #888;
+  font-style: italic;
+}
+
+/* Time expansion */
+.time-expansion {
+  padding: 10px;
+}
+
 .map-container {
   width: 100%;
   flex-grow: 1;
