@@ -37,15 +37,7 @@ const PopulationCounter: React.FC<PopulationCounterProps> = ({
       onCounterToggle(counterType); // Expand this counter
     }
   };
-
-  // Format years for display (with BCE/CE and commas)
-  const formatHistoricalYear = (year: number): string => {
-    // Convert to positive number and add commas
-    const absoluteYear = Math.abs(year).toLocaleString();
-    // Add BCE for negative years, CE for positive
-    return year < 0 ? `${absoluteYear} BCE` : `${absoluteYear} CE`;
-  };
-
+  
   // Render trend arrow based on populationTrend
   const renderTrendArrow = () => {
     if (!populationTrend) return null;

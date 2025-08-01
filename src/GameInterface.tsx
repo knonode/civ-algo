@@ -5,6 +5,7 @@ import './GameInterface.css';
 import { LocationData } from './interfaces'; // Import LocationData
 import PopulationCounter from './PopulationCounter';
 import PopulationChart from './PopulationChart';
+import TimeTable from './TimeTable';
 
 // Define AND Export the Milestone structure
 export interface MilestoneSegment {
@@ -527,15 +528,14 @@ const GameInterface: React.FC = () => {
           {/* Expansion area - appears after both counters */}
           {expandedCounter && (
             <div className="counter-expansion">
-              {expandedCounter === 'time' && (
-                <div className="time-expansion">
-                  <div className="expansion-placeholder">
-                    <h4>Time Charts</h4>
-                    <p>Game time vs Real time charts will appear here</p>
-                    <p>Placeholder for future implementation</p>
-                  </div>
-                </div>
-              )}
+                             {expandedCounter === 'time' && (
+                 <div className="time-expansion">
+                   <TimeTable
+                     currentRound={currentRound}
+                     totalRounds={TOTAL_ROUNDS}
+                   />
+                 </div>
+               )}
               
               {expandedCounter === 'population-global' && (
                 <div className="population-global-expansion">

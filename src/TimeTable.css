@@ -1,0 +1,106 @@
+/* src/TimeTable.css */
+
+.time-table {
+  padding: 15px;
+  color: #ccc;
+  font-size: 12px;
+}
+
+.time-table h4 {
+  margin: 0 0 15px 0;
+  color: #ffd700;
+  font-size: 14px;
+  text-align: center;
+}
+
+.time-table h5 {
+  margin: 15px 0 10px 0;
+  color: #ffeb3b;
+  font-size: 12px;
+}
+
+.time-calculations {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 15px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 4px;
+}
+
+.time-calculations th,
+.time-calculations td {
+  padding: 6px 8px;
+  text-align: left;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.time-calculations th {
+  background: rgba(255, 215, 0, 0.1);
+  color: #ffd700;
+  font-weight: bold;
+  font-size: 11px;
+}
+
+.time-calculations td {
+  font-family: 'Courier New', monospace;
+  font-size: 11px;
+}
+
+.time-calculations tr:hover {
+  background: rgba(255, 215, 0, 0.05);
+}
+
+.time-calculations td:nth-child(2),
+.time-calculations td:nth-child(3) {
+  text-align: right;
+  color: #fff;
+}
+
+.game-progress {
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 4px;
+  padding: 10px;
+}
+
+.progress-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.stat {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.stat .label {
+  color: #888;
+  font-size: 11px;
+}
+
+.stat .value {
+  color: #fff;
+  font-family: 'Courier New', monospace;
+  font-size: 11px;
+  font-weight: bold;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .time-table {
+    padding: 10px;
+    font-size: 10px;
+  }
+  
+  .time-calculations th,
+  .time-calculations td {
+    padding: 4px 6px;
+    font-size: 10px;
+  }
+  
+  .stat .label,
+  .stat .value {
+    font-size: 10px;
+  }
+} 
