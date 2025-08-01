@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
 import TimeCounter from './TimeCounter';
 import MapView from './MapView';
 import './GameInterface.css';
@@ -185,6 +185,12 @@ const GameInterface: React.FC = () => {
 
   // Add state for expandable counters
   const [expandedCounter, setExpandedCounter] = useState<'time' | 'population-global' | 'population-user' | 'population-description' | null>(null);
+
+  // Add stable references
+  const anchorRefStable = useRef<HTMLElement | null>(null);
+  const handleClosePopulationChart = useCallback(() => {
+    setExpandedCounter(null);
+  }, []);
 
   // Use animation frames instead of intervals for smoother updates
   useEffect(() => {
@@ -541,8 +547,8 @@ const GameInterface: React.FC = () => {
                 <div className="population-global-expansion">
                   <PopulationChart
                     isExpanded={true}
-                    onClose={() => setExpandedCounter(null)}
-                    anchorRef={{ current: null }}
+                    onClose={handleClosePopulationChart}
+                    anchorRef={anchorRefStable}
                     embedded={true}
                   />
                 </div>

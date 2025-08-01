@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useMemo, useCallback } from 'react';
 import ReactECharts from 'echarts-for-react';
 import './PopulationChart.css';
 
@@ -98,7 +98,8 @@ const PopulationChart: React.FC<PopulationChartProps> = ({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
-
+  const chartComponentRef = useRef<ReactECharts | null>(null);
+  const chartInstanceRef = useRef<echarts.ECharts | null>(null);
 
 
   // Fetch historical population data - ONLY ONCE
@@ -175,7 +176,7 @@ const PopulationChart: React.FC<PopulationChartProps> = ({
     }
   }, [isExpanded, onClose, embedded]);
 
-  const formatYear = (year: number): string => {
+  const formatYear = useCallback((year: number): string => {
     if (year < 0) {
       const absYear = Math.abs(year);
       if (absYear >= 1000) {
@@ -188,17 +189,17 @@ const PopulationChart: React.FC<PopulationChartProps> = ({
       }
       return `${year} CE`;
     }
-  };
+  }, []);
 
-  const formatPopulation = (value: number): string => {
+  const formatPopulation = useCallback((value: number): string => {
     if (value >= 1000000000) return `${(value / 1000000000).toFixed(1)}B`;
     if (value >= 1000000) return `${(value / 1000000).toFixed(1)}M`;
     if (value >= 1000) return `${(value / 1000).toFixed(1)}K`;
     return value.toString();
-  };
+  }, []);
 
-  const chartOptions = {
-
+  // Memoize chart options to prevent unnecessary re-creation
+  const chartOptions = useMemo(() => ({
     backgroundColor: 'transparent',
     tooltip: {
       trigger: 'axis',
@@ -281,7 +282,12 @@ const PopulationChart: React.FC<PopulationChartProps> = ({
         }
       }
     }]
-  };
+  }), [chartData, formatYear, formatPopulation]); // Only recreate when data or formatters change
+
+  // Handle chart ready event to preserve reference
+  const onChartReady = useCallback((chartInstance: echarts.ECharts) => {
+    chartInstanceRef.current = chartInstance;
+  }, []);
 
   if (!isExpanded) return null;
 
@@ -302,9 +308,11 @@ const PopulationChart: React.FC<PopulationChartProps> = ({
         ) : chartData.length > 0 ? (
           <>
             <ReactECharts 
+              ref={chartComponentRef}
               option={chartOptions} 
               style={{ height: '300px', width: '100%' }}
               opts={{ renderer: 'canvas' }}
+              onChartReady={onChartReady}
             />
             <div className="chart-info">
               <small>Scroll to zoom • Drag to pan • {chartData.length} data points</small>
@@ -336,9 +344,11 @@ const PopulationChart: React.FC<PopulationChartProps> = ({
         ) : chartData.length > 0 ? (
           <>
             <ReactECharts 
+              ref={chartComponentRef}
               option={chartOptions} 
               style={{ height: '300px', width: '100%' }}
               opts={{ renderer: 'canvas' }}
+              onChartReady={onChartReady}
             />
             <div className="chart-info">
               <small>Scroll to zoom • Drag to pan • {chartData.length} data points</small>
@@ -354,6 +364,16 @@ const PopulationChart: React.FC<PopulationChartProps> = ({
   );
 };
 
-export default PopulationChart;
+// Memoize the component to prevent unnecessary re-renders
+const MemoizedPopulationChart = React.memo(PopulationChart, (prevProps, nextProps) => {
+  // Only re-render if isExpanded or embedded actually changes
+  // onClose and anchorRef should be stable now, but we'll ignore them in comparison
+  return (
+    prevProps.isExpanded === nextProps.isExpanded &&
+    prevProps.embedded === nextProps.embedded
+  );
+});
+
+export default MemoizedPopulationChart;
 
 
