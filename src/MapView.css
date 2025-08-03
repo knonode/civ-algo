@@ -1,0 +1,41 @@
+/* Settlement Card Styles */
+.settlement-card-details {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: 8px;
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 1px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.detail-row:last-child {
+  border-bottom: none;
+}
+
+.detail-value {
+  color: #fff;
+  text-align: left;
+  flex: 1;
+  margin-left: 8px;
+  font-size: 11px;
+  font-weight: 300;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .detail-row {
+    flex-direction: column;
+    gap: 1px;
+  }
+  
+  .detail-value {
+    text-align: left;
+    margin-left: 0;
+  }
+} 

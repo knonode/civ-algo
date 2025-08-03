@@ -41,73 +41,20 @@ const MapBoundsUpdater: React.FC<{ locations: LocationData[] }> = ({ locations }
 
 function getImageFilename(location: string): string[] {
   // 1. Most common: remove apostrophes, keep spaces and hyphens
-  const primary = location.replace(/['']/g, '') + '.png';
+  const primary = location.replace(/['’]/g, '') + '.png';
 
   // 2. Fallback: replace spaces with hyphens, remove apostrophes
-  const fallback = location.replace(/['']/g, '').replace(/\s+/g, '-') + '.png';
+  const fallback = location.replace(/['’]/g, '').replace(/\s+/g, '-') + '.png';
 
   return [primary, fallback];
 }
 
-// Function to get the appropriate icon based on type_site
-function getIconForType(typeSite: string, isUnesco: boolean): L.Icon | L.DivIcon {
-  // Map type_site values to icon filenames
-  const typeToIconMap: { [key: string]: string } = {
-    'type-site': 'type-site.svg',
-    'cave': 'cave.svg',
-    'formation': 'formation.svg',
-    'coast': 'coast.svg',
-    'river': 'river.svg',
-    'lake': 'lake.svg',
-    'hills': 'hills.svg',
-    'thermal': 'thermal.svg',
-    'dna': 'dna.svg',
-    'burial': 'burial.svg',
-    'mummies': 'mummies.svg',
-    'artifact': 'artifact.svg',
-    'colony': 'colony.svg',
-    'castaway': 'castaway.svg',
-    'pirate': 'pirate.svg',
-    'whaling': 'whaling.svg',
-    'penal': 'penal.svg',
-    'naval-base': 'naval-base.svg',
-    'research-station': 'research-station.svg',
-    'rocket': 'rocket.svg',
-    'TAZ': 'TAZ.svg'
-  };
-
-  // Normalize the type_site string (lowercase, replace spaces with hyphens)
-  const normalizedType = typeSite.toLowerCase().replace(/\s+/g, '-');
-  
-  // Get the icon filename, fallback to settlement.svg if not found
-  const iconFilename = typeToIconMap[normalizedType] || 'settlement.svg';
-  
-  // If it's a UNESCO site, we'll create a custom icon that combines both type and UNESCO icons
-  if (isUnesco) {
-    // Create a custom div icon that combines both icons
-    const customIcon = L.divIcon({
-      className: 'custom-marker-icon',
-      html: `
-        <div style="position: relative; display: inline-block;">
-          <img src="/icons/${iconFilename}" style="width: 16px; height: 16px; position: relative; z-index: 2;" />
-          <img src="/icons/unesco.svg" style="width: 12px; height: 12px; position: absolute; top: -2px; right: -2px; z-index: 3;" />
-        </div>
-      `,
-      iconSize: [20, 20],
-      iconAnchor: [10, 10],
-      popupAnchor: [0, -10]
-    });
-    return customIcon;
-  } else {
-    // Regular icon for non-UNESCO sites
-    return L.icon({
-      iconUrl: `/icons/${iconFilename}`,
-      iconSize: [16, 16],
-      iconAnchor: [8, 8],
-      popupAnchor: [0, -8]
-    });
-  }
-}
+const settlementIcon = L.icon({
+  iconUrl: '/icons/settlement.svg',
+  iconSize: [16, 16],
+  iconAnchor: [16, 16],
+  popupAnchor: [0, -16]
+});
 
 const MapView: React.FC<MapViewProps> = ({ locations }) => {
   // Ref to hold the map instance
@@ -116,8 +63,8 @@ const MapView: React.FC<MapViewProps> = ({ locations }) => {
   const mapElementRef = useRef<HTMLDivElement | null>(null);
   // State to track if map is initialized
   const [isMapInitialized, setIsMapInitialized] = useState(false);
-  const renderedLocationsRef = useRef<Set<string>>(new Set());
-
+    const renderedLocationsRef = useRef<Set<string>>(new Set());
+  
   // Global function to toggle settlement details (accessible from popup)
   useEffect(() => {
     (window as any).toggleSettlementDetails = (settlementId: number, imageElement: HTMLElement) => {
@@ -207,25 +154,20 @@ const MapView: React.FC<MapViewProps> = ({ locations }) => {
         !renderedLocationsRef.current.has(loc.location)
       ) {
         const imageCandidates = getImageFilename(loc.location);
-        
-        // Determine if this is a UNESCO site
-        const isUnesco = loc.unesco_whs !== null && loc.unesco_whs !== '';
-        
-        // Get the appropriate icon based on type_site and UNESCO status
-        const markerIcon = getIconForType(loc.type_site, isUnesco);
 
         const marker = L.marker([loc.latitude, loc.longitude], {
-          icon: markerIcon
+          icon: settlementIcon
         })
-        .bindPopup(
+                .bindPopup(
           `
-          <div style="color: #eee; text-align: center; font-weight: 300; cursor: pointer;">
+          <div style="color: #eee; text-align: center; font-weight: 300;">
             <div style="margin-bottom: 4px;">${loc.location}</div>
             <img 
               src="/Settlements-pixelated/${imageCandidates[0]}" 
               alt="${loc.location}" 
-              style="max-width: 120px; max-height: 80px;" 
+              style="max-width: 120px; max-height: 80px; cursor: pointer;" 
               onerror="this.onerror=null;this.src='/Settlements-pixelated/${imageCandidates[1]}';"
+              onclick="window.toggleSettlementDetails && window.toggleSettlementDetails(${loc.id}, this)"
             />
                          <div id="details-${loc.id}" class="settlement-card-details" style="display: none;">
                <div class="detail-row">
@@ -263,8 +205,6 @@ const MapView: React.FC<MapViewProps> = ({ locations }) => {
   };
 
   return (
-    // Div container for the Leaflet map
-    // Note: height/width must be set via CSS or style prop for Leaflet to work
     <div ref={mapElementRef} style={{ height: '100%', width: '100%' }}></div>
   );
 };

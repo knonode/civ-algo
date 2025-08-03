@@ -89,18 +89,18 @@
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .time-table {
-    padding: 10px;
-    font-size: 10px;
+    padding: 11px;
+    font-size: 11px;
   }
   
   .time-calculations th,
   .time-calculations td {
     padding: 4px 6px;
-    font-size: 10px;
+    font-size: 11px;
   }
   
   .stat .label,
   .stat .value {
-    font-size: 10px;
+    font-size: 11px;
   }
 } 

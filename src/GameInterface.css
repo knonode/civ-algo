@@ -11,7 +11,7 @@
   height: 100vh; /* Use full viewport height */
 }
 
-.counters-bar {
+.game-controls {
   display: flex;
   flex-direction: column;
   background-color: rgba(0, 0, 0, 0.7);
@@ -22,6 +22,153 @@
   top: 0;
   left: 0;
   z-index: 1000;
+}
+
+/* Wallet Connect Section */
+.wallet-connect {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 5px;
+}
+
+.wallet-controls-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.clickable-wallet {
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-radius: 3px;
+  padding: 4px 8px;
+  font-size: 12px;
+  color: #f8c620;
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.clickable-wallet:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  transform: translateY(-1px);
+}
+
+.clickable-wallet.active {
+  background-color: rgba(255, 215, 0, 0.2);
+  border: 1px solid rgba(255, 215, 0, 0.5);
+  box-shadow: 0 0 5px rgba(255, 215, 0, 0.3);
+}
+
+/* Wallet Expansion */
+.wallet-expansion {
+  background-color: rgba(0, 0, 0, 0.8);
+  border: 1px solid #333;
+  border-radius: 4px;
+  margin: 5px 0;
+  overflow: hidden;
+  animation: expandIn 0.3s ease-out;
+}
+
+.expansion-content {
+  padding: 15px;
+  color: #ccc;
+}
+
+.expansion-content h4 {
+  margin: 0 0 10px 0;
+  color: #ffd700;
+  font-size: 14px;
+}
+
+.expansion-content p {
+  margin: 0 0 15px 0;
+  font-size: 12px;
+  line-height: 1.4;
+  color: #eee;
+}
+
+/* CIV.ALGO Expansion */
+.links {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.links a {
+  color: #63aeff;
+  text-decoration: none;
+  font-size: 12px;
+  padding: 5px 10px;
+  border: 1px solid rgba(99, 174, 255, 0.3);
+  border-radius: 3px;
+  transition: all 0.2s ease;
+}
+
+.links a:hover {
+  background-color: rgba(99, 174, 255, 0.1);
+  border-color: rgba(99, 174, 255, 0.5);
+}
+
+/* Network Expansion */
+.network-toggle {
+  display: flex;
+  gap: 10px;
+}
+
+.network-btn {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background-color: rgba(255, 255, 255, 0.05);
+  color: #ccc;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: all 0.2s ease;
+}
+
+.network-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.network-btn.active {
+  background-color: rgba(255, 215, 0, 0.2);
+  border-color: rgba(255, 215, 0, 0.5);
+  color: #ffd700;
+}
+
+/* Network Toggle - Simple click to switch */
+.clickable-wallet.network-toggle:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Wallet Buttons Expansion */
+.wallet-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.wallet-btn {
+  padding: 10px 15px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background-color: rgba(255, 255, 255, 0.05);
+  color: #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  text-align: left;
+}
+
+.wallet-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateX(2px);
 }
 
 .counter-container {

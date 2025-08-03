@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef, useMemo, useCallback } from 'react';
 import ReactECharts from 'echarts-for-react';
+import LoaderSVG from './assets/loader.svg?react';
 import './PopulationChart.css';
 
 interface PopulationChartProps {
@@ -297,7 +298,7 @@ const PopulationChart: React.FC<PopulationChartProps> = ({
       <div className="embedded-chart">
         {loading ? (
           <div className="loading">
-            <div className="loading-spinner"></div>
+            <LoaderSVG className="loading-spinner" />
             <span>Loading data...</span>
           </div>
         ) : error ? (
@@ -333,7 +334,7 @@ const PopulationChart: React.FC<PopulationChartProps> = ({
       <div className="dropdown-content">
         {loading ? (
           <div className="loading">
-            <div className="loading-spinner"></div>
+            <LoaderSVG className="loading-spinner" />
             <span>Loading data...</span>
           </div>
         ) : error ? (

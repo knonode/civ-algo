@@ -183,8 +183,12 @@ const GameInterface: React.FC = () => {
   const lastUpdateTimeRef = useRef<number>(0);
   const animationFrameRef = useRef<number>(0);
 
-  // Add state for expandable counters
+  // Replace the single expandedSection state with two separate states
   const [expandedCounter, setExpandedCounter] = useState<'time' | 'population-global' | 'population-user' | 'population-description' | null>(null);
+  const [expandedWallet, setExpandedWallet] = useState<'civ-algo' | 'wallet' | null>(null);
+
+  // Add state for network selection
+  const [isMainnet, setIsMainnet] = useState(false);
 
   // Add stable references
   const anchorRefStable = useRef<HTMLElement | null>(null);
@@ -249,7 +253,7 @@ const GameInterface: React.FC = () => {
       // Reset the timestamp
       lastUpdateTimeRef.current = 0;
     };
-  }, [isPaused, TOTAL_ROUNDS]);
+  }, [isPaused]);
 
   // Revised location fetching with better error handling
   useEffect(() => {
@@ -505,14 +509,81 @@ const GameInterface: React.FC = () => {
         clearTimeout(trendTimeoutRef.current);
       }
     };
-  }, [currentRound]); // Only depend on currentRound, not the population data
+  }, [currentRound, globalPopulation, historicalYear, nextYearPopulation]); // Include all dependencies
 
   // Add state for the interpolated population
   const [interpolatedPopulation, setInterpolatedPopulation] = useState<number>(0);
 
   return (
     <div className="game-interface-layout">
-      <div className="counters-bar">
+      <div className="game-controls">
+        {/* Wallet Connect Section */}
+        <div className="wallet-connect">
+          <div className="wallet-controls-row">
+            <span 
+              className={`clickable-wallet ${expandedWallet === 'civ-algo' ? 'active' : ''}`}
+              onClick={() => setExpandedWallet(expandedWallet === 'civ-algo' ? null : 'civ-algo')}
+            >
+              CIV.ALGO
+            </span>
+            <span 
+              className="clickable-wallet network-toggle"
+              onClick={() => setIsMainnet(!isMainnet)}
+            >
+              {isMainnet ? 'mainnet' : 'testnet'}
+            </span>
+            <span 
+              className={`clickable-wallet ${expandedWallet === 'wallet' ? 'active' : ''}`}
+              onClick={() => setExpandedWallet(expandedWallet === 'wallet' ? null : 'wallet')}
+            >
+              Wallet
+            </span>
+          </div>
+
+          {/* Wallet Connect Expansion */}
+          {expandedWallet === 'civ-algo' && (
+            <div className="wallet-expansion">
+              <div className="civ-algo-expansion">
+                <div className="expansion-content">
+                  <h4>
+                    Get access to the game by minting a civ.algo segment at {" "}
+                    <a
+                      href="https://app.nf.domains/name/civ.algo?view=segments"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{ color: "#ffd700", textDecoration: "underline" }}
+                    >
+                      NFDomains 
+                    </a>
+                  </h4>
+                  <p>A blockchain-based civilization simulation game where you build and manage settlements across human history.</p>
+                  <div className="links">
+                    <a href="https://docs.google.com/presentation/d/1tcXTQ7dKaslwGiP8009Dx3SKE6Bua-oMhh5abNbf_kY/edit?usp=sharing" target="_blank" rel="noopener noreferrer">�� Documentation</a>
+                    <a href="https://discord.gg/M3Tz4GtFcr" target="_blank" rel="noopener noreferrer">💬 Discord</a>
+                    <a href="https://x.com/hampelman_nft" target="_blank" rel="noopener noreferrer">🐦 X (Twitter)</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+          
+          {expandedWallet === 'wallet' && (
+            <div className="wallet-expansion">
+              <div className="wallet-buttons-expansion">
+                <div className="expansion-content">
+                  <h4>Connect Wallet</h4>
+                  <div className="wallet-buttons">
+                    <button className="wallet-btn">Pera</button>
+                    <button className="wallet-btn">Defly</button>
+                    <button className="wallet-btn">Lute</button>
+                    <button className="wallet-btn">Exodus</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+
         <div className="counter-container">
           <TimeCounter
             yearsPerRound={yearsPerRound}
@@ -520,29 +591,33 @@ const GameInterface: React.FC = () => {
             historicalYear={historicalYear}
             totalRounds={TOTAL_ROUNDS}
             expandedCounter={expandedCounter}
-            onCounterToggle={setExpandedCounter}
+            onCounterToggle={(counter) => setExpandedCounter(counter)}
           />
+          
+          {/* Time Expansion - appears between TimeCounter and PopulationCounter */}
+          {expandedCounter === 'time' && (
+            <div className="counter-expansion">
+              <div className="time-expansion">
+                <TimeTable
+                  currentRound={currentRound}
+                  totalRounds={TOTAL_ROUNDS}
+                />
+              </div>
+            </div>
+          )}
           
           <PopulationCounter 
             population={interpolatedPopulation}
             milestone={currentMilestone}
             populationTrend={populationTrend}
             expandedCounter={expandedCounter}
-            onCounterToggle={setExpandedCounter}
+            onCounterToggle={(counter) => setExpandedCounter(counter)}
           />
           
-          {/* Expansion area - appears after both counters */}
-          {expandedCounter && (
+          {/* Population Expansions - appear after PopulationCounter */}
+          {(expandedCounter === 'population-global' || expandedCounter === 'population-user' || expandedCounter === 'population-description') && (
             <div className="counter-expansion">
-                             {expandedCounter === 'time' && (
-                 <div className="time-expansion">
-                   <TimeTable
-                     currentRound={currentRound}
-                     totalRounds={TOTAL_ROUNDS}
-                   />
-                 </div>
-               )}
-              
+              {/* population expansions here */}
               {expandedCounter === 'population-global' && (
                 <div className="population-global-expansion">
                   <PopulationChart
@@ -564,19 +639,19 @@ const GameInterface: React.FC = () => {
                 </div>
               )}
               
-                             {expandedCounter === 'population-description' && currentMilestone && (
-                 <div className="population-description-expansion">
-                   <div className="milestone-expansion">
-                     <h4>{currentMilestone.description}</h4>
-                     <div className="milestone-years">
-                       {formatHistoricalYear(currentMilestone.startYear)} - {formatHistoricalYear(currentMilestone.endYear)}
-                     </div>
-                     <div className="milestone-summary">
-                       <p>Placeholder for historical period summary.</p>
-                     </div>
-                   </div>
-                 </div>
-               )}
+              {expandedCounter === 'population-description' && currentMilestone && (
+                <div className="population-description-expansion">
+                  <div className="milestone-expansion">
+                    <h4>{currentMilestone.description}</h4>
+                    <div className="milestone-years">
+                      {formatHistoricalYear(currentMilestone.startYear)} - {formatHistoricalYear(currentMilestone.endYear)}
+                    </div>
+                    <div className="milestone-summary">
+                      <p>Placeholder for historical period summary.</p>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
           )}
         </div>

@@ -1,9 +1,10 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react-swc'
+import svgr from 'vite-plugin-svgr'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), svgr()],
   // The server.proxy configuration is typically not needed when using `vercel dev`,
   // as `vercel dev` handles routing to the /api functions automatically.
   /*
