@@ -1,5 +1,5 @@
 .population-counter {
-  font-family: "Berkeley Mono Trial", "Berkeley Mono", "Fira Code", "Source Code Pro", Consolas, "Courier New", monospace;
+  font-family: var(--font-mono);
   background: rgba(26, 26, 26, 0.8);
   border-radius: 4px;
   padding: 5px 10px;

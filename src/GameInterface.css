@@ -7,7 +7,7 @@
 .clickable-population,
 .clickable-time,
 .clickable-wallet {
-  font-family: "Berkeley Mono Trial", "Berkeley Mono", "Fira Code", "Source Code Pro", Consolas, "Courier New", monospace;
+  font-family: var(--font-mono);
   letter-spacing: 0.025em;
   font-variant-numeric: tabular-nums;
 }
@@ -381,7 +381,7 @@
   box-shadow: none !important;
   background: transparent !important;
   padding: 0 !important;
-  font-family: "Berkeley Mono Trial", "Berkeley Mono", "Fira Code", "Source Code Pro", Consolas, "Courier New", monospace;
+  font-family: var(--font-mono);
   letter-spacing: 0.025em;
 }
 

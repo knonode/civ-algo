@@ -4,7 +4,7 @@
   flex-direction: column;
   gap: 2px;
   margin-top: 8px;
-  font-family: "Berkeley Mono Trial", "Berkeley Mono", "Fira Code", "Source Code Pro", Consolas, "Courier New", monospace;
+  font-family: var(--font-mono);
   letter-spacing: 0.025em;
 }
 
@@ -33,7 +33,7 @@
 .custom-marker-icon {
   border: none !important;
   background: transparent !important;
-  font-family: "Berkeley Mono Trial", "Berkeley Mono", "Fira Code", "Source Code Pro", Consolas, "Courier New", monospace;
+  font-family: var(--font-mono);
 }
 
 .custom-marker-icon img {
