@@ -42,6 +42,11 @@ export default async function handler(
   }
 
   try {
+    // Graceful fallback when DB is not configured for local/dev use
+    if (!process.env.DATABASE_URL) {
+      console.warn('[API global-population] DATABASE_URL not set. Returning 0 for local/dev.');
+      return response.status(200).json({ year: targetYear, population: 0 });
+    }
     const pool = getDbPool();
     const query = `
       (SELECT year::int, population::bigint FROM global_population

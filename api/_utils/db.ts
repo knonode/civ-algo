@@ -12,10 +12,8 @@ export function getDbPool(): Pool {
     }
     pool = new Pool({
       connectionString: process.env.DATABASE_URL,
-      // Add SSL configuration if required by your DB provider (e.g., Vercel Postgres)
-      // ssl: {
-      //   rejectUnauthorized: false 
-      // }
+      // Optional SSL for hosted Postgres (enable via DB_SSL=true)
+      ssl: process.env.DB_SSL === 'true' ? { rejectUnauthorized: false } : undefined
     });
   }
   return pool;

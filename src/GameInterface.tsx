@@ -6,6 +6,8 @@ import { LocationData } from './interfaces'; // Import LocationData
 import PopulationCounter from './PopulationCounter';
 import PopulationChart from './PopulationChart';
 import TimeTable from './TimeTable';
+// Allow pointing API calls to a remote base (useful when local serverless dev is flaky on Windows)
+const API_BASE: string = import.meta.env.VITE_API_BASE ?? '';
 
 // Define AND Export the Milestone structure
 export interface MilestoneSegment {
@@ -264,7 +266,7 @@ const GameInterface: React.FC = () => {
       try {
         console.log(`Fetching locations for year: ${historicalYear}`);
         // Use relative path for API call
-        const response = await fetch(`/api/settlements?max_year=${historicalYear}`);
+        const response = await fetch(`${API_BASE}/api/settlements?max_year=${historicalYear}`);
         
         // Guard against fetch errors
         if (!response.ok) {
@@ -413,7 +415,7 @@ const GameInterface: React.FC = () => {
     const fetchPopulation = async () => {
       try {
         // Use relative path for API call
-        const response = await fetch(`/api/global-population?year=${historicalYear}`);
+        const response = await fetch(`${API_BASE}/api/global-population?year=${historicalYear}`);
         
         if (response.status === 404) {
           // Set default value for missing data instead of throwing error
@@ -431,7 +433,7 @@ const GameInterface: React.FC = () => {
         
         // Also fetch next year's population for interpolation
         const nextYear = historicalYear + 1;
-        const nextYearResponse = await fetch(`/api/global-population?year=${nextYear}`);
+        const nextYearResponse = await fetch(`${API_BASE}/api/global-population?year=${nextYear}`);
         
         if (nextYearResponse.ok) {
           const nextYearData = await nextYearResponse.json();
@@ -530,13 +532,13 @@ const GameInterface: React.FC = () => {
               className="clickable-wallet network-toggle"
               onClick={() => setIsMainnet(!isMainnet)}
             >
-              {isMainnet ? 'mainnet' : 'testnet'}
+              {isMainnet ? 'MAINNET' : 'TESTNET'}
             </span>
             <span 
               className={`clickable-wallet ${expandedWallet === 'wallet' ? 'active' : ''}`}
               onClick={() => setExpandedWallet(expandedWallet === 'wallet' ? null : 'wallet')}
             >
-              Wallet
+              WALLET
             </span>
           </div>
 
@@ -551,16 +553,16 @@ const GameInterface: React.FC = () => {
                       href="https://app.nf.domains/name/civ.algo?view=segments"
                       target="_blank"
                       rel="noopener noreferrer"
-                      style={{ color: "#ffd700", textDecoration: "underline" }}
+                     style={{ color: 'var(--color-text-primary)', textDecoration: 'underline' }}
                     >
                       NFDomains 
                     </a>
                   </h4>
-                  <p>A blockchain-based civilization simulation game where you build and manage settlements across human history.</p>
+                  <p>An on-chain civ-like simulation game across history of Sapiens.</p>
                   <div className="links">
-                    <a href="https://docs.google.com/presentation/d/1tcXTQ7dKaslwGiP8009Dx3SKE6Bua-oMhh5abNbf_kY/edit?usp=sharing" target="_blank" rel="noopener noreferrer">�� Documentation</a>
-                    <a href="https://discord.gg/M3Tz4GtFcr" target="_blank" rel="noopener noreferrer">💬 Discord</a>
-                    <a href="https://x.com/hampelman_nft" target="_blank" rel="noopener noreferrer">🐦 X (Twitter)</a>
+                    <a href="https://docs.google.com/presentation/d/1tcXTQ7dKaslwGiP8009Dx3SKE6Bua-oMhh5abNbf_kY/edit?usp=sharing" target="_blank" rel="noopener noreferrer">Documentation</a>
+                    <a href="https://discord.gg/M3Tz4GtFcr" target="_blank" rel="noopener noreferrer">Discord</a>
+                    <a href="https://x.com/hampelman_nft" target="_blank" rel="noopener noreferrer">X (Twitter)</a>
                   </div>
                 </div>
               </div>

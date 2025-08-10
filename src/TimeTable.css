@@ -2,20 +2,20 @@
 
 .time-table {
   padding: 15px;
-  color: #ccc;
+  color: var(--color-text-primary);
   font-size: 12px;
 }
 
 .time-table h4 {
   margin: 0 0 15px 0;
-  color: #ffd700;
+  color: var(--color-text-primary);
   font-size: 14px;
   text-align: center;
 }
 
 .time-table h5 {
   margin: 15px 0 10px 0;
-  color: #ffeb3b;
+  color: var(--color-text-primary);
   font-size: 12px;
 }
 
@@ -23,7 +23,7 @@
   width: 100%;
   border-collapse: collapse;
   margin-bottom: 15px;
-  background: rgba(0, 0, 0, 0.3);
+  background: var(--color-panel-light);
   border-radius: 4px;
 }
 
@@ -31,12 +31,12 @@
 .time-calculations td {
   padding: 6px 8px;
   text-align: left;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid var(--color-border-muted);
 }
 
 .time-calculations th {
-  background: rgba(255, 215, 0, 0.1);
-  color: #ffd700;
+  background: var(--color-overlay-10);
+  color: var(--color-text-primary);
   font-weight: bold;
   font-size: 11px;
 }
@@ -49,17 +49,17 @@
 }
 
 .time-calculations tr:hover {
-  background: rgba(255, 215, 0, 0.05);
+  background: var(--color-overlay-05);
 }
 
 .time-calculations td:nth-child(2),
 .time-calculations td:nth-child(3) {
   text-align: right;
-  color: #fff;
+  color: var(--color-text-primary);
 }
 
 .game-progress {
-  background: rgba(0, 0, 0, 0.3);
+  background: var(--color-panel-light);
   border-radius: 4px;
   padding: 10px;
 }
@@ -77,12 +77,13 @@
 }
 
 .stat .label {
-  color: #888;
+  color: var(--color-text-muted);
+  color: var(--color-text-primary);
   font-size: 11px;
 }
 
 .stat .value {
-  color: #fff;
+  color: var(--color-text-primary);
   font-family: var(--font-mono);
   font-size: 11px;
   font-weight: bold;

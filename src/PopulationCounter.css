@@ -1,9 +1,9 @@
 .population-counter {
   font-family: var(--font-mono);
-  background: rgba(26, 26, 26, 0.8);
+  background: var(--color-surface-translucent);
   border-radius: 4px;
   padding: 5px 10px;
-  color: #ffffff;
+  color: var(--color-text-primary);
   display: flex;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
@@ -19,7 +19,7 @@
 
 .population-group {
   font-size: 11px;
-  color: #888;
+  color: var(--color-text-primary);
   white-space: nowrap;
 }
 
@@ -33,28 +33,28 @@
 }
 
 .clickable-population:hover {
-  background: rgba(255, 215, 0, 0.1);
-  color: #ffd700;
+  background: var(--color-overlay-10);
+  color: var(--color-text-primary);
   transform: scale(1.02);
 }
 
 .population-value {
   font-weight: bold;
-  color: #ffd700;
-  text-shadow: 0 0 4px rgba(255, 215, 0, 0.4);
+  color: var(--color-text-primary);
+  text-shadow: none;
   margin-left: 4px;
 }
 
 .user-population-value {
   font-weight: bold;
-  color: #4caf50;
+  color: var(--color-text-primary);
   text-shadow: 0 0 4px rgba(76, 175, 80, 0.3);
   margin-left: 4px;
 }
 
 .population-info {
   font-size: 11px;
-  color: #63aeff;
+  color: var(--color-text-primary);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -76,12 +76,12 @@
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 1000;
-  background-color: rgba(0, 0, 0, 0.9);
-  border: 2px solid #f1bf19;
+  background-color: var(--color-popup-bg);
+  border: 2px solid var(--color-border);
   border-radius: 4px;
   padding: 11px 16px;
   font-size: 14px;
-  color: #fff;
+  color: var(--color-text-primary);
   white-space: normal;
   width: 80%;
   max-width: 300px;
@@ -96,7 +96,7 @@
 
 .population-year {
   font-size: 11px;
-  color: #aaa;
+  color: var(--color-text-subtle);
   margin-left: auto;
 }
 
@@ -130,19 +130,19 @@
   font-size: 16px;
   font-weight: 500;
   margin-bottom: 8px;
-  color: #fff;
+  color: var(--color-text-primary);
 }
 
 .tooltip-years {
   font-size: 14px;
-  color: #63aeff;
+  color: var(--color-text-primary);
   margin-top: 6px;
   font-weight: normal;
 }
 
 .user-population {
   font-size: 11px;
-  color: #888;
+  color: var(--color-text-primary);
   white-space: nowrap;
 }
 
@@ -155,15 +155,15 @@
 }
 
 .trend-arrow.up {
-  color: #4caf50; /* Green for increasing */
+  color: var(--color-text-primary); /* unified */
 }
 
 .trend-arrow.down {
-  color: #f44336; /* Red for decreasing */
+  color: var(--color-text-primary); /* unified */
 }
 
 .trend-arrow.stable {
-  color: #ffeb3b; /* Yellow for stable */
+  color: var(--color-text-primary); /* unified */
 }
 
 /* Make population counter act as top bar when expanded */
@@ -177,7 +177,7 @@
   padding: 15px 20px;
   background: rgba(26, 26, 26, 0.98);
   backdrop-filter: blur(10px);
-  border-bottom: 2px solid #ffd700;
+  border-bottom: 2px solid var(--color-border);
   box-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
 }
 
@@ -187,7 +187,7 @@
 }
 
 .population-counter.expanded .population-group:first-child:hover {
-  background: rgba(255, 215, 0, 0.1);
+  background: var(--color-overlay-10);
   border-radius: 4px;
   padding: 4px 6px;
   margin: -4px -6px;
@@ -196,7 +196,7 @@
 
 /* Add a subtle glow effect when expanded */
 .population-counter.expanded .population-value {
-  text-shadow: 0 0 8px rgba(255, 215, 0, 0.6);
+  text-shadow: none;
 }
 
 /* Close button hint */
@@ -207,7 +207,7 @@
   top: 50%;
   transform: translateY(-50%);
   font-size: 10px;
-  color: #888;
+  color: var(--color-text-muted);
   opacity: 0.7;
   pointer-events: none;
 }

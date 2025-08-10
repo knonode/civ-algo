@@ -1,8 +1,8 @@
 .population-chart-dropdown {
   position: absolute;
   z-index: 1000;
-  background: rgba(0, 0, 0, 0.95);
-  border: 1px solid #333;
+  background: var(--color-popup-bg);
+  border: 1px solid var(--color-border);
   border-radius: 6px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
   min-width: 400px;
@@ -13,7 +13,7 @@
 
 .dropdown-content {
   padding: 15px;
-  background: rgba(0, 0, 0, 0.95);
+  background: var(--color-popup-bg);
   border-radius: 6px;
 }
 
@@ -28,13 +28,13 @@
 .embedded-chart .no-data {
   padding: 20px;
   text-align: center;
-  color: #ccc;
+  color: var(--color-text-primary);
 }
 
 .embedded-chart .chart-info {
   text-align: center;
   margin-top: 10px;
-  color: #888;
+  color: var(--color-text-primary);
   font-size: 11px;
 }
 
@@ -44,13 +44,13 @@
   align-items: center;
   gap: 10px;
   padding: 20px;
-  color: #ccc;
+  color: var(--color-text-primary);
 }
 
 .loading-spinner {
   width: 20px;
   height: 20px;
-  color: #ffd700;
+  color: var(--color-text-primary);
 }
 
 .error {
@@ -59,12 +59,12 @@
   align-items: center;
   gap: 10px;
   padding: 20px;
-  color: #ff6b6b;
+  color: var(--color-error);
 }
 
 .error button {
-  background: #ff6b6b;
-  color: white;
+  background: var(--color-error);
+  color: var(--color-text-primary);
   border: none;
   padding: 5px 10px;
   border-radius: 3px;
@@ -72,19 +72,19 @@
 }
 
 .error button:hover {
-  background: #ff5252;
+  background: var(--color-error-hover);
 }
 
 .no-data {
   padding: 20px;
   text-align: center;
-  color: #888;
+  color: var(--color-text-primary);
 }
 
 .chart-info {
   text-align: center;
   margin-top: 10px;
-  color: #888;
+  color: var(--color-text-primary);
   font-size: 11px;
 }
 

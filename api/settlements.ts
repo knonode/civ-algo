@@ -37,6 +37,11 @@ export default async function handler(
   }
 
   try {
+    // Graceful fallback when DB is not configured for local/dev use
+    if (!process.env.DATABASE_URL) {
+      console.warn('[API settlements] DATABASE_URL not set. Returning empty result for local/dev.');
+      return response.status(200).json([]);
+    }
     const pool = getDbPool();
     const queryText = `
       SELECT id, location, type_site, latitude, longitude, established_year, picture, culture, unesco_whs, type_icon, continent, region, country, hist_period

@@ -134,15 +134,12 @@ const createMarkerIcon = (typeSite: string, hasUnesco: boolean): L.Icon | L.DivI
 };
 
 const MapView: React.FC<MapViewProps> = ({ locations }) => {
-  // Ref to hold the map instance
   const mapRef = useRef<L.Map | null>(null);
-  // Ref for the div element where the map will be rendered
   const mapElementRef = useRef<HTMLDivElement | null>(null);
-  // State to track if map is initialized
   const [isMapInitialized, setIsMapInitialized] = useState(false);
-    const renderedLocationsRef = useRef<Set<string>>(new Set());
-  
-  // Global function to toggle settlement details (accessible from popup)
+  // Track currently rendered markers by location name
+  const markerMapRef = useRef<Map<string, L.Marker>>(new Map());
+
   useEffect(() => {
     window.toggleSettlementDetails = (settlementId: number) => {
       const detailsElement = document.getElementById(`details-${settlementId}`);
@@ -151,136 +148,113 @@ const MapView: React.FC<MapViewProps> = ({ locations }) => {
         detailsElement.style.display = isVisible ? 'none' : 'block';
       }
     };
-
     return () => {
       delete window.toggleSettlementDetails;
     };
   }, []);
 
-  // Initialize plain Leaflet map on mount
   useEffect(() => {
-    // Prevent double initialization
     if (mapRef.current || !mapElementRef.current) {
       return;
     }
-
-    console.log("Initializing plain Leaflet map...");
-
-    // Introduce a small delay
     const timerId = setTimeout(() => {
-      if (!mapElementRef.current) {
-        console.error("Map element ref not available inside setTimeout");
-        return;
-      }
+      if (!mapElementRef.current) return;
       try {
-        console.log("Attempting L.map inside setTimeout..."); // Log before L.map
         mapRef.current = L.map(mapElementRef.current, {
-          center: [20, 0], // Initial center
-          zoom: 2,        // Initial zoom
+          center: [20, 0],
+          zoom: 2,
           attributionControl: false,
-          zoomControl: false  // Disable zoom control buttons
+          zoomControl: false
         });
-        console.log("L.map call completed inside setTimeout."); // Log after L.map
-
-        // --- ADD LAYERS BACK ---
         L.tileLayer(
           'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
           { attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>' }
         ).addTo(mapRef.current);
-
-
-        console.log("Plain Leaflet map initialized (L.map + Layers)."); // Updated log
-        console.log("Map instance object:", mapRef.current);
         setIsMapInitialized(true);
-
       } catch (error) {
-          console.error("*** ERROR DURING LEAFLET INITIALIZATION (inside setTimeout) ***:", error);
+        console.error("*** ERROR DURING LEAFLET INITIALIZATION (inside setTimeout) ***:", error);
       }
-    }, 10); // 10ms delay
+    }, 10);
 
-    // Cleanup function to remove map and clear timeout
     return () => {
-      clearTimeout(timerId); // Clear the timeout
+      clearTimeout(timerId);
       if (mapRef.current) {
-        console.log("Removing plain Leaflet map instance.");
+        // Remove all markers we added
+        for (const [, marker] of markerMapRef.current) {
+          marker.remove();
+        }
+        markerMapRef.current.clear();
         mapRef.current.remove();
         mapRef.current = null;
         setIsMapInitialized(false);
       }
     };
-  }, []); // Empty dependency array ensures this runs only once
+  }, []);
 
-  // Effect to add/update dynamic markers - UNCOMMENT NOW
+  // Reconcile markers with incoming locations on every change
   useEffect(() => {
-
-    if (!mapRef.current || !isMapInitialized) {
-      return;
-    }
-
-    // Ensure map is valid before proceeding
-    if (!mapRef.current) {
-        return;
-    }
-
+    if (!mapRef.current || !isMapInitialized) return;
     const map = mapRef.current;
 
+    const incoming = new Set(locations.map(l => l.location));
+
+    // Remove markers for locations that are no longer present
+    for (const [locName, marker] of markerMapRef.current) {
+      if (!incoming.has(locName)) {
+        marker.removeFrom(map);
+        markerMapRef.current.delete(locName);
+      }
+    }
+
+    // Add markers for new locations
     locations.forEach((loc) => {
       if (
         typeof loc.latitude === 'number' &&
         typeof loc.longitude === 'number' &&
-        !renderedLocationsRef.current.has(loc.location)
+        !markerMapRef.current.has(loc.location)
       ) {
         const imageCandidates = getImageFilename(loc.location);
-        
-        // Create dynamic icon based on type_site and UNESCO status
         const markerIcon = createMarkerIcon(loc.type_site || 'settlement', !!loc.unesco_whs);
 
-        const marker = L.marker([loc.latitude, loc.longitude], {
-          icon: markerIcon
-        })
-                .bindPopup(
-          `
-          <div style="color: #eee; text-align: center; font-weight: 300;">
-            <div style="margin-bottom: 4px;">${loc.location}</div>
-            <img 
-              src="/Settlements-pixelated/${imageCandidates[0]}" 
-              alt="${loc.location}" 
-              style="max-width: 120px; max-height: 80px; cursor: pointer;" 
-              onerror="this.onerror=null;this.src='/Settlements-pixelated/${imageCandidates[1]}';"
-              onclick="window.toggleSettlementDetails && window.toggleSettlementDetails(${loc.id})"
-            />
-                         <div id="details-${loc.id}" class="settlement-card-details" style="display: none;">
-               <div class="detail-row">
-                 <span class="detail-value">${loc.latitude.toFixed(4)}, ${loc.longitude.toFixed(4)}</span>
-               </div>
-                               ${loc.type_site ? `<div class="detail-row"><span class="detail-value">${loc.type_site.replace('.svg', '')}</span></div>` : ''}
-               <div class="detail-row">
-                 <span class="detail-value">${loc.culture || 'culture n/a'}</span>
-               </div>
-               ${loc.country ? `<div class="detail-row"><span class="detail-value">${loc.country}</span></div>` : ''}
-               ${loc.continent ? `<div class="detail-row"><span class="detail-value">${loc.continent}</span></div>` : ''}
-               ${loc.established_year ? `<div class="detail-row"><span class="detail-value">${formatYear(loc.established_year)}</span></div>` : ''}
-               ${loc.hist_period ? `<div class="detail-row"><span class="detail-value">${loc.hist_period}</span></div>` : ''}
-               ${loc.unesco_whs ? `<div class="detail-row"><span class="detail-value">${loc.unesco_whs}</span></div>` : ''}
-             </div>
-          </div>
-          `
-        )
-        .addTo(map);
+        const marker = L.marker([loc.latitude, loc.longitude], { icon: markerIcon })
+          .bindPopup(`
+            <div style="color: var(--color-text-primary); text-align: center; font-weight: 300;">
+              <div style="margin-bottom: 4px;">${loc.location}</div>
+              <img 
+                src="/Settlements-pixelated/${imageCandidates[0]}" 
+                alt="${loc.location}" 
+                style="max-width: 120px; max-height: 80px; cursor: pointer;" 
+                onerror="this.onerror=null;this.src='/Settlements-pixelated/${imageCandidates[1]}';"
+                onclick="window.toggleSettlementDetails && window.toggleSettlementDetails(${loc.id})"
+              />
+              <div id="details-${loc.id}" class="settlement-card-details" style="display: none;">
+                <div class="detail-row">
+                  <span class="detail-value">${loc.latitude.toFixed(4)}, ${loc.longitude.toFixed(4)}</span>
+                </div>
+                ${loc.type_site ? `<div class="detail-row"><span class="detail-value">${loc.type_site.replace('.svg', '')}</span></div>` : ''}
+                <div class="detail-row">
+                  <span class="detail-value">${loc.culture || 'culture n/a'}</span>
+                </div>
+                ${loc.country ? `<div class="detail-row"><span class="detail-value">${loc.country}</span></div>` : ''}
+                ${loc.continent ? `<div class="detail-row"><span class="detail-value">${loc.continent}</span></div>` : ''}
+                ${loc.established_year ? `<div class="detail-row"><span class="detail-value">${formatYear(loc.established_year)}</span></div>` : ''}
+                ${loc.hist_period ? `<div class="detail-row"><span class="detail-value">${loc.hist_period}</span></div>` : ''}
+                ${loc.unesco_whs ? `<div class="detail-row"><span class="detail-value">${loc.unesco_whs}</span></div>` : ''}
+              </div>
+            </div>
+          `)
+          .addTo(map);
 
-        marker.openPopup();
+        // Optional: open popup only when first added
+        // marker.openPopup();
 
-        renderedLocationsRef.current.add(loc.location);
+        markerMapRef.current.set(loc.location, marker);
       }
     });
-
   }, [locations, isMapInitialized]);
 
-    // Helper function to format year
   const formatYear = (year: number): string => {
-    if (year < 0) {
-      return `${Math.abs(year)} BCE`;
-    }
+    if (year < 0) return `${Math.abs(year)} BCE`;
     return `${year} CE`;
   };
 

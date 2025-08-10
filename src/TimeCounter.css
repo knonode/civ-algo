@@ -1,10 +1,10 @@
 /* Compact TimeCounter Styles */
 .time-counter {
   font-family: var(--font-mono);
-  background: rgba(26, 26, 26, 0.8);
+  background: var(--color-surface-translucent);
   border-radius: 4px;
   padding: 5px 10px;
-  color: #ffffff;
+  color: var(--color-text-primary);
   display: flex;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
   width: auto;
@@ -22,7 +22,7 @@
 /* Add a new class for the time group */
 .time-group {
   font-size: 11px;
-  color: #888;
+  color: var(--color-text-primary);
   white-space: nowrap;
 }
 
@@ -30,27 +30,27 @@
   font-size: 11px;
   text-transform: uppercase;
   letter-spacing: 1px;
-  color: #888;
+  color: var(--color-text-primary);
   white-space: nowrap;
 }
 
 /* Update the main-year-display to work within the group */
 .main-year-display {
   font-weight: bold;
-  color: #ffd700;
-  text-shadow: 0 0 4px rgba(255, 215, 0, 0.4);
+  color: var(--color-text-primary);
+  text-shadow: none;
   margin-left: 4px;
 }
 
 .round-number {
   font-size: 11px;
-  color: #8bc34a;
+  color: var(--color-text-primary);
   white-space: nowrap;
 }
 
 .years-per-round {
   font-size: 11px;
-  color: #ff9800;
+  color: var(--color-text-primary);
   white-space: nowrap;
 }
 

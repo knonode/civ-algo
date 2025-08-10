@@ -3,6 +3,10 @@ import ReactECharts from 'echarts-for-react';
 import LoaderSVG from './assets/loader.svg?react';
 import './PopulationChart.css';
 
+// Allow pointing API calls to a remote base (useful when local serverless dev is flaky on Windows)
+const API_BASE: string = import.meta.env.VITE_API_BASE ?? '';
+
+
 interface PopulationChartProps {
   isExpanded: boolean;
   onClose: () => void;
@@ -61,7 +65,7 @@ class ChartDataManager {
 
       const promises = keyPeriods.map(async (year) => {
         try {
-          const response = await fetch(`/api/global-population?year=${year}`);
+          const response = await fetch(`${API_BASE}/api/global-population?year=${year}`);
           if (!response.ok) throw new Error(`HTTP ${response.status}`);
           const data = await response.json();
           return { year, population: data.population || 0 };
@@ -204,10 +208,10 @@ const PopulationChart: React.FC<PopulationChartProps> = ({
     backgroundColor: 'transparent',
     tooltip: {
       trigger: 'axis',
-      backgroundColor: 'rgba(0, 0, 0, 0.9)',
-      borderColor: '#ffd700',
+      backgroundColor: 'var(--color-popup-bg)',
+      borderColor: 'var(--color-border)',
       borderWidth: 1,
-      textStyle: { color: '#ffffff' },
+      textStyle: { color: 'var(--color-text-primary)' },
       formatter: (params: Array<{axisValue: number, value: number}>) => {
         const data = params[0];
         const year = data.axisValue;
@@ -239,26 +243,26 @@ const PopulationChart: React.FC<PopulationChartProps> = ({
       type: 'category',
       data: chartData.map(d => d.year),
       axisLabel: { 
-        color: '#cccccc',
+        color: 'var(--color-chart-label)',
         fontSize: 9,
         formatter: formatYear,
         rotate: 45
       },
-      axisLine: { lineStyle: { color: '#666666' } },
-      axisTick: { lineStyle: { color: '#666666' } }
+      axisLine: { lineStyle: { color: 'var(--color-chart-axis)' } },
+      axisTick: { lineStyle: { color: 'var(--color-chart-axis)' } }
     },
     yAxis: {
       type: 'value',
       axisLabel: { 
-        color: '#cccccc',
+        color: 'var(--color-chart-label)',
         fontSize: 9,
         formatter: formatPopulation
       },
-      axisLine: { lineStyle: { color: '#666666' } },
-      axisTick: { lineStyle: { color: '#666666' } },
+      axisLine: { lineStyle: { color: 'var(--color-chart-axis)' } },
+      axisTick: { lineStyle: { color: 'var(--color-chart-axis)' } },
       splitLine: { 
         lineStyle: { 
-          color: '#333333',
+          color: 'var(--color-chart-grid)',
           type: 'dashed'
         }
       }
@@ -266,10 +270,11 @@ const PopulationChart: React.FC<PopulationChartProps> = ({
     series: [{
       data: chartData.map(d => d.population),
       type: 'line',
-      smooth: true,
+      smooth: false,
       symbol: 'none',
+      z: 5,
       lineStyle: { 
-        color: '#ffd700', 
+        color: 'var(--color-text-primary)', 
         width: 2
       },
       areaStyle: {
@@ -277,8 +282,8 @@ const PopulationChart: React.FC<PopulationChartProps> = ({
           type: 'linear',
           x: 0, y: 0, x2: 0, y2: 1,
           colorStops: [
-            { offset: 0, color: 'rgba(255, 215, 0, 0.3)' },
-            { offset: 1, color: 'rgba(255, 215, 0, 0.05)' }
+            { offset: 0, color: 'rgba(255, 255, 255, 0.2)' },
+            { offset: 1, color: 'rgba(255, 255, 255, 0.05)' }
           ]
         }
       }
