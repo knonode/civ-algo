@@ -4,6 +4,8 @@
   flex-direction: column;
   gap: 2px;
   margin-top: 8px;
+  font-family: "Berkeley Mono Trial", "Berkeley Mono", "Fira Code", "Source Code Pro", Consolas, "Courier New", monospace;
+  letter-spacing: 0.025em;
 }
 
 .detail-row {
@@ -25,6 +27,18 @@
   margin-left: 8px;
   font-size: 11px;
   font-weight: 300;
+}
+
+/* Custom marker icon styling */
+.custom-marker-icon {
+  border: none !important;
+  background: transparent !important;
+  font-family: "Berkeley Mono Trial", "Berkeley Mono", "Fira Code", "Source Code Pro", Consolas, "Courier New", monospace;
+}
+
+.custom-marker-icon img {
+  border-radius: 2px;
+  filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.3));
 }
 
 /* Mobile responsiveness */

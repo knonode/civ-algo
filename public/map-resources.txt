@@ -1,0 +1,43 @@
+### Resources Table
+
+| Resource Name                  | Description                                                                 | Link                                                                                  | Category         |
+|------------------------------------|---------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------|----------------------|
+| GeoHistoricalData              | Historical maps and geo data with tools for QGIS and Python.                    | [Link](https://github.com/GeoHistoricalData)                                             | GitHub, Free         |
+| aourednik/historical-basemaps  | Georeferenced boundaries of world countries and cultural regions.               | [Link](https://github.com/aourednik/historical-basemaps)                                  | GitHub, Free         |
+| opengeos/leafmap               | Python package for interactive mapping and geospatial analysis.                 | [Link](https://github.com/opengeos/leafmap)                                               | GitHub, Free         |
+| datasets/sea-level-rise        | Data on global mean sea level rise, useful for recent changes.                  | [Link](https://github.com/datasets/sea-level-rise)                                        | GitHub, Free         |
+| softwareunderground            | Curated list of open-source geoscience tools and data.                          | [Link](https://github.com/softwareunderground/awesome-open-geoscience)                    | GitHub, Free         |
+| Practical Geo for Statistics   | Online course with theoretical knowledge and geospatial tool/data links.        | [Link](https://onsgeo.github.io)                                                          | Online, Free         |
+| Leaflet                        | Open-source JavaScript library for interactive maps.                            | [Link](https://leafletjs.com)                                                             | Online, Free         |
+| Plugins for Leaflet            | Extensions for Leaflet to enhance interactive map functionality.                | [Link](https://leafletjs.com/plugins.html)                                                 |
+| GIScience Research GroupHeiGIT | Repositories with geospatial data and tools, potentially historical.            | [Link](https://github.com/GIScience)                                                      | GitHub, Free         |
+| iamtekson/awesome-geospatial   | List of open-source geospatial data sources, may include historical data.       | [Link](https://github.com/iamtekson/awesome-geospatial-data-sources)                      | GitHub, Free         |
+| David Rumsey Map Collection    | Large collection of historical maps, some georeferenced.                        | [Link](https://www.davidrumsey.com)                                                       | Online, Paid         |
+| Euratlas                       | Historical maps and data, primarily paid with some free resources.              | [Link](https://www.euratlas.net)                                                          | Online, Paid         |
+| Geacron                        | Interactive world history atlas with a commercial version.                      | [Link](https://geacron.com)                                                               | Online, Paid         |
+| Ancient World Mapping Center   | Historical maps and data focused on the ancient world.                          | [Link](http://awmc.unc.edu)                                                               | Academic, Free       |
+|✅ Atlas of Human Evolution       | Visualization tool for human prehistory, including sea level changes.           | [Link](http://www.atlasofhumanevolution.com)                                             | Academic, Free       |
+|✅ Native Land                    | Maps of territorial conventions between colonizers and natives in GeoJSON.      | [Link](https://native-land.ca)                                                            | Online, Free         |
+| Free GIS Datasets              | free GIS datasets, including historical, geological, and climate data.          | [Link](http://freegisdata.rtwilson.com/)                                                  |
+| 10 Free GIS Data Sources       | List of ten free global GIS data sources                                        | [Link](https://gisgeography.com/free-gis-data/)                                           |
+| Awesome-Geospatial             | Curated list of geospatial tools and resources, including data sources.         | [Link](https://github.com/sacridini/Awesome-Geospatial)                                   |
+| Spatial Database FIU Libraries | Guide to geo tools and data sources, incl. Antarctic and permafrost datasets.   | [Link](https://library.fiu.edu/gis/spatialdatabase)                                       |
+| Historical GIS Research Network| Links to major historical GIS websites and portals.                             | [Link](http://www.hgis.org.uk/)                                                           |
+| Awesome Geodata                | Curated list of geospatial data sources and services.                           | [Link](https://github.com/kartoza/awesome-geodata)                                        |
+| Awesome Earth Observation Code | Tools and code for Earth observation and satellite imagery.                     | [Link](https://github.com/acgeospatial/awesome-earthobservation-code)                     |
+| Geo Timescale by UW-Macrostrat | Another D3.js-based interactive geologic time scale.                            | [Link](https://github.com/UW-Macrostrat/geo-timescale)                                    |
+| U.S. Geological Survey         | USGS GitHub organization with geological and environmental data repos.          | [Link](https://github.com/usgs)                                                           |
+| GeoData Science Resources      | Tutorials and guides for geo data science and mapping.                          | [Link](https://gist.github.com/acgeospatial/GeoData-Science-Learning-Resources)           |
+|✅ Holocene Volcano Locations     | Locations of the world's volcanoes, from the Smithsonian Global Volcanism Prog  |  [Link] (https://hifld-geoplatform.hub.arcgis.com/datasets/historical-holocene-volcano-locations/explore) 
+|✅ Pleistocene Sea Level Maps     | sea level change on the Sunda and Sahul Continental Shelves during the Pleistocene  |  [Link] (https://www.fieldmuseum.org/pleistocene-sea-level-maps
+
+https://sea-level.vercel.app/
+http://www.paleoclim.org/
+
+| **Resource Name**                              | **Description**                                                                                   | **Data Type**                      | **Format**                             | **Time Coverage**              | **Link**                                                                                   |
+|------------------------------------------------|---------------------------------------------------------------------------------------------------|------------------------------------|----------------------------------------|--------------------------------|--------------------------------------------------------------------------------------------|
+| **NCEI Paleoclimatology**                      |  [NCEI Paleoclimatology](https://www.ncei.noaa.gov/products/paleoclimatology)               |
+| **NOAA Climate.gov Paleoclimate Records**      |  [NOAA Climate.gov](https://www.climate.gov/maps-data/data-type/paleoclimate)               |
+| **International Commission on Stratigraphy (ICS)** | [ICS Website](https://stratigraphy.org/)                                                   |
+| **PaleoClim GitHub Repository**                || [PaleoClim GitHub](https://github.com/paleoclim/PaleoClim)                                 |
+| **ESRI GIS Data Services**                     |[ESRI Website](https://www.esri.com/en-us/home)                                            |

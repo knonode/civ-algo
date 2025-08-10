@@ -1,0 +1,13 @@
+warning: in the working copy of 'src/MapView.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/index.css', LF will be replaced by CRLF the next time Git touches it
+public/icons/naval-base.svg
+public/icons/thermal.svg
+public/icons/type-site.svg
+src/GameInterface.css
+src/MapView.css
+src/MapView.tsx
+src/PopulationChart.css
+src/PopulationCounter.css
+src/TimeCounter.css
+src/TimeTable.css
+src/index.css

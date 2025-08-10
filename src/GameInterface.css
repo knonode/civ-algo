@@ -1,5 +1,17 @@
 /* src/GameInterface.css */
 
+/* Berkeley Mono Trial font styling for key UI elements */
+.counters-bar,
+.slider-label,
+.time-slider,
+.clickable-population,
+.clickable-time,
+.clickable-wallet {
+  font-family: "Berkeley Mono Trial", "Berkeley Mono", "Fira Code", "Source Code Pro", Consolas, "Courier New", monospace;
+  letter-spacing: 0.025em;
+  font-variant-numeric: tabular-nums;
+}
+
 .game-interface-layout {
   display: flex;
   flex-direction: column;
@@ -369,6 +381,8 @@
   box-shadow: none !important;
   background: transparent !important;
   padding: 0 !important;
+  font-family: "Berkeley Mono Trial", "Berkeley Mono", "Fira Code", "Source Code Pro", Consolas, "Courier New", monospace;
+  letter-spacing: 0.025em;
 }
 
 .leaflet-popup-close-button {

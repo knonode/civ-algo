@@ -7,6 +7,8 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
   min-width: 400px;
   max-width: 600px;
+  font-family: "Berkeley Mono Trial", "Berkeley Mono", "Fira Code", "Source Code Pro", Consolas, "Courier New", monospace;
+  letter-spacing: 0.025em;
 }
 
 .dropdown-content {
