@@ -1,9 +1,11 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react';
-import TimeCounter from './TimeCounter';
+// import TimeCounter from './TimeCounter';
 import MapView from './MapView';
 import './GameInterface.css';
+import './PopulationCounter.css';
 import { LocationData } from './interfaces'; // Import LocationData
-import PopulationCounter from './PopulationCounter';
+import { ICON_FILENAMES, getIconFilenameForType } from './iconMap';
+// import PopulationCounter from './PopulationCounter';
 import PopulationChart from './PopulationChart';
 import TimeTable from './TimeTable';
 // Allow pointing API calls to a remote base (useful when local serverless dev is flaky on Windows)
@@ -177,6 +179,10 @@ const GameInterface: React.FC = () => {
   const [currentMilestone, setCurrentMilestone] = useState<MilestoneSegment | null>(null);
   // Add state for the locations fetched from the API
   const [visibleLocations, setVisibleLocations] = useState<LocationData[]>([]); // Use LocationData[]
+  // Legend filter state: settlements icon filenames selected
+  const [legendSettlementsSelected, setLegendSettlementsSelected] = useState<Set<string>>(() => new Set(ICON_FILENAMES));
+  // Which settlement icon types are actually available (entered the game for current year)
+  const [availableSettlementIcons, setAvailableSettlementIcons] = useState<Set<string>>(() => new Set());
 
   // Use a simpler play/pause state that doesn't cause conflicts
   const [isPaused, setIsPaused] = useState(false);
@@ -185,9 +191,11 @@ const GameInterface: React.FC = () => {
   const lastUpdateTimeRef = useRef<number>(0);
   const animationFrameRef = useRef<number>(0);
 
-  // Replace the single expandedSection state with two separate states
-  const [expandedCounter, setExpandedCounter] = useState<'time' | 'population-global' | 'population-user' | 'population-description' | null>(null);
-  const [expandedWallet, setExpandedWallet] = useState<'civ-algo' | 'wallet' | null>(null);
+  // Top controls accordion (styled like bottom pills)
+  const [expandedTopPanel, setExpandedTopPanel] = useState<'time' | 'population-global' | 'population-user' | 'population-description' | 'civ-algo' | 'wallet' | null>(null);
+  // Note: Counters replaced by pill rows; keep placeholder if reintroducing later
+  // Player controls accordion (expands upward)
+  const [expandedPlayerPanel, setExpandedPlayerPanel] = useState<'map-time' | 'map-legend' | 'map-focus' | 'admin' | 'search' | null>(null);
 
   // Add state for network selection
   const [isMainnet, setIsMainnet] = useState(false);
@@ -195,8 +203,24 @@ const GameInterface: React.FC = () => {
   // Add stable references
   const anchorRefStable = useRef<HTMLElement | null>(null);
   const handleClosePopulationChart = useCallback(() => {
-    setExpandedCounter(null);
+    setExpandedTopPanel(null);
   }, []);
+
+  // Collapse expansions when clicking outside top or bottom controls
+  useEffect(() => {
+    const handleDocumentClick = (e: MouseEvent) => {
+      const target = e.target as Element;
+      const clickedInsideTop = !!target.closest('.game-controls');
+      const clickedInsideBottom = !!target.closest('.player-controls');
+      if (!clickedInsideTop && !clickedInsideBottom) {
+        if (expandedTopPanel) setExpandedTopPanel(null);
+        if (expandedPlayerPanel) setExpandedPlayerPanel(null);
+      }
+    };
+
+    document.addEventListener('mousedown', handleDocumentClick);
+    return () => document.removeEventListener('mousedown', handleDocumentClick);
+  }, [expandedTopPanel, expandedPlayerPanel]);
 
   // Use animation frames instead of intervals for smoother updates
   useEffect(() => {
@@ -300,8 +324,20 @@ const GameInterface: React.FC = () => {
         // Final guard against unmount
         if (!isMounted) return;
         
-        // Update state
-        setVisibleLocations(processedLocations);
+        // Determine which settlement types are available for this year
+        const availableIcons = new Set<string>();
+        for (const loc of processedLocations) {
+          const icon = getIconFilenameForType(loc.type_site || 'settlement');
+          availableIcons.add(icon);
+        }
+        setAvailableSettlementIcons(availableIcons);
+
+        // Apply legend filter for settlements (only icons that are selected)
+        const filtered = processedLocations.filter((loc: LocationData) => {
+          const icon = getIconFilenameForType(loc.type_site || 'settlement');
+          return legendSettlementsSelected.has(icon);
+        });
+        setVisibleLocations(filtered);
         
       } catch (error) {
         console.error("Error fetching locations:", error);
@@ -315,7 +351,31 @@ const GameInterface: React.FC = () => {
     return () => {
       isMounted = false;
     };
-  }, [historicalYear]);
+  }, [historicalYear, legendSettlementsSelected]);
+
+  // Legend interaction handlers (tri-state like)
+  const toggleAllSettlementIcons = () => {
+    const available = availableSettlementIcons;
+    const selected = new Set(legendSettlementsSelected);
+    let selectedAvailableCount = 0;
+    available.forEach((fn) => { if (selected.has(fn)) selectedAvailableCount += 1; });
+
+    if (available.size > 0 && selectedAvailableCount === available.size) {
+      // all available -> deselect all available
+      available.forEach((fn) => selected.delete(fn));
+      setLegendSettlementsSelected(selected);
+    } else {
+      // none/partial -> select all available (keep any other selections intact)
+      available.forEach((fn) => selected.add(fn));
+      setLegendSettlementsSelected(selected);
+    }
+  };
+
+  const toggleOneSettlementIcon = (filename: string) => {
+    const next = new Set(legendSettlementsSelected);
+    if (next.has(filename)) next.delete(filename); else next.add(filename);
+    setLegendSettlementsSelected(next);
+  };
 
   // Improved milestone finder with error handling
   useEffect(() => {
@@ -516,111 +576,134 @@ const GameInterface: React.FC = () => {
   // Add state for the interpolated population
   const [interpolatedPopulation, setInterpolatedPopulation] = useState<number>(0);
 
+  // Helper to format Years/Round like TimeCounter
+  const formatYearsPerRoundDisplay = (ypr: number): string => {
+    const MONTHS_PER_YEAR = 12;
+    const DAYS_PER_MONTH = 30.44;
+    const HOURS_PER_DAY = 24;
+    const MINUTES_PER_HOUR = 60;
+    const SECONDS_PER_MINUTE = 60;
+
+    if (ypr >= 1) {
+      return ypr < 10 ? ypr.toFixed(2) + ' Y/R' :
+             ypr < 100 ? ypr.toFixed(1) + ' Y/R' :
+             Math.floor(ypr).toLocaleString() + ' Y/R';
+    }
+
+    const monthsPerRound = ypr * MONTHS_PER_YEAR;
+    if (monthsPerRound >= 1) return monthsPerRound.toFixed(1) + ' M/R';
+
+    const daysPerRound = monthsPerRound * DAYS_PER_MONTH;
+    if (daysPerRound >= 1) return daysPerRound.toFixed(1) + ' D/R';
+
+    const hoursPerRound = daysPerRound * HOURS_PER_DAY;
+    if (hoursPerRound >= 1) return hoursPerRound.toFixed(1) + ' H/R';
+
+    const minutesPerRound = hoursPerRound * MINUTES_PER_HOUR;
+    if (minutesPerRound >= 1) return minutesPerRound.toFixed(1) + ' Min/R';
+
+    const secondsPerRound = minutesPerRound * SECONDS_PER_MINUTE;
+    return secondsPerRound.toFixed(1) + ' S/R';
+  };
+
   return (
     <div className="game-interface-layout">
       <div className="game-controls">
-        {/* Wallet Connect Section */}
-        <div className="wallet-connect">
-          <div className="wallet-controls-row">
-            <span 
-              className={`clickable-wallet ${expandedWallet === 'civ-algo' ? 'active' : ''}`}
-              onClick={() => setExpandedWallet(expandedWallet === 'civ-algo' ? null : 'civ-algo')}
+        {/* Top row */}
+        <div className="player-row">
+          <div className="player-row-controls player-row-pills">
+            <span
+              className={`player-pill ${expandedTopPanel === 'civ-algo' ? 'active' : ''}`}
+              onClick={() => setExpandedTopPanel(expandedTopPanel === 'civ-algo' ? null : 'civ-algo')}
             >
               CIV.ALGO
             </span>
-            <span 
-              className="clickable-wallet network-toggle"
+            <span
+              className={`player-pill`}
               onClick={() => setIsMainnet(!isMainnet)}
+              title="Toggle network"
             >
               {isMainnet ? 'MAINNET' : 'TESTNET'}
             </span>
-            <span 
-              className={`clickable-wallet ${expandedWallet === 'wallet' ? 'active' : ''}`}
-              onClick={() => setExpandedWallet(expandedWallet === 'wallet' ? null : 'wallet')}
+            <span
+              className={`player-pill ${expandedTopPanel === 'wallet' ? 'active' : ''}`}
+              onClick={() => setExpandedTopPanel(expandedTopPanel === 'wallet' ? null : 'wallet')}
             >
               WALLET
             </span>
           </div>
-
-          {/* Wallet Connect Expansion */}
-          {expandedWallet === 'civ-algo' && (
-            <div className="wallet-expansion">
-              <div className="civ-algo-expansion">
-                <div className="expansion-content">
-                  <h4>
-                    Get access to the game by minting a civ.algo segment at {" "}
-                    <a
-                      href="https://app.nf.domains/name/civ.algo?view=segments"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                     style={{ color: 'var(--color-text-primary)', textDecoration: 'underline' }}
-                    >
-                      NFDomains 
-                    </a>
-                  </h4>
-                  <p>An on-chain civ-like simulation game across history of Sapiens.</p>
-                  <div className="links">
-                    <a href="https://docs.google.com/presentation/d/1tcXTQ7dKaslwGiP8009Dx3SKE6Bua-oMhh5abNbf_kY/edit?usp=sharing" target="_blank" rel="noopener noreferrer">Documentation</a>
-                    <a href="https://discord.gg/M3Tz4GtFcr" target="_blank" rel="noopener noreferrer">Discord</a>
-                    <a href="https://x.com/hampelman_nft" target="_blank" rel="noopener noreferrer">X (Twitter)</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-          
-          {expandedWallet === 'wallet' && (
-            <div className="wallet-expansion">
-              <div className="wallet-buttons-expansion">
-                <div className="expansion-content">
-                  <h4>Connect Wallet</h4>
-                  <div className="wallet-buttons">
-                    <button className="wallet-btn">Pera</button>
-                    <button className="wallet-btn">Defly</button>
-                    <button className="wallet-btn">Lute</button>
-                    <button className="wallet-btn">Exodus</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
         </div>
 
-        <div className="counter-container">
-          <TimeCounter
-            yearsPerRound={yearsPerRound}
-            currentRound={currentRound}
-            historicalYear={historicalYear}
-            totalRounds={TOTAL_ROUNDS}
-            expandedCounter={expandedCounter}
-            onCounterToggle={(counter) => setExpandedCounter(counter)}
-          />
-          
-          {/* Time Expansion - appears between TimeCounter and PopulationCounter */}
-          {expandedCounter === 'time' && (
-            <div className="counter-expansion">
-              <div className="time-expansion">
-                <TimeTable
-                  currentRound={currentRound}
-                  totalRounds={TOTAL_ROUNDS}
-                />
-              </div>
-            </div>
-          )}
-          
-          <PopulationCounter 
-            population={interpolatedPopulation}
-            milestone={currentMilestone}
-            populationTrend={populationTrend}
-            expandedCounter={expandedCounter}
-            onCounterToggle={(counter) => setExpandedCounter(counter)}
-          />
-          
-          {/* Population Expansions - appear after PopulationCounter */}
-          {(expandedCounter === 'population-global' || expandedCounter === 'population-user' || expandedCounter === 'population-description') && (
-            <div className="counter-expansion">
-              {/* population expansions here */}
-              {expandedCounter === 'population-global' && (
+        {/* Second row */}
+        <div className="player-row">
+          <div className="player-row-controls player-row-pills">
+            <span
+              className={`player-pill ${expandedTopPanel === 'time' ? 'active' : ''}`}
+              onClick={() => setExpandedTopPanel(expandedTopPanel === 'time' ? null : 'time')}
+              title="View time mechanics"
+            >
+              {`${formatHistoricalYear(historicalYear)}`}
+            </span>
+            <span
+              className={`player-pill ${expandedTopPanel === 'time' ? 'active' : ''}`}
+              onClick={() => setExpandedTopPanel(expandedTopPanel === 'time' ? null : 'time')}
+              title="View time mechanics"
+            >
+              {`R ${formatRoundNumber(currentRound)}/${formatRoundNumber(TOTAL_ROUNDS)}`}
+            </span>
+            <span
+              className={`player-pill ${expandedTopPanel === 'time' ? 'active' : ''}`}
+              onClick={() => setExpandedTopPanel(expandedTopPanel === 'time' ? null : 'time')}
+              title="View time mechanics"
+            >
+              {formatYearsPerRoundDisplay(yearsPerRound)}
+            </span>
+          </div>
+        </div>
+
+        {/* Third row */}
+        <div className="player-row">
+          <div className="player-row-controls player-row-pills">
+            <span
+              className={`player-pill ${expandedTopPanel === 'population-global' ? 'active' : ''}`}
+              onClick={() => setExpandedTopPanel(expandedTopPanel === 'population-global' ? null : 'population-global')}
+            >
+              {interpolatedPopulation.toLocaleString()}
+              {populationTrend && (
+                <span className={`trend-arrow ${populationTrend}`} style={{ marginLeft: 6 }}>
+                  {populationTrend === 'up' ? '▲' : populationTrend === 'down' ? '▼' : '-'}
+                </span>
+              )}
+            </span>
+            <span
+              className={`player-pill ${expandedTopPanel === 'population-user' ? 'active' : ''}`}
+              onClick={() => setExpandedTopPanel(expandedTopPanel === 'population-user' ? null : 'population-user')}
+            >
+              Your ppl
+            </span>
+            <span
+              className={`player-pill milestone-pill ${expandedTopPanel === 'population-description' ? 'active' : ''}`}
+              onClick={() => setExpandedTopPanel(expandedTopPanel === 'population-description' ? null : 'population-description')}
+              title={currentMilestone ? currentMilestone.description : 'Period milestone'}
+            >
+              {currentMilestone ? currentMilestone.description : 'Period milestone'}
+            </span>
+          </div>
+        </div>
+
+        {/* Unified expansion area for top pills */}
+        {expandedTopPanel && (
+          <div className="player-expansion">
+            <div className="expansion-content">
+              {expandedTopPanel === 'time' && (
+                <div className="time-expansion">
+                  <TimeTable
+                    currentRound={currentRound}
+                    totalRounds={TOTAL_ROUNDS}
+                  />
+                </div>
+              )}
+              {expandedTopPanel === 'population-global' && (
                 <div className="population-global-expansion">
                   <PopulationChart
                     isExpanded={true}
@@ -630,8 +713,7 @@ const GameInterface: React.FC = () => {
                   />
                 </div>
               )}
-              
-              {expandedCounter === 'population-user' && (
+              {expandedTopPanel === 'population-user' && (
                 <div className="population-user-expansion">
                   <div className="expansion-placeholder">
                     <h4>Your Population Chart</h4>
@@ -640,8 +722,7 @@ const GameInterface: React.FC = () => {
                   </div>
                 </div>
               )}
-              
-              {expandedCounter === 'population-description' && currentMilestone && (
+              {expandedTopPanel === 'population-description' && currentMilestone && (
                 <div className="population-description-expansion">
                   <div className="milestone-expansion">
                     <h4>{currentMilestone.description}</h4>
@@ -654,26 +735,267 @@ const GameInterface: React.FC = () => {
                   </div>
                 </div>
               )}
+              {expandedTopPanel === 'civ-algo' && (
+                <div className="civ-algo-expansion">
+                  <div className="expansion-content">
+                    <h4>
+                      Get access to the game by minting a civ.algo segment at{' '}
+                      <a
+                        href="https://app.nf.domains/name/civ.algo?view=segments"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{ color: 'var(--color-text-primary)', textDecoration: 'underline' }}
+                      >
+                        NFDomains
+                      </a>
+                    </h4>
+                    <p>An on-chain civ-like simulation game across history of Sapiens.</p>
+                    <div className="links">
+                      <a href="https://docs.google.com/presentation/d/1tcXTQ7dKaslwGiP8009Dx3SKE6Bua-oMhh5abNbf_kY/edit?usp=sharing" target="_blank" rel="noopener noreferrer">Documentation</a>
+                      <a href="https://discord.gg/M3Tz4GtFcr" target="_blank" rel="noopener noreferrer">Discord</a>
+                      <a href="https://x.com/hampelman_nft" target="_blank" rel="noopener noreferrer">X (Twitter)</a>
+                    </div>
+                  </div>
+                </div>
+              )}
+              {expandedTopPanel === 'wallet' && (
+                <div className="wallet-buttons-expansion">
+                  <div className="expansion-content">
+                    <h4>Connect Wallet</h4>
+                    <div className="wallet-buttons">
+                      <button className="wallet-btn">Pera</button>
+                      <button className="wallet-btn">Defly</button>
+                      <button className="wallet-btn">Lute</button>
+                      <button className="wallet-btn">Exodus</button>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
-          )}
-        </div>
+          </div>
+        )}
+
+        {/* Counters replaced by pill rows above */}
       </div>
 
       <div className="map-container">
         <MapView locations={visibleLocations} />
       </div>
 
-      <div className="slider-container">
-        <label className="slider-label" htmlFor="timeSlider">Time Machine ⏲️ R #{formatRoundNumber(currentRound)} / {formatRoundNumber(TOTAL_ROUNDS)}</label>
-        <input
-          type="range"
-          id="timeSlider"
-          min="1"
-          max={TOTAL_ROUNDS}
-          value={currentRound}
-          onChange={handleSliderChange}
-          className="time-slider"
-        />
+      {/* Player Controls (bottom, expands upward from its row) */}
+      <div className="player-controls">
+        <div className="player-rows">
+          {/* Time Machine group (expansion appears ABOVE its row) */}
+          {expandedPlayerPanel === 'map-time' && (
+            <div className="player-expansion">
+              <div className="expansion-content">
+                <div className="player-row-controls">
+                  <span className="player-slider-label">R{formatRoundNumber(currentRound)}/{formatRoundNumber(TOTAL_ROUNDS)}</span>
+                  <input
+                    type="range"
+                    id="timeSlider"
+                    min="1"
+                    max={TOTAL_ROUNDS}
+                    value={currentRound}
+                    onChange={handleSliderChange}
+                    className="time-slider time-slider-compact"
+                  />
+                </div>
+              </div>
+            </div>
+          )}
+          {expandedPlayerPanel === 'map-legend' && (
+            <div className="player-expansion">
+              <div className="expansion-content">
+                <h4>Map Legend</h4>
+                <div className="legend-grid">
+                  {/* Settlements category */}
+                  <div className="legend-category">
+                    <div className="legend-cat-header">
+                      <label className={`checkbox compact${availableSettlementIcons.size === 0 ? ' disabled' : ''}`}>
+                        <input
+                          type="checkbox"
+                          disabled={availableSettlementIcons.size === 0}
+                          checked={(() => {
+                            if (availableSettlementIcons.size === 0) return false;
+                            let count = 0; availableSettlementIcons.forEach((fn) => { if (legendSettlementsSelected.has(fn)) count += 1; });
+                            return count === availableSettlementIcons.size;
+                          })()}
+                          ref={(el) => {
+                            if (el) {
+                              let count = 0; availableSettlementIcons.forEach((fn) => { if (legendSettlementsSelected.has(fn)) count += 1; });
+                              el.indeterminate = availableSettlementIcons.size > 0 && count > 0 && count < availableSettlementIcons.size;
+                            }
+                          }}
+                          onChange={toggleAllSettlementIcons}
+                        />
+                        <span>Settlements</span>
+                      </label>
+                    </div>
+                    <div className="legend-sublist">
+                      {ICON_FILENAMES.map((fn) => {
+                        const isAvailable = availableSettlementIcons.has(fn);
+                        return (
+                          <label className={`checkbox compact${!isAvailable ? ' disabled' : ''}`} key={fn} title={fn.replace('.svg','')}>
+                            <input
+                              type="checkbox"
+                              disabled={!isAvailable}
+                              checked={legendSettlementsSelected.has(fn)}
+                              onChange={() => toggleOneSettlementIcon(fn)}
+                            />
+                            <span>{fn.replace('.svg','')}</span>
+                          </label>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  {/* Cities category (disabled) */}
+                  <div className="legend-category">
+                    <div className="legend-cat-header">
+                      <label className="checkbox compact disabled">
+                        <input type="checkbox" disabled />
+                        <span>Cities</span>
+                      </label>
+                    </div>
+                    <div className="legend-sublist">
+                      {['coast','river','altitude','mono','metropol','megalopolis','city-state'].map((s) => (
+                        <label className="checkbox compact disabled" key={s}>
+                          <input type="checkbox" disabled />
+                          <span>{s}</span>
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Empires category (disabled) */}
+                  <div className="legend-category">
+                    <div className="legend-cat-header">
+                      <label className="checkbox compact disabled">
+                        <input type="checkbox" disabled />
+                        <span>Empires</span>
+                      </label>
+                    </div>
+                    <div className="legend-sublist">
+                      {['territorial','maritime','informal'].map((s) => (
+                        <label className="checkbox compact disabled" key={s}>
+                          <input type="checkbox" disabled />
+                          <span>{s}</span>
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Countries category (disabled) */}
+                  <div className="legend-category">
+                    <div className="legend-cat-header">
+                      <label className="checkbox compact disabled">
+                        <input type="checkbox" disabled />
+                        <span>Countries</span>
+                      </label>
+                    </div>
+                    <div className="legend-sublist">
+                      {['democratic','autocratic','developing'].map((s) => (
+                        <label className="checkbox compact disabled" key={s}>
+                          <input type="checkbox" disabled />
+                          <span>{s}</span>
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Specialists category (disabled) */}
+                  <div className="legend-category">
+                    <div className="legend-cat-header">
+                      <label className="checkbox compact disabled">
+                        <input type="checkbox" disabled />
+                        <span>Specialists</span>
+                      </label>
+                    </div>
+                    <div className="legend-sublist">
+                      {['art','fundamental','applied','medicine','economy','social','politics','military','frontier'].map((s) => (
+                        <label className="checkbox compact disabled" key={s}>
+                          <input type="checkbox" disabled />
+                          <span>{s}</span>
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+          {expandedPlayerPanel === 'map-focus' && (
+            <div className="player-expansion">
+              <div className="expansion-content">
+                <h4>Focus</h4>
+                <p>Focus tools placeholder</p>
+              </div>
+            </div>
+          )}
+          <div className={`player-row map-row ${expandedPlayerPanel && expandedPlayerPanel.startsWith('map-') ? 'active' : ''}`}>
+            <div className="player-row-controls player-row-pills">
+              <span
+                className={`player-pill ${expandedPlayerPanel === 'map-time' ? 'active' : ''}`}
+                onClick={() => setExpandedPlayerPanel(expandedPlayerPanel === 'map-time' ? null : 'map-time')}
+              >
+                TIMELINE
+              </span>
+              <span
+                className={`player-pill ${expandedPlayerPanel === 'map-legend' ? 'active' : ''}`}
+                onClick={() => setExpandedPlayerPanel(expandedPlayerPanel === 'map-legend' ? null : 'map-legend')}
+              >
+                LEGEND
+              </span>
+              <span
+                className={`player-pill ${expandedPlayerPanel === 'map-focus' ? 'active' : ''}`}
+                onClick={() => setExpandedPlayerPanel(expandedPlayerPanel === 'map-focus' ? null : 'map-focus')}
+              >
+                FOCUS
+              </span>
+            </div>
+          </div>
+
+          {/* Admin group */}
+          {expandedPlayerPanel === 'admin' && (
+            <div className="player-expansion">
+              <div className="expansion-content">
+                <h4>Admin</h4>
+                <p>Admin controls placeholder</p>
+              </div>
+            </div>
+          )}
+          <div className={`player-row ${expandedPlayerPanel === 'admin' ? 'active' : ''}`}>
+            <div className="player-row-controls player-row-pills">
+              <span
+                className={`player-pill ${expandedPlayerPanel === 'admin' ? 'active' : ''}`}
+                onClick={() => setExpandedPlayerPanel(expandedPlayerPanel === 'admin' ? null : 'admin')}
+              >
+                ADMIN
+              </span>
+            </div>
+          </div>
+
+          {/* Search group */}
+          {expandedPlayerPanel === 'search' && (
+            <div className="player-expansion">
+              <div className="expansion-content">
+                <h4>Search</h4>
+                <p>Search tools placeholder</p>
+              </div>
+            </div>
+          )}
+          <div className={`player-row ${expandedPlayerPanel === 'search' ? 'active' : ''}`}>
+            <div className="player-row-controls player-row-pills">
+              <span
+                className={`player-pill ${expandedPlayerPanel === 'search' ? 'active' : ''}`}
+                onClick={() => setExpandedPlayerPanel(expandedPlayerPanel === 'search' ? null : 'search')}
+              >
+                SEARCH
+              </span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

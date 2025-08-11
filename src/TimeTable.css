@@ -24,7 +24,7 @@
   border-collapse: collapse;
   margin-bottom: 15px;
   background: var(--color-panel-light);
-  border-radius: 4px;
+  border-radius: 0px;
 }
 
 .time-calculations th,
@@ -60,7 +60,7 @@
 
 .game-progress {
   background: var(--color-panel-light);
-  border-radius: 4px;
+  border-radius: 0px;
   padding: 10px;
 }
 

@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 // Keep L from leaflet, remove react-leaflet imports for now
 import L from 'leaflet';
 import { LocationData } from './interfaces'; // Import from new file
+import { getIconFilenameForType } from './iconMap';
 
 // Extend Window interface for our global function
 declare global {
@@ -57,51 +58,7 @@ function getImageFilename(location: string): string[] {
 }
 
 // Function to map type_site values to appropriate icon filenames
-const getIconForType = (typeSite: string): string => {
-  // Remove .svg extension if present and convert to lowercase
-  const cleanType = typeSite.replace('.svg', '').toLowerCase();
-  
-  // Map type_site values to icon filenames
-  // Note: Database values may have spaces, hyphens, or other variations
-  const iconMap: { [key: string]: string } = {
-    'cave': 'cave.svg',
-    'burial': 'burial.svg', 
-    'mummies': 'mummies.svg',
-    'artifact': 'artifact.svg',
-    'lake': 'lake.svg',
-    'hills': 'hills.svg',
-    'coast': 'coast.svg',
-    'river': 'river.svg',
-    'formation': 'formation.svg',
-    'thermal': 'thermal spring.svg',
-    'thermal spring': 'thermal spring.svg',
-    'thermal-spring': 'thermal spring.svg',
-    'dna': 'dna.svg',
-    'settlement': 'settlement.svg',
-    'colony': 'colony.svg',
-    'castaway': 'castaway.svg',
-    'pirate': 'pirate.svg',
-    'whaling': 'whaling.svg',
-    'penal': 'penal.svg',
-    'naval base': 'naval base.svg',
-    'naval-base': 'naval base.svg',
-    'navalbase': 'naval base.svg',
-    'research station': 'research-station.svg',
-    'research-station': 'research-station.svg',
-    'researchstation': 'research-station.svg',
-    'rocket': 'rocket.svg',
-    'taz': 'TAZ.svg',
-    'type site': 'type site.svg',
-    'type-site': 'type site.svg',
-    'typesite': 'type site.svg',
-    'rock shelter': 'rock shelter.svg',
-    'rock-shelter': 'rock shelter.svg',
-    'rockshelter': 'rock shelter.svg'
-  };
-  
-  // Return mapped icon or default to settlement if not found
-  return iconMap[cleanType] || 'settlement.svg';
-};
+const getIconForType = (typeSite: string): string => getIconFilenameForType(typeSite);
 
 // Function to create icon with optional UNESCO overlay
 const createMarkerIcon = (typeSite: string, hasUnesco: boolean): L.Icon | L.DivIcon => {
@@ -157,19 +114,25 @@ const MapView: React.FC<MapViewProps> = ({ locations }) => {
     if (mapRef.current || !mapElementRef.current) {
       return;
     }
+
+    // Capture refs in local variables for cleanup
+    let localMap: L.Map | null = null;
+    const localMarkerMap = markerMapRef.current;
+
     const timerId = setTimeout(() => {
       if (!mapElementRef.current) return;
       try {
-        mapRef.current = L.map(mapElementRef.current, {
+        localMap = L.map(mapElementRef.current, {
           center: [20, 0],
           zoom: 2,
           attributionControl: false,
           zoomControl: false
         });
+        mapRef.current = localMap;
         L.tileLayer(
           'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
           { attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>' }
-        ).addTo(mapRef.current);
+        ).addTo(localMap);
         setIsMapInitialized(true);
       } catch (error) {
         console.error("*** ERROR DURING LEAFLET INITIALIZATION (inside setTimeout) ***:", error);
@@ -178,16 +141,16 @@ const MapView: React.FC<MapViewProps> = ({ locations }) => {
 
     return () => {
       clearTimeout(timerId);
-      if (mapRef.current) {
-        // Remove all markers we added
-        for (const [, marker] of markerMapRef.current) {
-          marker.remove();
-        }
-        markerMapRef.current.clear();
-        mapRef.current.remove();
-        mapRef.current = null;
-        setIsMapInitialized(false);
+      // Use captured locals instead of refs in cleanup
+      for (const [, marker] of localMarkerMap) {
+        marker.remove();
       }
+      localMarkerMap.clear();
+      if (localMap) {
+        localMap.remove();
+      }
+      mapRef.current = null;
+      setIsMapInitialized(false);
     };
   }, []);
 
@@ -245,8 +208,8 @@ const MapView: React.FC<MapViewProps> = ({ locations }) => {
           `)
           .addTo(map);
 
-        // Optional: open popup only when first added
-        // marker.openPopup();
+        // Open popup so the settlement image is visible when marker appears
+        marker.openPopup();
 
         markerMapRef.current.set(loc.location, marker);
       }

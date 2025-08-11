@@ -216,7 +216,7 @@ const TimeCounter: React.FC<TimeCounterProps> = ({
           onClick={() => handleCounterClick('time')}
           title="Click to view time charts"
         >
-          R #{currentRound.toLocaleString()}/{formatRoundNumber(totalRounds)}
+          R {formatRoundNumber(currentRound)}/{formatRoundNumber(totalRounds)}
         </span>
         <span 
           ref={yearsPerRoundRef}

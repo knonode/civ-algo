@@ -3,7 +3,7 @@
   z-index: 1000;
   background: var(--color-popup-bg);
   border: 1px solid var(--color-border);
-  border-radius: 6px;
+  border-radius: 0px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
   min-width: 400px;
   max-width: 600px;
@@ -14,7 +14,7 @@
 .dropdown-content {
   padding: 15px;
   background: var(--color-popup-bg);
-  border-radius: 6px;
+  border-radius: 0px;
 }
 
 /* Embedded chart styles */
@@ -67,7 +67,7 @@
   color: var(--color-text-primary);
   border: none;
   padding: 5px 10px;
-  border-radius: 3px;
+  border-radius: 0px;
   cursor: pointer;
 }
 

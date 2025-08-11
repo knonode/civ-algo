@@ -149,7 +149,9 @@ const TimeTable: React.FC<TimeTableProps> = ({
         <div className="progress-stats">
           <div className="stat">
             <span className="label">Current Round:</span>
-            <span className="value">{formatNumber(currentRound, 0)} / {formatNumber(totalRounds, 0)}</span>
+            <span className="value">
+              {currentRound.toLocaleString(undefined, { maximumFractionDigits: 0 })} / {formatNumber(totalRounds, 0)}
+            </span>
           </div>
           <div className="stat">
             <span className="label">Progress:</span>

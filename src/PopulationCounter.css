@@ -1,7 +1,7 @@
 .population-counter {
   font-family: var(--font-mono);
   background: var(--color-surface-translucent);
-  border-radius: 4px;
+  border-radius: 0px;
   padding: 5px 10px;
   color: var(--color-text-primary);
   display: flex;
@@ -27,7 +27,7 @@
 .clickable-population {
   cursor: pointer;
   transition: all 0.2s ease;
-  border-radius: 3px;
+  border-radius: 0px;
   padding: 2px 4px;
   margin: -2px -4px;
 }
@@ -78,7 +78,7 @@
   z-index: 1000;
   background-color: var(--color-popup-bg);
   border: 2px solid var(--color-border);
-  border-radius: 4px;
+  border-radius: 0px;
   padding: 11px 16px;
   font-size: 14px;
   color: var(--color-text-primary);
@@ -152,14 +152,15 @@
   margin-left: 4px;
   font-weight: bold;
   font-size: 12px;
+  color: var(--color-text-primary);
 }
 
 .trend-arrow.up {
-  color: var(--color-text-primary); /* unified */
+  color: var(--color-success); /* unified */
 }
 
 .trend-arrow.down {
-  color: var(--color-text-primary); /* unified */
+  color: var(--color-negative); /* unified */
 }
 
 .trend-arrow.stable {
@@ -188,7 +189,7 @@
 
 .population-counter.expanded .population-group:first-child:hover {
   background: var(--color-overlay-10);
-  border-radius: 4px;
+  border-radius: 0px;
   padding: 4px 6px;
   margin: -4px -6px;
   transform: scale(1.02);

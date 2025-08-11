@@ -53,7 +53,7 @@
 .clickable-wallet {
   cursor: pointer;
   transition: all 0.2s ease;
-  border-radius: 3px;
+  border-radius: 0px;
   padding: 4px 8px;
   font-size: 12px;
   color: var(--color-text-primary);
@@ -76,7 +76,7 @@
 .wallet-expansion {
   background-color: var(--color-panel-strong);
   border: 1px solid var(--color-border);
-  border-radius: 4px;
+  border-radius: 0px;
   margin: 5px 0;
   overflow: hidden;
   animation: expandIn 0.3s ease-out;
@@ -113,7 +113,7 @@
   font-size: 12px;
   padding: 5px 10px;
   border: 1px solid var(--color-info-a30);
-  border-radius: 3px;
+  border-radius: 0px;
   transition: all 0.2s ease;
 }
 
@@ -134,7 +134,7 @@
   border: 1px solid var(--color-border-strong);
   background-color: var(--color-overlay-05);
   color: var(--color-text-primary);
-  border-radius: 3px;
+  border-radius: 0px;
   cursor: pointer;
   font-size: 12px;
   transition: all 0.2s ease;
@@ -169,7 +169,7 @@
   border: 1px solid var(--color-border-strong);
   background-color: var(--color-overlay-05);
   color: var(--color-text-primary);
-  border-radius: 4px;
+  border-radius: 0px;
   cursor: pointer;
   font-size: 13px;
   font-weight: 500;
@@ -193,7 +193,7 @@
 .counter-expansion {
   background-color: var(--color-panel-strong);
   border: 1px solid var(--color-border);
-  border-radius: 4px;
+  border-radius: 0px;
   margin: 5px 0;
   overflow: hidden;
   animation: expandIn 0.3s ease-out;
@@ -215,7 +215,7 @@
 .clickable-time {
   cursor: pointer;
   transition: all 0.2s ease;
-  border-radius: 3px;
+  border-radius: 0px;
   padding: 2px 4px;
 }
 
@@ -322,20 +322,8 @@
   filter: brightness(0.9) saturate(0.8); /* Optional: slightly adjust the map tiles appearance */
 }
 
-.slider-container {
-  position: absolute;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 80%;
-  max-width: 600px;
-  background-color: var(--color-panel);
-  border-radius: 8px;
-  padding: 10px;
-  text-align: center;
-  color: var(--color-text-primary);
-  z-index: 1000;
-}
+/* Deprecated floating slider container removed in favor of player controls */
+/* .slider-container { ... } */
 
 .slider-label {
   font-size: 11px;
@@ -352,8 +340,8 @@
 }
 
 /* Slider track/thumb styles */
-.time-slider::-webkit-slider-runnable-track { background: var(--color-track); height: 6px; border-radius: 3px; }
-.time-slider::-moz-range-track { background: var(--color-track); height: 6px; border-radius: 3px; }
+.time-slider::-webkit-slider-runnable-track { background: var(--color-track); height: 6px; border-radius: 0px; }
+.time-slider::-moz-range-track { background: var(--color-track); height: 6px; border-radius: 0px; }
 .time-slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 16px; height: 16px; background: var(--color-text-primary); border-radius: 50%; margin-top: -5px; }
 .time-slider::-moz-range-thumb { width: 16px; height: 16px; background: var(--color-text-primary); border-radius: 50%; border: none; }
 
@@ -388,3 +376,178 @@
 .leaflet-popup-close-button {
   display: none !important;
 } 
+
+/* Player Controls (bottom, expands upward) */
+.player-controls {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background-color: var(--color-panel);
+  border-top: 1px solid var(--color-border);
+}
+
+.player-expansion {
+  background-color: var(--color-panel-strong);
+  border-top: 1px solid var(--color-border);
+  animation: expandUp 0.25s ease-out;
+  max-height: 60vh;
+  overflow: auto;
+}
+
+@keyframes expandUp {
+  from { max-height: 0; opacity: 0; transform: translateY(6px); }
+  to { max-height: 60vh; opacity: 1; transform: translateY(0); }
+}
+
+.player-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 8px 10px;
+}
+
+.player-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  background-color: var(--color-panel);
+}
+
+/* Add spacing between the top rows inside the game-controls header */
+.game-controls > .player-row + .player-row {
+  margin-top: 6px;
+}
+
+.player-row-title {
+  font-size: 12px;
+  color: var(--color-text-primary);
+  background: var(--color-overlay-05);
+  border: 1px solid var(--color-border-muted);
+  padding: 6px 8px;
+  cursor: pointer;
+}
+
+.player-row-controls {
+  display: flex;
+  align-items: center;
+  gap: 0; /* pills manage their own margins */
+  flex: 1;
+}
+
+/* Visually emphasize active row like top accordion */
+.player-row.active .player-row-title {
+  background-color: var(--color-overlay-20);
+  border: 1px solid var(--color-border);
+  box-shadow: 0 0 5px rgba(0,0,0,0.3);
+}
+
+/* Map row pills */
+.player-row-pills {
+  justify-content: space-between; /* evenly distribute across the row */
+  width: 100%;
+}
+
+.player-pill {
+  cursor: pointer;
+  border-radius: 0px; /* match clickable-wallet */
+  padding: 4px 8px;
+  font-size: 12px;
+  color: var(--color-text-primary);
+  background-color: var(--color-overlay-05);
+  border: 1px solid var(--color-border-muted);
+  transition: all 0.2s ease;
+  flex: 1;                 /* take equal width */
+  text-align: center;      /* center label */
+  margin: 0 6px;           /* inner spacing between pills */
+}
+
+.player-pill:hover {
+  background-color: var(--color-overlay-10);
+}
+
+.player-pill.active {
+  background-color: var(--color-overlay-20);
+  border: 1px solid var(--color-border);
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+}
+
+/* Ellipsis only for milestone pill */
+.milestone-pill {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.player-slider-label {
+  font-size: 11px;
+  color: var(--color-text-primary);
+  white-space: nowrap;
+  margin-right: 8px;
+}
+
+.time-slider-compact {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+}
+
+/* Compact slider visuals */
+.time-slider-compact::-webkit-slider-runnable-track { height: 4px; }
+.time-slider-compact::-moz-range-track { height: 4px; }
+.time-slider-compact::-webkit-slider-thumb { width: 12px; height: 12px; margin-top: -4px; }
+.time-slider-compact::-moz-range-thumb { width: 12px; height: 12px; }
+
+/* Legend layout */
+.legend-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 8px;
+}
+
+@media (max-width: 1024px) {
+  .legend-grid { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
+}
+
+@media (max-width: 768px) {
+  .legend-grid { grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 6px; }
+}
+
+@media (max-width: 420px) {
+  .legend-grid { grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 6px; }
+}
+
+.legend-category {
+  background: var(--color-overlay-05);
+  border: 1px solid var(--color-border-muted);
+  border-radius: 0px;
+  padding: 6px;
+  line-height: 1.2;
+}
+
+.legend-cat-header { margin-bottom: 4px; }
+
+.legend-sublist {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  max-height: 160px;
+  overflow: auto;
+  scrollbar-width: thin;
+}
+.legend-sublist::-webkit-scrollbar { width: 6px; }
+.legend-sublist::-webkit-scrollbar-thumb { background: var(--color-border-muted); border-radius: 0px; }
+
+.checkbox {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  user-select: none;
+}
+.checkbox.compact input[type="checkbox"] { width: 11px; height: 11px; accent-color: var(--color-text-primary); }
+.checkbox.compact span { font-size: 10px; }
+.checkbox.disabled {
+  opacity: 0.5;
+}
