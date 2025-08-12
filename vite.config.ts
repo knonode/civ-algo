@@ -6,6 +6,15 @@ import svgr from 'vite-plugin-svgr'
 export default defineConfig({
   plugins: [react(), svgr()],
   define: { 'process.env': {} },
+  server: {
+    proxy: {
+      '/api': {
+        target: 'https://civ-algo.vercel.app',
+        changeOrigin: true,
+        secure: true,
+      },
+    },
+  },
   // The server.proxy configuration is typically not needed when using `vercel dev`,
   // as `vercel dev` handles routing to the /api functions automatically.
   /*

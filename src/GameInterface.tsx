@@ -3,6 +3,7 @@ import React, { useEffect, useState, useRef, useCallback } from 'react';
 import MapView from './MapView';
 import './GameInterface.css';
 import './PopulationCounter.css';
+import FocusChat from './components/FocusChat';
 import { LocationData } from './interfaces'; // Import LocationData
 import { ICON_FILENAMES, getIconFilenameForType } from './iconMap';
 // import PopulationCounter from './PopulationCounter';
@@ -929,7 +930,7 @@ const GameInterface: React.FC = () => {
             <div className="player-expansion">
               <div className="expansion-content">
                 <h4>Focus</h4>
-                <p>Focus tools placeholder</p>
+                <FocusChat />
               </div>
             </div>
           )}
