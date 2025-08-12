@@ -17,7 +17,7 @@
     "ai": "^5.0.10",
     "axios": "^1.8.4",
     "cors": "^2.8.5",
-    "dotenv": "^16.5.0",
+    "dotenv": "^16.6.1",
     "echarts": "^5.6.0",
     "echarts-for-react": "^3.0.2",
     "express": "^4.19.2",
@@ -26,7 +26,8 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-leaflet": "^5.0.0",
-    "tailwindcss": "^4.1.11"
+    "tailwindcss": "^4.1.11",
+    "zod": "^4.0.17"
   },
   "devDependencies": {
     "@eslint/js": "^9.21.0",
@@ -45,6 +46,7 @@
     "globals": "^15.15.0",
     "nodemon": "^3.1.4",
     "ts-node": "^10.9.2",
+    "tsx": "^4.20.4",
     "typescript": "~5.7.2",
     "typescript-eslint": "^8.24.1",
     "vite": "^7.1.1",

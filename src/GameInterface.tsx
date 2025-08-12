@@ -929,7 +929,6 @@ const GameInterface: React.FC = () => {
           {expandedPlayerPanel === 'map-focus' && (
             <div className="player-expansion">
               <div className="expansion-content">
-                <h4>Focus</h4>
                 <FocusChat />
               </div>
             </div>

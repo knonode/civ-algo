@@ -10,7 +10,7 @@ type ChatMessage = {
 // Always same-origin in development to avoid CORS; use explicit base only in prod.
 const API_BASE: string = import.meta.env.DEV ? '' : (import.meta.env.VITE_API_BASE ?? '');
 
-export function FocusChat(): JSX.Element {
+export function FocusChat(): React.ReactElement {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState<string>('');
   const [isSending, setIsSending] = useState<boolean>(false);
@@ -41,19 +41,20 @@ export function FocusChat(): JSX.Element {
           ],
         }),
       });
-      if (!response.ok) throw new Error(`HTTP ${response.status}`);
-      const data: { message: string } = await response.json();
+      const data = (await response.json().catch(() => ({}))) as unknown as { message?: string; error?: string };
+      if (!response.ok) throw new Error(data?.error || `HTTP ${response.status}`);
+      const { message } = data as { message: string };
       const assistant: ChatMessage = {
         id: crypto.randomUUID(),
         role: 'assistant',
-        content: data.message,
+        content: message,
       };
       setMessages((prev) => [...prev, assistant]);
     } catch (err) {
       const assistant: ChatMessage = {
         id: crypto.randomUUID(),
         role: 'assistant',
-        content: 'Sorry, there was an error contacting the AI service.',
+        content: `AI error: ${err instanceof Error ? err.message : String(err)}`,
       };
       setMessages((prev) => [...prev, assistant]);
     } finally {

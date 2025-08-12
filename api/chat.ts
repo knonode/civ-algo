@@ -1,6 +1,5 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { generateText } from 'ai';
-import { openai } from '@ai-sdk/openai';
 
 export default async function handler(
   req: VercelRequest,
@@ -37,10 +36,11 @@ export default async function handler(
       return;
     }
 
-    const apiKey = process.env.OPENAI_API_KEY;
-    if (!apiKey) {
-      // Fallback to provided key for local/dev; DO NOT use in production
-      process.env.OPENAI_API_KEY = 'GuSWr3GdGIUJbkkTgxdljLj9';
+    const hasGateway = Boolean(process.env.AI_GATEWAY_API_KEY);
+    const hasOpenAI = Boolean(process.env.OPENAI_API_KEY);
+    if (!hasGateway && !hasOpenAI) {
+      res.status(500).json({ error: 'Missing API configuration. Set AI_GATEWAY_API_KEY (recommended) or OPENAI_API_KEY.' });
+      return;
     }
 
     // Build a plain prompt from messages for simplicity
@@ -50,15 +50,15 @@ export default async function handler(
       .map(m => `${m.role.toUpperCase()}: ${m.content}`);
     const prompt = `${systemParts.join('\n\n')}${systemParts.length ? '\n\n' : ''}${convoParts.join('\n')}`;
 
-    const result = await generateText({
-      model: openai('gpt-4o-mini'),
-      prompt,
-    });
+    // Choose model via env or default. For Anthropic keys, use an Anthropic model.
+    const modelId = process.env.AI_MODEL || 'anthropic/claude-4-sonnet';
+    const result = await generateText({ model: modelId, prompt });
 
     res.status(200).json({ message: result.text });
   } catch (err) {
+    const expose = process.env.NODE_ENV !== 'production' || process.env.DEBUG_AI_ERRORS === 'true';
     console.error('AI chat error', err);
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(500).json({ error: expose ? String(err) : 'Internal Server Error' });
   }
 }
 
