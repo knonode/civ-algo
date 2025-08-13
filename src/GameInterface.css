@@ -547,7 +547,7 @@
   user-select: none;
 }
 .checkbox.compact input[type="checkbox"] { width: 11px; height: 11px; accent-color: var(--color-text-primary); }
-.checkbox.compact span { font-size: 10px; }
+.checkbox.compact span { font-size: 12px; }
 .checkbox.disabled {
   opacity: 0.5;
 }

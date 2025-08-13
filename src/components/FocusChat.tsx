@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import './FocusChat.css';
 
 type ChatMessage = {
@@ -35,7 +37,6 @@ export function FocusChat(): React.ReactElement {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           messages: [
-            { role: 'system', content: 'You are a concise assistant for the Civ Counter app.' },
             ...messages.map(({ role, content }) => ({ role, content })),
             { role: 'user', content: trimmed },
           ],
@@ -54,7 +55,7 @@ export function FocusChat(): React.ReactElement {
       const assistant: ChatMessage = {
         id: crypto.randomUUID(),
         role: 'assistant',
-        content: `AI error: ${err instanceof Error ? err.message : String(err)}`,
+        content: `AI error: ${err instanceof Error ? err.name === 'AbortError' ? 'Request timed out. Please try again.' : err.message : String(err)}`,
       };
       setMessages((prev) => [...prev, assistant]);
     } finally {
@@ -66,12 +67,21 @@ export function FocusChat(): React.ReactElement {
     <div className="focus-chat">
       <div className="focus-chat-messages">
         {messages.length === 0 ? (
-          <div className="focus-chat-empty">Start a conversation…</div>
+          <div className="focus-chat-empty">F.O.C.U.S.<br />
+          Factual, Orderly, Concise, Unbiased, Scholarly.<br />
+          v.0.1.0<br />
+          <br />
+          In-game AI assistant loaded...<br />
+          <br />
+          <br />
+          Awaiting user query...</div>
         ) : (
           messages.map((m) => (
             <div key={m.id} className={`focus-chat-message ${m.role}`}>
-              <div className="role">{m.role === 'user' ? 'You' : 'AI'}</div>
-              <div className="content">{m.content}</div>
+              <div className="role">{m.role === 'user' ? 'You' : 'FCS'}</div>
+              <div className="content">
+                <ReactMarkdown remarkPlugins={[remarkGfm]}>{m.content}</ReactMarkdown>
+              </div>
             </div>
           ))
         )}
