@@ -1,0 +1,208 @@
+.admin-panel {
+  font-family: var(--font-mono);
+  color: var(--color-text-primary);
+}
+
+.admin-tabs {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 0;
+  border-bottom: 1px solid var(--color-border);
+  position: relative;
+  z-index: 0;
+}
+
+.admin-tab {
+  background: var(--color-overlay-05);
+  border: 1px solid var(--color-border);
+  border-bottom: none; /* folder tab effect base */
+  color: var(--color-text-primary);
+  padding: 4px 8px;
+  cursor: pointer;
+  border-radius: 0;
+  font-size: 11px;
+  position: relative;
+  top: 1px; /* sit above the baseline */
+  outline: none; /* remove default focus ring */
+}
+
+.admin-tab.active {
+  background: var(--color-panel-strong); /* merge with content */
+  border-color: var(--color-border);
+  z-index: 2; /* in front of baseline */
+  margin-bottom: -1px; /* overlap the baseline to remove the gap */
+  box-shadow: none; /* no glow */
+}
+
+.admin-tab:focus,
+.admin-tab:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+
+.admin-section {
+  background: var(--color-panel-strong);
+  border: 1px solid var(--color-border);
+  border-top: none; /* baseline from tabs continues visually */
+  padding: 8px;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 11px;
+}
+
+.admin-table th,
+.admin-table td {
+  border: 1px solid var(--color-border-muted);
+  padding: 6px 8px;
+  text-align: left;
+}
+
+.admin-table th {
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.admin-table td.num { text-align: right; }
+.admin-table td.pos { color: var(--color-success, #7fd47f); }
+.admin-table td.neg { color: var(--color-danger, #ff6b6b); }
+
+.trend.up { color: var(--color-success, #7fd47f); }
+.trend.down { color: var(--color-danger, #ff6b6b); }
+
+.action-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 20px;
+  padding: 0 10px;
+  border: 1px solid var(--color-border);
+  background: transparent;
+  border-radius: 0;
+  cursor: pointer;
+}
+
+.action-pill .dot {
+  width: 6px;
+  height: 6px;
+  background: var(--color-text-primary);
+  border-radius: 50%;
+  display: inline-block;
+}
+
+/* PPL summary */
+.ppl-summary .summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 6px;
+  align-items: center;
+}
+
+.market-pill {
+  background: var(--color-overlay-05);
+  border: 1px solid var(--color-border);
+  padding: 4px 8px;
+  border-radius: 0;
+  color: var(--color-text-primary);
+  font-size: 11px;
+  cursor: pointer;
+}
+
+/* Craft form */
+.craft-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.craft-form .form-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.craft-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 11px;
+}
+
+.craft-form label span {
+  font-weight: 700;
+}
+
+.craft-form input[type="text"],
+.craft-form input[type="number"],
+.craft-form input[list],
+.craft-form select {
+  background: var(--color-overlay-05);
+  border: 1px solid var(--color-border-muted);
+  color: var(--color-text-primary);
+  padding: 6px 8px;
+  border-radius: 0;
+  font-size: 11px;
+  font-family: var(--font-mono);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.coords-inputs,
+.time-inputs {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.hint {
+  font-size: 11px;
+  color: var(--color-text-tertiary);
+}
+.hint.error { color: var(--color-danger, #ff6b6b); }
+
+.form-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.upload-pill {
+  position: relative;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 8px;
+  border: 1px solid var(--color-border);
+  background: var(--color-overlay-05);
+  border-radius: 0;
+  cursor: pointer;
+  font-size: 11px;
+}
+.upload-pill input[type="file"] {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.craft-pill {
+  padding: 4px 8px;
+  border: 1px solid var(--color-border);
+  background: var(--color-overlay-20);
+  color: var(--color-text-primary);
+  border-radius: 0;
+  cursor: pointer;
+  font-size: 11px;
+}
+
+/* Ensure placeholders in craft inputs are also 11px (cross-browser) */
+.craft-form input::placeholder {
+  font-size: 11px;
+}
+.craft-form input::-webkit-input-placeholder { font-size: 11px; }
+.craft-form input::-moz-placeholder { font-size: 11px; }
+.craft-form input:-ms-input-placeholder { font-size: 11px; }
+.craft-form input::-ms-input-placeholder { font-size: 11px; }
+
+

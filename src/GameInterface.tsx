@@ -4,11 +4,13 @@ import MapView from './MapView';
 import './GameInterface.css';
 import './PopulationCounter.css';
 import FocusChat from './components/FocusChat';
+import AdminPanel from './components/AdminPanel';
 import { LocationData } from './interfaces'; // Import LocationData
 import { ICON_FILENAMES, getIconFilenameForType } from './iconMap';
 // import PopulationCounter from './PopulationCounter';
 import PopulationChart from './PopulationChart';
 import TimeTable from './TimeTable';
+import GlobeView from './components/GlobeView';
 // Allow pointing API calls to a remote base (useful when local serverless dev is flaky on Windows)
 const API_BASE: string = import.meta.env.VITE_API_BASE ?? '';
 
@@ -200,6 +202,9 @@ const GameInterface: React.FC = () => {
 
   // Add state for network selection
   const [isMainnet, setIsMainnet] = useState(false);
+
+  // Add state for map mode
+  const [mapMode, setMapMode] = useState<'2d' | '3d'>('2d');
 
   // Add stable references
   const anchorRefStable = useRef<HTMLElement | null>(null);
@@ -634,6 +639,42 @@ const GameInterface: React.FC = () => {
             </span>
           </div>
         </div>
+        {expandedTopPanel === 'civ-algo' && (
+          <div className="player-expansion">
+            <div className="expansion-content">
+              <h4>
+                Get access to the game by minting a civ.algo segment at{' '}
+                <a
+                  href="https://app.nf.domains/name/civ.algo?view=segments"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ color: 'var(--color-text-primary)', textDecoration: 'underline' }}
+                >
+                  NFDomains
+                </a>
+              </h4>
+              <p>An on-chain civ-like simulation game across history of Sapiens.</p>
+              <div className="links">
+                <a href="https://docs.google.com/presentation/d/1tcXTQ7dKaslwGiP8009Dx3SKE6Bua-oMhh5abNbf_kY/edit?usp=sharing" target="_blank" rel="noopener noreferrer">Documentation</a>
+                <a href="https://discord.gg/M3Tz4GtFcr" target="_blank" rel="noopener noreferrer">Discord</a>
+                <a href="https://x.com/hampelman_nft" target="_blank" rel="noopener noreferrer">X (Twitter)</a>
+              </div>
+            </div>
+          </div>
+        )}
+        {expandedTopPanel === 'wallet' && (
+          <div className="player-expansion">
+            <div className="expansion-content">
+              <h4>Connect Wallet</h4>
+              <div className="wallet-buttons">
+                <button className="wallet-btn">Pera</button>
+                <button className="wallet-btn">Defly</button>
+                <button className="wallet-btn">Lute</button>
+                <button className="wallet-btn">Exodus</button>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Second row */}
         <div className="player-row">
@@ -661,6 +702,15 @@ const GameInterface: React.FC = () => {
             </span>
           </div>
         </div>
+        {expandedTopPanel === 'time' && (
+          <div className="player-expansion">
+            <div className="expansion-content">
+              <div className="time-expansion">
+                <TimeTable currentRound={currentRound} totalRounds={TOTAL_ROUNDS} />
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Third row */}
         <div className="player-row">
@@ -691,87 +741,45 @@ const GameInterface: React.FC = () => {
             </span>
           </div>
         </div>
-
-        {/* Unified expansion area for top pills */}
-        {expandedTopPanel && (
+        {expandedTopPanel === 'population-global' && (
           <div className="player-expansion">
             <div className="expansion-content">
-              {expandedTopPanel === 'time' && (
-                <div className="time-expansion">
-                  <TimeTable
-                    currentRound={currentRound}
-                    totalRounds={TOTAL_ROUNDS}
-                  />
-                </div>
-              )}
-              {expandedTopPanel === 'population-global' && (
-                <div className="population-global-expansion">
-                  <PopulationChart
-                    isExpanded={true}
-                    onClose={handleClosePopulationChart}
-                    anchorRef={anchorRefStable}
-                    embedded={true}
-                  />
-                </div>
-              )}
-              {expandedTopPanel === 'population-user' && (
-                <div className="population-user-expansion">
-                  <div className="expansion-placeholder">
-                    <h4>Your Population Chart</h4>
-                    <p>Your population growth chart will appear here</p>
-                    <p>Placeholder for future implementation</p>
+              <div className="population-global-expansion">
+                <PopulationChart
+                  isExpanded={true}
+                  onClose={handleClosePopulationChart}
+                  anchorRef={anchorRefStable}
+                  embedded={true}
+                />
+              </div>
+            </div>
+          </div>
+        )}
+        {expandedTopPanel === 'population-user' && (
+          <div className="player-expansion">
+            <div className="expansion-content">
+              <div className="expansion-placeholder">
+                <h4>Your Population Chart</h4>
+                <p>Your population growth chart will appear here</p>
+                <p>Placeholder for future implementation</p>
+              </div>
+            </div>
+          </div>
+        )}
+        {expandedTopPanel === 'population-description' && currentMilestone && (
+          <div className="player-expansion">
+            <div className="expansion-content">
+              <div className="population-description-expansion">
+                <div className="milestone-expansion">
+                  <h4>{currentMilestone.description}</h4>
+                  <div className="milestone-years">
+                    {formatHistoricalYear(currentMilestone.startYear)} - {formatHistoricalYear(currentMilestone.endYear)}
+                  </div>
+                  <div className="milestone-summary">
+                    <p>Placeholder for historical period summary.</p>
                   </div>
                 </div>
-              )}
-              {expandedTopPanel === 'population-description' && currentMilestone && (
-                <div className="population-description-expansion">
-                  <div className="milestone-expansion">
-                    <h4>{currentMilestone.description}</h4>
-                    <div className="milestone-years">
-                      {formatHistoricalYear(currentMilestone.startYear)} - {formatHistoricalYear(currentMilestone.endYear)}
-                    </div>
-                    <div className="milestone-summary">
-                      <p>Placeholder for historical period summary.</p>
-                    </div>
-                  </div>
-                </div>
-              )}
-              {expandedTopPanel === 'civ-algo' && (
-                <div className="civ-algo-expansion">
-                  <div className="expansion-content">
-                    <h4>
-                      Get access to the game by minting a civ.algo segment at{' '}
-                      <a
-                        href="https://app.nf.domains/name/civ.algo?view=segments"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        style={{ color: 'var(--color-text-primary)', textDecoration: 'underline' }}
-                      >
-                        NFDomains
-                      </a>
-                    </h4>
-                    <p>An on-chain civ-like simulation game across history of Sapiens.</p>
-                    <div className="links">
-                      <a href="https://docs.google.com/presentation/d/1tcXTQ7dKaslwGiP8009Dx3SKE6Bua-oMhh5abNbf_kY/edit?usp=sharing" target="_blank" rel="noopener noreferrer">Documentation</a>
-                      <a href="https://discord.gg/M3Tz4GtFcr" target="_blank" rel="noopener noreferrer">Discord</a>
-                      <a href="https://x.com/hampelman_nft" target="_blank" rel="noopener noreferrer">X (Twitter)</a>
-                    </div>
-                  </div>
-                </div>
-              )}
-              {expandedTopPanel === 'wallet' && (
-                <div className="wallet-buttons-expansion">
-                  <div className="expansion-content">
-                    <h4>Connect Wallet</h4>
-                    <div className="wallet-buttons">
-                      <button className="wallet-btn">Pera</button>
-                      <button className="wallet-btn">Defly</button>
-                      <button className="wallet-btn">Lute</button>
-                      <button className="wallet-btn">Exodus</button>
-                    </div>
-                  </div>
-                </div>
-              )}
+              </div>
             </div>
           </div>
         )}
@@ -780,7 +788,11 @@ const GameInterface: React.FC = () => {
       </div>
 
       <div className="map-container">
-        <MapView locations={visibleLocations} />
+        {mapMode === '2d' ? (
+          <MapView locations={visibleLocations} />
+        ) : (
+          <GlobeView locations={visibleLocations} />
+        )}
       </div>
 
       {/* Player Controls (bottom, expands upward from its row) */}
@@ -805,6 +817,45 @@ const GameInterface: React.FC = () => {
               </div>
             </div>
           )}
+          
+          {expandedPlayerPanel === 'map-focus' && (
+            <div className="player-expansion">
+              <div className="expansion-content">
+                <FocusChat />
+              </div>
+            </div>
+          )}
+          {expandedPlayerPanel === 'admin' && (
+            <div className="player-expansion">
+              <div className="expansion-content">
+                <AdminPanel />
+              </div>
+            </div>
+          )}
+          <div className={`player-row map-row ${expandedPlayerPanel && expandedPlayerPanel.startsWith('map-') ? 'active' : ''}`}>
+            <div className="player-row-controls player-row-pills">
+              <span
+                className={`player-pill ${expandedPlayerPanel === 'map-time' ? 'active' : ''}`}
+                onClick={() => setExpandedPlayerPanel(expandedPlayerPanel === 'map-time' ? null : 'map-time')}
+              >
+                TIMELINE
+              </span>
+              <span
+                className={`player-pill ${expandedPlayerPanel === 'admin' ? 'active' : ''}`}
+                onClick={() => setExpandedPlayerPanel(expandedPlayerPanel === 'admin' ? null : 'admin')}
+              >
+                ADMIN
+              </span>
+              <span
+                className={`player-pill ${expandedPlayerPanel === 'map-focus' ? 'active' : ''}`}
+                onClick={() => setExpandedPlayerPanel(expandedPlayerPanel === 'map-focus' ? null : 'map-focus')}
+              >
+                FOCUS
+              </span>
+            </div>
+          </div>
+
+          {/* Expansions between rows for MAP row neighbors (LEGEND, SEARCH) */}
           {expandedPlayerPanel === 'map-legend' && (
             <div className="player-expansion">
               <div className="expansion-content">
@@ -926,57 +977,6 @@ const GameInterface: React.FC = () => {
               </div>
             </div>
           )}
-          {expandedPlayerPanel === 'map-focus' && (
-            <div className="player-expansion">
-              <div className="expansion-content">
-                <FocusChat />
-              </div>
-            </div>
-          )}
-          <div className={`player-row map-row ${expandedPlayerPanel && expandedPlayerPanel.startsWith('map-') ? 'active' : ''}`}>
-            <div className="player-row-controls player-row-pills">
-              <span
-                className={`player-pill ${expandedPlayerPanel === 'map-time' ? 'active' : ''}`}
-                onClick={() => setExpandedPlayerPanel(expandedPlayerPanel === 'map-time' ? null : 'map-time')}
-              >
-                TIMELINE
-              </span>
-              <span
-                className={`player-pill ${expandedPlayerPanel === 'map-legend' ? 'active' : ''}`}
-                onClick={() => setExpandedPlayerPanel(expandedPlayerPanel === 'map-legend' ? null : 'map-legend')}
-              >
-                LEGEND
-              </span>
-              <span
-                className={`player-pill ${expandedPlayerPanel === 'map-focus' ? 'active' : ''}`}
-                onClick={() => setExpandedPlayerPanel(expandedPlayerPanel === 'map-focus' ? null : 'map-focus')}
-              >
-                FOCUS
-              </span>
-            </div>
-          </div>
-
-          {/* Admin group */}
-          {expandedPlayerPanel === 'admin' && (
-            <div className="player-expansion">
-              <div className="expansion-content">
-                <h4>Admin</h4>
-                <p>Admin controls placeholder</p>
-              </div>
-            </div>
-          )}
-          <div className={`player-row ${expandedPlayerPanel === 'admin' ? 'active' : ''}`}>
-            <div className="player-row-controls player-row-pills">
-              <span
-                className={`player-pill ${expandedPlayerPanel === 'admin' ? 'active' : ''}`}
-                onClick={() => setExpandedPlayerPanel(expandedPlayerPanel === 'admin' ? null : 'admin')}
-              >
-                ADMIN
-              </span>
-            </div>
-          </div>
-
-          {/* Search group */}
           {expandedPlayerPanel === 'search' && (
             <div className="player-expansion">
               <div className="expansion-content">
@@ -985,8 +985,22 @@ const GameInterface: React.FC = () => {
               </div>
             </div>
           )}
-          <div className={`player-row ${expandedPlayerPanel === 'search' ? 'active' : ''}`}>
+
+          <div className={`player-row ${expandedPlayerPanel === 'admin' || expandedPlayerPanel === 'search' ? 'active' : ''}`}>
             <div className="player-row-controls player-row-pills">
+              <span
+                className="player-pill"
+                onClick={() => setMapMode(mapMode === '2d' ? '3d' : '2d')}
+                title="Toggle between 2D and 3D map"
+              >
+                MAP
+              </span>
+              <span
+                className={`player-pill ${expandedPlayerPanel === 'map-legend' ? 'active' : ''}`}
+                onClick={() => setExpandedPlayerPanel(expandedPlayerPanel === 'map-legend' ? null : 'map-legend')}
+              >
+                LEGEND
+              </span>
               <span
                 className={`player-pill ${expandedPlayerPanel === 'search' ? 'active' : ''}`}
                 onClick={() => setExpandedPlayerPanel(expandedPlayerPanel === 'search' ? null : 'search')}
